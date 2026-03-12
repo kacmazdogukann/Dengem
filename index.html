@@ -215,9 +215,9 @@ input:focus, select:focus { border-color: var(--primary); }
         <div class="topbar-right">
             <button class="theme-btn" onclick="toggleTheme()"><span id="theme-icon">☀️</span></button>
             <div class="balance-widget">
-                <div class="balance-label" id="bal-label">BU AY KALAN NAKİT</div>
+                <div class="balance-label" id="bal-label">BU AY KALAN BÜTÇE</div>
                 <div class="balance-amount" id="bal">0 TL</div>
-                <div style="font-size:9px; color:#94a3b8; margin-top:2px;">(Sadece ödenenler düşüldü)</div>
+                <div style="font-size:9px; color:#94a3b8; margin-top:2px;" id="bal-sub">(Tüm planlanan giderler düşüldü)</div>
             </div>
         </div>
     </div>
@@ -230,6 +230,16 @@ input:focus, select:focus { border-color: var(--primary); }
     </div>
 
     <div class="fab" onclick="openQuickAdd()">+</div>
+</div>
+</div>
+
+<div class="modal" id="modalAdjustBal">
+<div class="box">
+<h3 style="color:var(--warning)">Banka Bakiyesini Güncelle</h3>
+<label class="input-label">Bankadaki Gerçek Tutarınız Nedir? (TL)</label>
+<input type="number" id="adj-amt" placeholder="Örn: 15000">
+<button class="btn-modern" style="width:100%; background:var(--warning); margin-top:15px;" onclick="saveAdjust()">GÜNCELLE</button>
+<button class="btn-close" onclick="closeM('modalAdjustBal')">İptal</button>
 </div>
 </div>
 
@@ -252,7 +262,7 @@ input:focus, select:focus { border-color: var(--primary); }
 <h3 style="color:var(--gold)">Altın Ekle / Satın Al</h3>
 <label class="input-label">Kaç Gram Alındı?</label><input type="number" id="gold-grams" step="0.01">
 <label class="input-label">Hangi Hesaptan Ödendi?</label><select id="gold-account" class="account-select"></select>
-<label class="input-label">Toplam Ödenen Tutar (TL) - <small>Aylık Nakitten Düşer</small></label><input type="number" id="gold-amt">
+<label class="input-label">Toplam Ödenen Tutar (TL)</label><input type="number" id="gold-amt">
 <button class="btn-modern" style="width:100%; background:var(--gold); color:#000;" onclick="saveGold()">KASAYA EKLE</button>
 <button class="btn-close" onclick="closeM('modalAddGold')">İptal</button>
 </div>
@@ -273,6 +283,9 @@ input:focus, select:focus { border-color: var(--primary); }
 <label class="input-label">Açıklama</label><input type="text" id="inc-desc" list="desc-history" autocomplete="off">
 <label class="input-label">Tutar (TL)</label><input type="number" id="inc-amt">
 <label class="input-label">Hangi Hesaba Yattı?</label><select id="inc-account" class="account-select"></select>
+<label class="input-label" style="display:flex; align-items:center; gap:8px; margin-top:15px; cursor:pointer;">
+    <input type="checkbox" id="inc-is-savings" style="width:18px; height:18px; margin:0;">💎 Bu doğrudan birikimdir (Bütçeyi etkilemesin)
+</label>
 <button class="btn-modern" style="width:100%; background:var(--success); margin-top:15px;" onclick="saveIncome()">KAYDET</button>
 <button class="btn-close" onclick="closeM('modalAddInc')">İptal</button>
 </div>
@@ -286,7 +299,7 @@ input:focus, select:focus { border-color: var(--primary); }
 <div id="exp-bank-container" style="display:none;"><label class="input-label">Hangi Kuruma Ödendi?</label><select id="exp-bank-select" class="account-select"></select></div>
 <label class="input-label">Tutar (TL)</label><input type="number" id="exp-amt">
 <label class="input-label">Hangi Hesabından Çıktı?</label><select id="exp-account" class="account-select"></select>
-<p style="font-size:11px; color:var(--warning); text-align:center; margin-bottom:15px;">Bu kayıt "Bekliyor" olarak eklenecek. Ödediğinizde yanındaki butona basarak onaylayın.</p>
+<p style="font-size:11px; color:var(--warning); text-align:center; margin-bottom:15px;">Bu kayıt "Bekliyor" olarak eklenecek. Varlıklardan düşmesi için onaylayın.</p>
 <button class="btn-modern" style="width:100%; background:var(--danger)" onclick="saveExpense()">KAYDET</button>
 <button class="btn-close" onclick="closeM('modalAddExp')">İptal</button>
 </div>
@@ -303,16 +316,6 @@ input:focus, select:focus { border-color: var(--primary); }
 </div>
 </div>
 
-<div class="modal" id="modalAdjustBal">
-<div class="box">
-<h3 style="color:var(--warning)">Banka Bakiyesini Güncelle</h3>
-<label class="input-label">Bankadaki Gerçek Tutarınız Nedir? (TL)</label>
-<input type="number" id="adj-amt" placeholder="Örn: 15000">
-<button class="btn-modern" style="width:100%; background:var(--warning); margin-top:15px;" onclick="saveAdjust()">GÜNCELLE</button>
-<button class="btn-close" onclick="closeM('modalAdjustBal')">İptal</button>
-</div>
-</div>
-
 <div class="modal" id="modalTransfer">
 <div class="box">
 <h3 id="tr-modal-title" style="color:var(--info)">Para Transferi</h3>
@@ -321,7 +324,7 @@ input:focus, select:focus { border-color: var(--primary); }
 <label class="input-label">Tutar (TL)</label><input type="number" id="tr-amt">
 <label class="input-label" style="display:flex; align-items:flex-start; gap:10px; margin-top:20px; cursor:pointer; background:rgba(14, 165, 233, 0.1); padding:15px; border-radius:12px; border:1px solid var(--info);">
     <input type="checkbox" id="tr-is-savings" style="width:24px; height:24px; margin:0;">
-    <span style="font-size:13px; font-weight:700; color:var(--info);">💎 BİRİKİME AKTAR<br><span style="font-size:11px; font-weight:normal; color:var(--text); display:block; margin-top:4px;">Bu kutuyu işaretlersen bu para "Bu Ay Kalan" nakitinden DÜŞER ve varlıklarına gizlice eklenir.</span></span>
+    <span style="font-size:13px; font-weight:700; color:var(--info);">💎 BİRİKİME AKTAR<br><span style="font-size:11px; font-weight:normal; color:var(--text); display:block; margin-top:4px;">Bu kutuyu işaretlersen bu para bütçenden DÜŞER ve varlıklarına gizlice eklenir.</span></span>
 </label>
 <button class="btn-modern" style="width:100%; background:var(--info); margin-top:15px;" onclick="saveTransfer()">KAYDET</button>
 <button class="btn-close" onclick="closeM('modalTransfer')">İptal</button>
@@ -396,12 +399,7 @@ function login(id) {
 }
 
 function toggleSub() { const s=document.getElementById('sub-menu'); s.style.display=s.style.display==='block'?'none':'block'; }
-
-window.toggleSavingsVisibility = function() { 
-    hideSavings = !hideSavings; 
-    try { localStorage.setItem('dengem_hide_savings', hideSavings); } catch(e){} 
-    render(); 
-};
+window.toggleSavingsVisibility = function() { hideSavings = !hideSavings; try { localStorage.setItem('dengem_hide_savings', hideSavings); } catch(e){} render(); };
 
 function slideTo(pane) { 
     const s=document.getElementById('view-slider'), c=document.getElementById('content-scroll'); 
@@ -410,46 +408,41 @@ function slideTo(pane) {
 }
 function page(v) { view=v; slideTo('main'); render(); }
 
-// SADECE BANKA (VARLIK) HESAPLAMASI İÇİN KULLANILIR
+// SADECE BANKA (VARLIKLAR) HESAPLAMASI İÇİN KULLANILIR (BURADA KURAL KESİNDİR: ÖDENMEYEN PARA BANKADAN DÜŞMEZ)
 function calculateBalances() {
     let banks={}; let tG=0; bankAccounts.forEach(b=>banks[b]=0); 
     tx.filter(t=>t.uid===activeUser.id).forEach(t=>{
         if(!t.account) t.account='Nakit (Cüzdan)';
         if(t.type==='income') { if(banks[t.account]!==undefined) banks[t.account]+=t.amt; } 
-        else if(t.type==='expense'&&t.isPaid) { if(banks[t.account]!==undefined) banks[t.account]-=t.amt; } 
+        else if(t.type==='expense'&&t.isPaid) { if(banks[t.account]!==undefined) banks[t.account]-=t.amt; } // ÖDENMEDİYSE DÜŞMEZ!
         else if(t.type==='transfer') { if(banks[t.account]!==undefined) banks[t.account]-=t.amt; if(banks[t.toAccount]!==undefined) banks[t.toAccount]+=t.amt; }
         else if(t.type==='gold_buy') { if(banks[t.account]!==undefined) banks[t.account]-=t.amt; tG+=t.grams; }
     });
     return {banks, totalGoldGrams:tG};
 }
 
-// CANLI ÖDEME BUTONU
 window.togglePaid = function(id) { 
     const i = tx.findIndex(x => x.id === id); 
     if(i !== -1) { 
         tx[i].isPaid = !tx[i].isPaid; 
-        saveDB(); 
-        render(); 
-        showToast(tx[i].isPaid ? "✅ Ödendi. Cüzdandan Düşüldü!" : "⏳ İade Edildi. Bekliyor."); 
+        saveDB(); render(); 
+        showToast(tx[i].isPaid ? "✅ Varlıklardan Düşüldü!" : "⏳ Bekliyor. Paranız geri iade edildi."); 
     } 
 };
 
 function render() {
-    const aM = document.getElementById('area-main');
-    const date = document.getElementById('dateInput').value;
+    const aM = document.getElementById('area-main'), date = document.getElementById('dateInput').value;
     const uTx = tx.filter(t => t.uid === activeUser.id);
-    
-    // YENİ: SADECE BU AYIN MATEMATİĞİ (DASHBOARD İLE BİREBİR AYNI)
     const lTM = uTx.filter(t => t.date === date);
     
+    // ANA EKRAN BÜTÇESİ (TÜM GİDERLER DÜŞER, FOTOĞRAFTAKİ MATEMATİĞİ TUTTURUR!)
     const iTM = lTM.filter(t=>t.type==='income' && t.cat !== 'Bakiye Eşitleme').reduce((a,b)=>a+b.amt,0);
-    const eTMPaid = lTM.filter(t=>t.type==='expense' && t.isPaid && t.cat !== 'Bakiye Eşitleme').reduce((a,b)=>a+b.amt,0);
+    const eTMAll = lTM.filter(t=>t.type==='expense' && t.cat !== 'Bakiye Eşitleme').reduce((a,b)=>a+b.amt,0); // isPaid kontrolü KALDIRILDI!
     const gBTM = lTM.filter(t=>t.type==='gold_buy' && t.account !== 'Dışarıdan Nakit').reduce((a,b)=>a+b.amt,0);
     const sTTM = lTM.filter(t=>t.type==='transfer' && t.isSavings).reduce((a,b)=>a+b.amt, 0);
 
-    const cNakit = iTM - eTMPaid - gBTM - sTTM;
+    const cNakit = iTM - eTMAll - gBTM - sTTM;
 
-    // SAĞ ÜST KÖŞE: ARTIK SADECE BU AYI GÖSTERİR (NET FORMÜL)
     const balEl = document.getElementById('bal');
     balEl.innerText = cNakit.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
     balEl.style.color = cNakit >= 0 ? 'var(--success)' : 'var(--danger)';
@@ -462,8 +455,8 @@ function render() {
     if(view === 'dash') {
         const fL = lTM.filter(t=>t.type==='expense'&&bankaKategorileri.includes(t.cat)&&t.cat!=='Bakiye Eşitleme');
         const eL = lTM.filter(t=>t.type==='expense'&&!bankaKategorileri.includes(t.cat)&&t.cat!=='Bakiye Eşitleme');
-        const tFA = fL.reduce((a,b)=>a+b.amt,0); // Toplam banka gideri
-        const tEA = eL.reduce((a,b)=>a+b.amt,0); // Toplam ev gideri
+        const tFA = fL.reduce((a,b)=>a+b.amt,0);
+        const tEA = eL.reduce((a,b)=>a+b.amt,0);
         const tB = gBTM + sTTM;
 
         aM.innerHTML = `
@@ -511,7 +504,6 @@ function render() {
         if(!uL.length) h='<div style="text-align:center; color:#94a3b8; padding:30px; border:1px dashed var(--border-color); border-radius:12px;">Kredi yok.</div>';
         else uL.forEach(l=>{ 
             let p=(l.paidM/l.totalM)*100; 
-            // KUSURSUZ KREDİ KUTUCUKLARI (DOTS)
             let dots = '';
             for(let i=1; i<=l.totalM; i++) {
                 dots += `<div class="loan-dot ${i <= l.paidM ? 'paid' : ''}">${i}</div>`;
@@ -604,7 +596,6 @@ function openAdjustBalance() { document.getElementById('adj-amt').value=''; docu
 function saveAdjust() {
     const rB=parseFloat(document.getElementById('adj-amt').value); if(isNaN(rB))return showToast("Hata!");
     const {banks}=calculateBalances(); const d=rB-(banks[activeBankDetail]||0); if(d===0)return showToast("Zaten doğru!");
-    // Eşitleme parası Cüzdan (Bu ay Kalan) nakitine girmez! Sadece varlıklara yansır. (cat: Bakiye Eşitleme olduğu için render() fonksiyonu onu yoksayar)
     tx.push({id:Date.now(),uid:activeUser.id,type:d>0?'income':'expense',cat:'Bakiye Eşitleme',icon:'⚖️',desc:'Varlık Girişi',amt:Math.abs(d),date:document.getElementById('dateInput').value,account:activeBankDetail,isPaid:true});
     saveDB(); render(); showToast("Güncellendi"); closeM('modalAdjustBal'); openBankDetails(activeBankDetail); 
 }
@@ -615,13 +606,13 @@ function saveGold() { const g=parseFloat(document.getElementById('gold-grams').v
 
 function openQuickAdd() { editingId=null; document.getElementById('exp-title').innerText='Hızlı Ekle'; document.getElementById('exp-cat-selector').style.display='block'; document.getElementById('quick-cat').value='Market'; updateQuickForm(); document.getElementById('exp-desc').value=''; document.getElementById('exp-amt').value=''; document.getElementById('modalAddExp').style.display='flex'; }
 function updateQuickForm() { const c=document.getElementById('quick-cat').value; document.getElementById('exp-desc-container').style.display=bankaKategorileri.includes(c)?'none':'block'; document.getElementById('exp-bank-container').style.display=bankaKategorileri.includes(c)?'block':'none'; }
-function openIncAdd() { editingId=null; document.getElementById('inc-desc').value=''; document.getElementById('inc-amt').value=''; document.getElementById('modalAddInc').style.display='flex'; }
+function openIncAdd() { editingId=null; document.getElementById('inc-desc').value=''; document.getElementById('inc-amt').value=''; document.getElementById('inc-is-savings').checked=false; document.getElementById('modalAddInc').style.display='flex'; }
 function openExpAdd(c,i) { editingId=null; document.getElementById('exp-title').innerText=c; document.getElementById('exp-cat-selector').style.display='none'; document.getElementById('exp-desc-container').style.display=bankaKategorileri.includes(c)?'none':'block'; document.getElementById('exp-bank-container').style.display=bankaKategorileri.includes(c)?'block':'none'; document.getElementById('exp-desc').value=''; document.getElementById('exp-amt').value=''; document.getElementById('modalAddExp').style.display='flex'; }
 function openTransferAdd() { editingId=null; document.getElementById('tr-amt').value=''; document.getElementById('tr-is-savings').checked=false; document.getElementById('modalTransfer').style.display='flex'; }
-function editTx(id) { const t=tx.find(x=>x.id===id); if(!t)return; editingId=id; if(t.type==='income'){document.getElementById('inc-desc').value=t.desc; document.getElementById('inc-amt').value=t.amt; document.getElementById('inc-account').value=t.account; document.getElementById('modalAddInc').style.display='flex';}else if(t.type==='expense'){document.getElementById('exp-cat-selector').style.display='none'; document.getElementById('exp-amt').value=t.amt; document.getElementById('exp-account').value=t.account; document.getElementById('exp-desc-container').style.display=bankaKategorileri.includes(t.cat)?'none':'block'; document.getElementById('exp-bank-container').style.display=bankaKategorileri.includes(t.cat)?'block':'none'; document.getElementById('exp-desc').value=t.desc; document.getElementById('exp-bank-select').value=t.desc; document.getElementById('modalAddExp').style.display='flex';}else if(t.type==='transfer'){document.getElementById('tr-amt').value=t.amt; document.getElementById('tr-from').value=t.account; document.getElementById('tr-to').value=t.toAccount; document.getElementById('tr-is-savings').checked=t.isSavings||false; document.getElementById('modalTransfer').style.display='flex';} }
+function editTx(id) { const t=tx.find(x=>x.id===id); if(!t)return; editingId=id; if(t.type==='income'){document.getElementById('inc-desc').value=t.desc; document.getElementById('inc-amt').value=t.amt; document.getElementById('inc-account').value=t.account; document.getElementById('inc-is-savings').checked=t.isSavings||false; document.getElementById('modalAddInc').style.display='flex';}else if(t.type==='expense'){document.getElementById('exp-cat-selector').style.display='none'; document.getElementById('exp-amt').value=t.amt; document.getElementById('exp-account').value=t.account; document.getElementById('exp-desc-container').style.display=bankaKategorileri.includes(t.cat)?'none':'block'; document.getElementById('exp-bank-container').style.display=bankaKategorileri.includes(t.cat)?'block':'none'; document.getElementById('exp-desc').value=t.desc; document.getElementById('exp-bank-select').value=t.desc; document.getElementById('modalAddExp').style.display='flex';}else if(t.type==='transfer'){document.getElementById('tr-amt').value=t.amt; document.getElementById('tr-from').value=t.account; document.getElementById('tr-to').value=t.toAccount; document.getElementById('tr-is-savings').checked=t.isSavings||false; document.getElementById('modalTransfer').style.display='flex';} }
 
-function saveIncome() { const a=parseFloat(document.getElementById('inc-amt').value), d=document.getElementById('inc-desc').value||'Gelir', acc=document.getElementById('inc-account').value; if(a){if(editingId){let i=tx.findIndex(x=>x.id===editingId); tx[i]={...tx[i],desc:d,amt:a,account:acc};}else{tx.push({id:Date.now(),uid:activeUser.id,type:'income',cat:'Gelir',icon:'💰',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:true});} saveDB(); updateHistoryList(); closeM('modalAddInc'); render(); showToast("Kaydedildi");} }
-function saveExpense() { const c=document.getElementById('exp-cat-selector').style.display==='none'?document.getElementById('exp-title').innerText:document.getElementById('quick-cat').value; const a=parseFloat(document.getElementById('exp-amt').value), d=bankaKategorileri.includes(c)?document.getElementById('exp-bank-select').value:(document.getElementById('exp-desc').value||c), acc=document.getElementById('exp-account').value; if(a){if(editingId){let i=tx.findIndex(x=>x.id===editingId); tx[i]={...tx[i],desc:d,amt:a,account:acc};}else{tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:c,icon:cats.find(x=>x.n===c)?.i||'📌',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:false});} saveDB(); updateHistoryList(); closeM('modalAddExp'); render(); showToast("Bekliyor Olarak Eklendi");} }
+function saveIncome() { const a=parseFloat(document.getElementById('inc-amt').value), d=document.getElementById('inc-desc').value||'Gelir', acc=document.getElementById('inc-account').value, s=document.getElementById('inc-is-savings').checked; if(a){if(editingId){let i=tx.findIndex(x=>x.id===editingId); tx[i]={...tx[i],desc:d,amt:a,account:acc,isSavings:s};}else{tx.push({id:Date.now(),uid:activeUser.id,type:'income',cat:'Gelir',icon:'💰',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:true,isSavings:s});} saveDB(); updateHistoryList(); closeM('modalAddInc'); render(); showToast("Kaydedildi");} }
+function saveExpense() { const c=document.getElementById('exp-cat-selector').style.display==='none'?document.getElementById('exp-title').innerText:document.getElementById('quick-cat').value; const a=parseFloat(document.getElementById('exp-amt').value), d=bankaKategorileri.includes(c)?document.getElementById('exp-bank-select').value:(document.getElementById('exp-desc').value||c), acc=document.getElementById('exp-account').value; if(a){if(editingId){let i=tx.findIndex(x=>x.id===editingId); tx[i]={...tx[i],desc:d,amt:a,account:acc};}else{tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:c,icon:cats.find(x=>x.n===c)?.i||'📌',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:false});} saveDB(); updateHistoryList(); closeM('modalAddExp'); render(); showToast("Gider Eklendi");} }
 function saveTransfer() { const a=parseFloat(document.getElementById('tr-amt').value), f=document.getElementById('tr-from').value, t=document.getElementById('tr-to').value, s=document.getElementById('tr-is-savings').checked; if(f===t)return showToast("Aynı hesap olmaz!"); if(a){if(editingId){let i=tx.findIndex(x=>x.id===editingId); tx[i]={...tx[i],amt:a,account:f,toAccount:t,isSavings:s};}else{tx.push({id:Date.now(),uid:activeUser.id,type:'transfer',cat:'Transfer',icon:'🔄',desc:'Transfer',amt:a,date:document.getElementById('dateInput').value,account:f,toAccount:t,isSavings:s,isPaid:true});} saveDB(); closeM('modalTransfer'); render(); showToast("Aktarıldı");} }
 function del(id, bd=false) { if(confirm("Silmek istediğine emin misin?")){ tx=tx.filter(t=>t.id!==id); saveDB(); updateHistoryList(); render(); showToast("Silindi"); if(bd)openBankDetails(activeBankDetail); } }
 function closeM(id) { document.getElementById(id).style.display='none'; editingId=null; }
