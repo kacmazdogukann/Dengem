@@ -67,21 +67,20 @@ body { margin:0; font-family:'Segoe UI', system-ui, sans-serif; background:var(-
 .view-pane { width: 50%; padding: 25px; box-sizing: border-box; flex-shrink: 0; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* DASHBOARD */
-.dash-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-.chart-card { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display:flex; flex-direction:column; align-items:center; }
-.chart-wrapper { position: relative; height: 180px; width: 100%; max-width: 200px; }
-.sub-cards { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-.sub-card { background:var(--card-bg); padding:15px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display:flex; flex-direction:column; justify-content:center; position: relative;}
+/* KAYDIRMALI SEKME (YENİ TASARIM) */
+.scroll-tabs-wrapper { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+.scroll-tabs-wrapper::-webkit-scrollbar { display: none; }
+.scroll-tab { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text); padding: 12px 18px; border-radius: 30px; font-weight: 700; font-size: 13px; white-space: nowrap; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.2s; display:flex; align-items:center; gap:8px; }
+.scroll-tab:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
 
-/* ANA MENÜ BUTONLARI */
-.nav-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-.nav-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s; display:flex; flex-direction:column; justify-content:center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-.nav-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color:var(--primary); }
-.nav-icon { font-size: 32px; margin-bottom: 10px; }
-.nav-title { font-size: 15px; font-weight: 700; color: var(--text); }
-.nav-subtitle { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+/* DASHBOARD KARTLARI */
+.dash-overview { display: flex; flex-direction: column; gap: 25px; margin-bottom: 25px; }
+.sub-cards { display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
+.sub-card { background:var(--card-bg); padding:18px; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border-color); display:flex; flex-direction:column; justify-content:center; }
+.chart-card { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display:flex; flex-direction:column; align-items:center; }
+.chart-wrapper { position: relative; height: 220px; width: 100%; max-width: 250px; }
 
+/* GERİ BUTONU */
 .btn-back { display: inline-flex; align-items: center; gap: 5px; background: transparent; border: none; color: var(--primary); font-size: 15px; font-weight: 700; cursor: pointer; padding: 0 0 15px 0; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); width: 100%; text-align: left; }
 
 /* VARLIK & GİZLİLİK */
@@ -93,8 +92,9 @@ body { margin:0; font-family:'Segoe UI', system-ui, sans-serif; background:var(-
 .gold-panel { background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 12px; padding: 15px; margin-top: 20px; display:flex; justify-content:space-between; align-items:center; }
 .bank-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
 .bank-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; cursor: pointer; transition: 0.2s; }
+.bank-card:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-/* KREDİ VE BORÇ */
+/* KREDİ VE BORÇ KARTLARI */
 .loan-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 .loan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
 .loan-title { font-size: 16px; font-weight: 700; color: var(--text); }
@@ -103,37 +103,41 @@ body { margin:0; font-family:'Segoe UI', system-ui, sans-serif; background:var(-
 .progress-bar { background: var(--primary); height: 100%; transition: width 0.5s; }
 .loan-footer { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; font-weight: 600; }
 
-/* LİSTE & ÖDEME */
+/* LİSTE & YENİ ÖDEME BUTONU */
 .tx-list { display:flex; flex-direction:column; gap:12px; }
 .group-details { background: var(--card-bg); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid var(--border-color); }
 .group-summary { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 15px; list-style: none; user-select: none; color: var(--text); }
 .group-summary::-webkit-details-marker { display: none; } 
-.group-title { display: flex; align-items: center; gap: 8px; }
-.group-count { font-size: 11px; color: #94a3b8; font-weight: 500; background: var(--border-color); padding: 2px 8px; border-radius: 10px; }
-.group-total { font-weight: 800; font-size: 16px; }
 .group-items { border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.02); }
 
 .g-item { background: var(--card-bg); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); transition: 0.3s; }
 .g-item:last-child { border-bottom: none; }
-.g-info { display: flex; flex-direction: column; gap: 4px; }
+.g-info { display: flex; flex-direction: column; gap: 4px; flex:1; }
 .g-desc { font-size: 14px; color: var(--text); font-weight: 600; display:flex; align-items:center; gap:8px; transition:0.3s;}
 .tx-account-badge { display: inline-block; background: var(--border-color); color: #64748b; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; width: fit-content; }
-.g-amt-del { display: flex; align-items: center; gap: 8px; }
+.g-amt-del { display: flex; align-items: center; gap: 10px; }
 .g-amt { font-size: 16px; font-weight: 800; margin-right: 5px; transition:0.3s;}
 
 .item-paid { background: rgba(0,0,0,0.02); }
 .item-paid .g-desc, .item-paid .g-amt { text-decoration: line-through; opacity: 0.5; color: #94a3b8 !important; }
 .item-paid .tx-account-badge { opacity: 0.5; }
 
-.btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; display:flex; align-items:center; justify-content:center; font-size:14px;}
-.btn-status-paid { background: #dcfce7; color: #15803d; }
-.btn-status-unpaid { background: #fef3c7; color: #d97706; }
-.badge-unpaid { font-size:9px; background:var(--warning); color:#fff; padding:3px 6px; border-radius:4px; font-weight:bold; letter-spacing:0.5px;}
+/* DÜZENLENMİŞ ÖDE / ÖDENDİ BUTONU */
+.btn-pay-status { padding: 6px 12px; border-radius: 8px; border: none; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+.btn-pay-status.unpaid { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; animation: pulse 2s infinite; }
+.btn-pay-status.paid { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; opacity: 0.7; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
+.btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; display:flex; align-items:center; justify-content:center; font-size:14px;}
+.btn-edit { background: #e0f2fe; color: #0284c7; }
+.btn-delete { background: #fee2e2; color: #ef4444; }
+
+/* MODAL, FAB, GENEL BUTONLAR */
 .btn-modern { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s; }
 .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0, 0.7); backdrop-filter: blur(4px); display:none; align-items:center; justify-content:center; z-index:2000; padding: 20px; box-sizing: border-box; }
 .box { background:var(--card-bg); color:var(--text); padding:25px; border-radius:20px; width:100%; max-width: 360px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); }
 input:not([type="file"]), select { width:100%; padding:14px; margin-bottom:15px; border:1px solid var(--border-color); border-radius:10px; box-sizing:border-box; font-size: 14px; outline: none; background: var(--input-bg); color: var(--text); font-family:inherit;}
+input:focus, select:focus { border-color: var(--primary); }
 .btn-close { width:100%; margin-top:10px; padding: 12px; background:var(--border-color); color:var(--text); border:none; border-radius:10px; cursor:pointer; font-weight: 600; transition: 0.2s; }
 .input-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; display: block; }
 .fab { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 99; transition: transform 0.2s; }
@@ -150,8 +154,9 @@ input:not([type="file"]), select { width:100%; padding:14px; margin-bottom:15px;
     .topbar-center { display: none; }
     .topbar-right { width: auto; margin-left: auto; gap: 8px; }
     .balance-amount { font-size: 18px; }
-    .dash-overview { grid-template-columns: 1fr; gap:15px; }
-    .nav-cards { grid-template-columns: 1fr; gap:10px; }
+    .content { padding: 15px; }
+    .sub-cards { grid-template-columns: 1fr 1fr; }
+    .fab { bottom: 20px; right: 20px; width: 55px; height: 55px; font-size: 28px; }
 }
 </style>
 </head>
@@ -241,7 +246,7 @@ input:not([type="file"]), select { width:100%; padding:14px; margin-bottom:15px;
 <h3 style="color:var(--gold)">Altın Ekle / Satın Al</h3>
 <label class="input-label">Kaç Gram Alındı?</label><input type="number" id="gold-grams" step="0.01">
 <label class="input-label">Hangi Hesaptan Ödendi?</label><select id="gold-account" class="account-select"></select>
-<label class="input-label">Toplam Ödenen Tutar (TL)</label><input type="number" id="gold-amt">
+<label class="input-label">Toplam Ödenen Tutar (TL)</label><input type="number" id="gold-amt" placeholder="Aylık Nakitten Düşer">
 <button class="btn-modern" style="width:100%; background:var(--gold); color:#000;" onclick="saveGold()">KASAYA EKLE</button>
 <button class="btn-close" onclick="closeM('modalAddGold')">İptal</button>
 </div>
@@ -275,6 +280,7 @@ input:not([type="file"]), select { width:100%; padding:14px; margin-bottom:15px;
 <div id="exp-bank-container" style="display:none;"><label class="input-label">Hangi Kuruma Ödendi?</label><select id="exp-bank-select" class="account-select"></select></div>
 <label class="input-label">Tutar (TL)</label><input type="number" id="exp-amt">
 <label class="input-label">Hangi Hesabından Çıktı?</label><select id="exp-account" class="account-select"></select>
+<p style="font-size:11px; color:var(--warning); text-align:center; margin-bottom:15px;">Bu kayıt "Bekliyor" olarak eklenecek. Ödediğinizde yanındaki butona basarak onaylayın.</p>
 <button class="btn-modern" style="width:100%; background:var(--danger)" onclick="saveExpense()">KAYDET</button>
 <button class="btn-close" onclick="closeM('modalAddExp')">İptal</button>
 </div>
@@ -324,19 +330,21 @@ const bankAccounts = ['Nakit (Cüzdan)', 'Ziraat Bankası', 'Vakıfbank', 'Garan
 const cats = [{n:'Market', i:'🛒'}, {n:'Aidat', i:'🏢'}, {n:'Fatura', i:'⚡'}, {n:'Yakıt', i:'⛽'}, {n:'Sağlık', i:'💊'}, {n:'Kredi Kartı Ödemesi', i:'💳'}, {n:'Kredi Ödemesi', i:'🏦'}, {n:'Ek Hesap (KMH)', i:'📉'}, {n:'Diğer', i:'🔹'}];
 const bankaKategorileri = ['Kredi Kartı Ödemesi', 'Kredi Ödemesi', 'Ek Hesap (KMH)'];
 
-// HATA YAKALAYICI ZIRH
+try {
+    currentGoldPrice = parseFloat(localStorage.getItem('dengem_gold_price')) || 3050;
+    hideSavings = localStorage.getItem('dengem_hide_savings') === 'true';
+    if(typeof Chart !== 'undefined') Chart.defaults.color = '#94a3b8';
+} catch(e) {}
+
 window.onload = function() {
     try { loadTheme(); } catch(e){}
     try {
         let u = localStorage.getItem(KEY_U); users = u ? JSON.parse(u) : []; if(!Array.isArray(users)) users = [];
         let t = localStorage.getItem(KEY_T); tx = t ? JSON.parse(t) : []; if(!Array.isArray(tx)) tx = [];
         let l = localStorage.getItem(KEY_L); loans = l ? JSON.parse(l) : []; if(!Array.isArray(loans)) loans = [];
-        currentGoldPrice = parseFloat(localStorage.getItem('dengem_gold_price')) || 3050;
-        hideSavings = localStorage.getItem('dengem_hide_savings') === 'true';
     } catch(e) { users=[]; tx=[]; loans=[]; }
-    try { if(typeof Chart !== 'undefined') Chart.defaults.color = '#94a3b8'; } catch(e){}
     try { populateAccountDropdowns(); updateHistoryList(); } catch(e){}
-    try { initLogin(); } catch(e) { document.getElementById('p-list').innerHTML = `<div class="p-card" onclick="addUser()"><div class="p-avatar" style="background:transparent; border:2px dashed #94a3b8; color:#94a3b8">+</div><div style="color:#94a3b8; font-weight:600">Yeni Ekle</div></div>`; }
+    try { initLogin(); } catch(e) {}
     try { document.getElementById('dateInput').value = new Date().toISOString().slice(0,7); } catch(e){}
 };
 
@@ -383,7 +391,7 @@ function calculateBalances() {
     return {banks, totalGoldGrams:tG};
 }
 
-function togglePaid(id) { const i=tx.findIndex(x=>x.id===id); if(i!==-1){ tx[i].isPaid=!tx[i].isPaid; saveDB(); render(); showToast(tx[i].isPaid?"✅ Ödendi":"⏳ Bekliyor"); } }
+function togglePaid(id) { const i=tx.findIndex(x=>x.id===id); if(i!==-1){ tx[i].isPaid=!tx[i].isPaid; saveDB(); render(); showToast(tx[i].isPaid?"✅ Ödendi Olarak İşaretlendi":"⏳ Beklemeye Alındı"); } }
 
 function render() {
     const aM = document.getElementById('area-main'), date = document.getElementById('dateInput').value;
@@ -407,15 +415,40 @@ function render() {
         const tFA = fL.reduce((a,b)=>a+b.amt,0), tEA = eL.reduce((a,b)=>a+b.amt,0), tB = gBTM + sTTM;
 
         aM.innerHTML = `
-        <div class="dash-overview"><div class="sub-cards">
-            <div class="sub-card" style="border-left:4px solid var(--success);"><div style="font-size:10px; color:#64748b; font-weight:bold;">BU AY GİREN</div><div style="font-size:16px; font-weight:bold; color:var(--success)">+${iTM.toLocaleString()} ₺</div></div>
-            <div class="sub-card" style="border-left:4px solid var(--info);"><div style="font-size:10px; color:#64748b; font-weight:bold;">BİRİKİM/ALTIN</div><div style="font-size:16px; font-weight:bold; color:var(--info)">-${tB.toLocaleString()} ₺</div></div>
-        </div><div class="chart-card"><h4 style="margin:0 0 5px 0; color:var(--text); font-size:11px; text-transform:uppercase;">Harcama Dağılımı</h4><div class="chart-wrapper"><canvas id="expenseChart"></canvas></div></div></div>
-        <h3 style="font-size:14px; margin-bottom:10px; color:#64748b; text-transform:uppercase;">Gider Kategorileri</h3>
-        <div class="nav-cards">
-            <div class="nav-card" onclick="openDetailView('Ev ve Yaşam', 'ev')"><div class="nav-icon">🏠</div><div class="nav-title">Ev ve Yaşam Gideri</div><div class="nav-subtitle">Toplam: ${tEA.toLocaleString()} ₺</div></div>
-            <div class="nav-card" onclick="openDetailView('Banka ve Finans', 'finans')"><div class="nav-icon">💳</div><div class="nav-title">Banka ve Kartlar</div><div class="nav-subtitle">Toplam: ${tFA.toLocaleString()} ₺</div></div>
-        </div>`;
+        <div class="scroll-tabs-wrapper">
+            <button class="scroll-tab" onclick="openDetailView('Ev ve Yaşam', 'ev')">🏠 Ev & Yaşam</button>
+            <button class="scroll-tab" onclick="openDetailView('Banka ve Finans', 'finans')">💳 Banka & Kart</button>
+            <button class="scroll-tab" onclick="page('loans')">🏦 Krediler</button>
+            <button class="scroll-tab" onclick="page('assets')">💎 Varlıklarım</button>
+            <button class="scroll-tab" onclick="page('inc')">💰 Gelirler</button>
+        </div>
+
+        <div class="dash-overview">
+            <div class="sub-cards">
+                <div class="sub-card" style="border-left:4px solid var(--success);">
+                    <div style="font-size:10px; color:#64748b; font-weight:bold;">BU AY GİREN</div>
+                    <div style="font-size:16px; font-weight:bold; color:var(--success)">+${iTM.toLocaleString()} ₺</div>
+                </div>
+                <div class="sub-card" style="border-left:4px solid var(--info);">
+                    <div style="font-size:10px; color:#64748b; font-weight:bold;">BİRİKİM / ALTIN</div>
+                    <div style="font-size:16px; font-weight:bold; color:var(--info)">-${tB.toLocaleString()} ₺</div>
+                </div>
+                <div class="sub-card" style="border-left:4px solid var(--warning);">
+                    <div style="font-size:10px; color:#64748b; font-weight:bold;">EV GİDERLERİ</div>
+                    <div style="font-size:16px; font-weight:bold; color:var(--warning)">-${tEA.toLocaleString()} ₺</div>
+                </div>
+                <div class="sub-card" style="border-left:4px solid var(--danger);">
+                    <div style="font-size:10px; color:#64748b; font-weight:bold;">KART/KREDİ GİDERİ</div>
+                    <div style="font-size:16px; font-weight:bold; color:var(--danger)">-${tFA.toLocaleString()} ₺</div>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h4 style="margin:0 0 10px 0; color:var(--text); font-size:12px; text-transform:uppercase;">Aylık Dağılım</h4>
+                <div class="chart-wrapper"><canvas id="expenseChart"></canvas></div>
+            </div>
+        </div>
+        `;
         if((tEA+tFA+tB)>0 && typeof Chart!=='undefined') setTimeout(()=>drawChart(lTM, tB), 100);
     } 
     else if(view === 'inc') aM.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h3 style="margin:0;font-size:20px;">Gelirler</h3><button class="btn-modern" style="padding:8px 15px;" onclick="openIncAdd()">+ Ekle</button></div>${renderGroupedList(lTM.filter(t=>t.type==='income'&&t.cat!=='Bakiye Eşitleme'))}`;
@@ -427,7 +460,11 @@ function render() {
     }
     else if(view === 'assets') {
         let bH = ''; for(const [b,a] of Object.entries(banks)){ let c=a>=0?'white':'var(--danger)', aD=hideSavings?'***':a.toLocaleString(); bH+=`<div class="bank-card" onclick="openBankDetails('${b}')"><div class="bank-card-name"><span>${b}</span> 🏦</div><div class="bank-card-amt" style="color:${c}">${aD} ₺</div></div>`; }
-        aM.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h3 style="margin:0;font-size:20px;">Varlıklar</h3><button class="btn-modern" style="padding:8px 15px;background:var(--info)" onclick="openTransferAdd()">🔄 Transfer</button></div><div class="assets-board"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="assets-total-label">NET SERVET</div><div class="assets-total-val">${hideSavings?'***':tNW.toLocaleString()} ₺</div></div><button class="eye-btn" onclick="toggleSavingsVisibility()">${hideSavings?'🙈':'👁️'}</button></div><div class="gold-panel"><div class="gold-info"><span style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">🥇 ALTIN KASASI</span><span class="gold-grams">${hideSavings?'***':totalGoldGrams.toLocaleString()} Gr</span><span class="gold-tl">Karşılığı: ${hideSavings?'***':tGV.toLocaleString()} ₺</span></div><div style="display:flex;flex-direction:column;gap:8px;"><button class="btn-modern" style="background:var(--gold);color:#000;padding:6px 12px;font-size:12px;" onclick="openGoldAdd()">+ Altın Al</button><button class="btn-modern" style="background:rgba(255,255,255,0.2);color:#fff;padding:6px 12px;font-size:12px;" onclick="document.getElementById('modalGoldPrice').style.display='flex'">⚙️ Kur</button></div></div><div class="bank-grid">${bH}</div></div>`;
+        let netDisplay = hideSavings ? '***' : totalNetWorth.toLocaleString(), goldGramsDisplay = hideSavings ? '***' : totalGoldGrams.toLocaleString(), goldValDisplay = hideSavings ? '***' : totalGoldValue.toLocaleString(), eyeIcon = hideSavings ? '🙈' : '👁️';
+
+        aM.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;"><h3 style="margin:0; font-size:20px;">Varlıklar</h3><button class="btn-modern" style="padding: 8px 15px; background:var(--info)" onclick="openTransferAdd()">🔄 Transfer</button></div>
+        <div class="assets-board"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="assets-total-label">NET SERVET</div><div class="assets-total-val">${netDisplay} ₺</div></div><button class="eye-btn" onclick="toggleSavingsVisibility()">${eyeIcon}</button></div><div class="gold-panel"><div class="gold-info"><span style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">🥇 ALTIN KASASI</span><span class="gold-grams">${goldGramsDisplay} Gram</span><span class="gold-tl">Karşılığı: ${goldValDisplay} ₺</span></div><div style="display:flex;flex-direction:column;gap:8px;"><button class="btn-modern" style="background:var(--gold);color:#000;padding:6px 12px;font-size:12px;" onclick="openGoldAdd()">+ Altın Al</button><button class="btn-modern" style="background:rgba(255,255,255,0.2);color:#fff;padding:6px 12px;font-size:12px;" onclick="document.getElementById('modalGoldPrice').style.display='flex'">⚙️ Kur</button></div></div><div class="bank-grid">${bH}</div></div>`;
     }
 }
 
@@ -443,7 +480,8 @@ function drawChart(l, tB) {
     const eL = l.filter(t=>t.type==='expense'&&t.cat!=='Bakiye Eşitleme'), cT = {};
     eL.forEach(t=>{ cT[t.cat]=(cT[t.cat]||0)+t.amt; }); if(tB>0) cT['💎 Birikim']=tB;
     if(myChart) myChart.destroy();
-    myChart = new Chart(c, { type:'doughnut', data:{ labels:Object.keys(cT), datasets:[{data:Object.values(cT),backgroundColor:['#ef4444','#0ea5e9','#f59e0b','#84cc16','#10b981','#06b6d4','#3b82f6','#8b5cf6','#d946ef','#64748b'],borderWidth:document.body.classList.contains('dark-mode')?2:1,borderColor:document.body.classList.contains('dark-mode')?'#1e293b':'#ffffff'}] }, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'75%'} });
+    const isDark = document.body.classList.contains('dark-mode');
+    myChart = new Chart(c, { type:'doughnut', data:{ labels:Object.keys(cT), datasets:[{data:Object.values(cT),backgroundColor:['#ef4444','#0ea5e9','#f59e0b','#84cc16','#10b981','#06b6d4','#3b82f6','#8b5cf6','#d946ef','#64748b'],borderWidth:isDark?2:1,borderColor:isDark?'#1e293b':'#ffffff'}] }, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'75%'} });
 }
 
 function renderGroupedList(l, oA=false) {
@@ -452,9 +490,13 @@ function renderGroupedList(l, oA=false) {
     let h='<div class="tx-list">';
     for(const [c, d] of Object.entries(g)) {
         let col=d.t==='income'?'var(--success)':'var(--danger)', s=d.t==='income'?'+':'-'; d.items.sort((a,b)=>b.id-a.id);
-        h+=`<details class="group-details" ${oA?'open':''}><summary class="group-summary" style="border-left:5px solid ${col}"><div class="group-title"><span>${d.i||'📌'} ${c}</span> <span class="group-count">${d.items.length} İşlem</span></div><div class="group-total" style="color:${col}">${s} ${d.tot.toLocaleString()} ₺</div></summary><div class="group-items">
-        ${d.items.map(t=>{ let iP=t.isPaid===undefined?true:t.isPaid, iC=(iP&&t.type==='expense')?'item-paid':'';
-        return `<div class="g-item ${iC}"><div class="g-info"><div class="g-desc">${t.desc} ${!iP?'<span class="badge-unpaid">ÖDENMEDİ</span>':''}</div><div class="tx-account-badge">${t.account||'Nakit'}</div></div><div class="g-amt-del"><span class="g-amt" style="color:${col}">${s} ${t.amt.toLocaleString()} ₺</span>${t.type==='expense'?`<button class="btn-action ${iP?'btn-status-paid':'btn-status-unpaid'}" onclick="togglePaid(${t.id})">${iP?'✅':'⏳'}</button>`:''}<button class="btn-action btn-edit" onclick="editTx(${t.id})">✏️</button><button class="btn-action btn-delete" onclick="del(${t.id})">✕</button></div></div>`; }).join('')}</div></details>`;
+        h+=`<details class="group-details" ${oA?'open':''}><summary class="group-summary" style="border-left:5px solid ${col}"><div class="group-title"><span>${d.i||'📌'} ${c}</span></div><div class="group-total" style="color:${col}">${s} ${d.tot.toLocaleString()} ₺</div></summary><div class="group-items">
+        ${d.items.map(t=>{ 
+            let iP=t.isPaid===undefined?true:t.isPaid, iC=(iP&&t.type==='expense')?'item-paid':'';
+            // YENİ BUTON DİZAYNI
+            let payBtn = t.type==='expense' ? `<button class="btn-pay-status ${iP?'paid':'unpaid'}" onclick="togglePaid(${t.id})">${iP?'✅ Ödendi':'⏳ Öde'}</button>` : '';
+            return `<div class="g-item ${iC}"><div class="g-info"><div class="g-desc">${t.desc}</div><div class="tx-account-badge">${t.account||'Nakit'}</div></div><div class="g-amt-del"><span class="g-amt" style="color:${col}">${s} ${t.amt.toLocaleString()} ₺</span>${payBtn}<button class="btn-action btn-edit" onclick="editTx(${t.id})">✏️</button><button class="btn-action btn-delete" onclick="del(${t.id})">✕</button></div></div>`; 
+        }).join('')}</div></details>`;
     } return h+'</div>';
 }
 
@@ -468,7 +510,7 @@ function openBankDetails(b) {
     const bT=tx.filter(t=>t.uid===activeUser.id&&(t.account===b||t.toAccount===b)).sort((a,b)=>b.id-a.id);
     let h='<div class="tx-list" style="padding-bottom:0;">'; if(!bT.length) h+='<div style="text-align:center;padding:15px;color:#94a3b8;font-size:13px;">Yok.</div>';
     bT.forEach(t=>{ let s='', c='var(--text)', i=t.desc; if(t.type==='income'){s='+';c='var(--success)';}else if(t.type==='expense'){s='-';c='var(--danger)';}else if(t.type==='transfer'){if(t.account===b){s='-';c='var(--danger)';i='Transfer -> '+t.toAccount;}if(t.toAccount===b){s='+';c='var(--success)';i='Transfer <- '+t.account;}}else if(t.type==='gold_buy'){s='-';c='var(--gold)';i=`Altın Alımı (${t.grams}g)`;} if(t.cat==='Bakiye Eşitleme') i='⚖️ Varlık Girişi';
-    h+=`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-color);align-items:center;"><div style="font-size:13px;"><div style="font-weight:600;">${t.icon||'📌'} ${i} ${(t.type==='expense'&&!t.isPaid)?'<span class="badge-unpaid">BEKLİYOR</span>':''}</div><div style="font-size:10px;color:#94a3b8;">${t.date}</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:${c};">${s}${t.amt.toLocaleString()} ₺</span><button class="btn-action btn-delete" style="width:24px;height:24px;font-size:10px;" onclick="del(${t.id},true)">✕</button></div></div>`; });
+    h+=`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-color);align-items:center;"><div style="font-size:13px;"><div style="font-weight:600;">${t.icon||'📌'} ${i} ${(t.type==='expense'&&!t.isPaid)?'<span class="badge-unpaid" style="margin-left:5px;">BEKLİYOR</span>':''}</div><div style="font-size:10px;color:#94a3b8;">${t.date}</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:${c};">${s}${t.amt.toLocaleString()} ₺</span><button class="btn-action btn-delete" style="width:24px;height:24px;font-size:10px;" onclick="del(${t.id},true)">✕</button></div></div>`; });
     document.getElementById('bd-list').innerHTML=h+'</div>'; document.getElementById('modalBankDetails').style.display='flex';
 }
 function adjustBalance() { const {banks}=calculateBalances(); const r=prompt(`GERÇEK tutarınız ne kadar?`); if(!r)return; const rB=parseFloat(r.replace(',','.')); if(isNaN(rB))return showToast("Hata!"); const d=rB-(banks[activeBankDetail]||0); if(d===0)return showToast("Zaten doğru!"); tx.push({id:Date.now(),uid:activeUser.id,type:d>0?'income':'expense',cat:'Bakiye Eşitleme',icon:'⚖️',desc:'Varlık Girişi',amt:Math.abs(d),date:document.getElementById('dateInput').value,account:activeBankDetail,isPaid:true}); saveDB(); render(); showToast("Güncellendi"); openBankDetails(activeBankDetail); }
