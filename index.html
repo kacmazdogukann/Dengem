@@ -76,13 +76,14 @@ body {
 
 .dev-signature { text-align: center; font-size: 11px; color: var(--text-muted); padding: 5px 0 20px; font-weight: 600; opacity: 0.6; letter-spacing: 2px; grid-column: span 2;}
 
-/* ANİMASYON KATMANI */
+/* DÜZENLENMİŞ: KATI ARKA PLANLI ANİMASYON KATMANI */
 .vortex-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 5000; display: flex; flex-direction: column; 
     transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25, 1, 0.25, 1); 
 }
 .vortex-layer.active { transform: translateY(0); }
 
-.v-header { padding: 15px 20px; display:flex; align-items:center; gap:15px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position:sticky; top:0; z-index:10;}
+/* DÜZENLENMİŞ: ŞEFFAFLIK KALDIRILDI, KATI RENK */
+.v-header { padding: 15px 20px; display:flex; align-items:center; gap:15px; background: var(--bg); border-bottom: 1px solid var(--border-color); position:sticky; top:0; z-index:10;}
 .v-back { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border-color); color: var(--text); font-size: 18px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition:0.2s; flex-shrink:0;}
 .v-back:active { background: var(--border-color); transform:scale(0.9);}
 .v-title { font-size: 18px; font-weight: 800; color: var(--text); margin:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
@@ -107,7 +108,7 @@ input:focus, select:focus { border-color: var(--primary); }
 .btn-huge { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; color: white; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: 0.2s; letter-spacing: 0.5px;}
 .btn-huge:active { transform: scale(0.97); }
 
-/* BÜTÇE TAHMİN KARTLARI (YENİ) */
+/* BÜTÇE TAHMİN KARTLARI */
 .budget-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; cursor: pointer; transition: 0.2s;}
 .budget-card:active { transform: scale(0.98); }
 .bc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -159,13 +160,17 @@ input:focus, select:focus { border-color: var(--primary); }
 .loan-dot { width: 12px; height: 12px; border-radius: 3px; background: var(--border-color); display:flex; align-items:center; justify-content:center; font-size:0px; transition:0.3s;}
 .loan-dot.paid { background: var(--success); }
 
-/* MODALLAR */
+/* DÜZENLENMİŞ MODALLAR (BOŞLUĞA TIKLAYINCA KAPANIR) */
 .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 12px 25px; border-radius: 25px; font-weight: 800; font-size: 13px; transition: bottom 0.3s; z-index: 9000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .toast.show { bottom: 40px; }
 
-#user-modal, #budget-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:8000; align-items:center; justify-content:center; }
-.um-box { background:var(--card-bg); padding:30px; border-radius:24px; width:85%; max-width:320px; border:1px solid var(--border-color); text-align:center;}
+.modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:8000; align-items:center; justify-content:center; backdrop-filter:blur(4px);}
+.um-box { background:var(--card-bg); padding:30px; border-radius:24px; width:85%; max-width:340px; border:1px solid var(--border-color); text-align:center;}
 .um-del-link { color: var(--danger); font-size: 12px; font-weight: 600; margin-top: 20px; display: inline-block; cursor: pointer; text-decoration: none; opacity: 0.8; border-bottom: 1px dashed var(--danger);}
+
+/* YENİ: TAHMİN İÇİ DETAY LİSTESİ */
+.bm-tx-list { margin-top:15px; display:flex; flex-direction:column; gap:8px; text-align:left; max-height:150px; overflow-y:auto; padding-right:5px;}
+.bm-tx-item { display:flex; justify-content:space-between; background:var(--bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); align-items:center; }
 </style>
 </head>
 <body class="dark-mode">
@@ -174,11 +179,11 @@ input:focus, select:focus { border-color: var(--primary); }
 
 <div id="login-layer">
     <div class="logo-main">DEN<span>GEM</span></div>
-    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION V5.2</div>
+    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION V5.3</div>
     <div class="p-grid" id="p-list"></div>
 </div>
 
-<div id="user-modal">
+<div class="modal-overlay" id="user-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
     <div class="um-box">
         <h2 id="um-name" style="margin-top:0; color:var(--text);">Kullanıcı</h2>
         <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Profil Ayarları</p>
@@ -188,16 +193,21 @@ input:focus, select:focus { border-color: var(--primary); }
     </div>
 </div>
 
-<div id="budget-modal">
-    <div class="um-box">
+<div class="modal-overlay" id="budget-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
+    <div class="um-box" style="padding:20px; max-height:85vh; display:flex; flex-direction:column;">
         <h3 id="bm-title" style="margin-top:0; color:var(--teal);">Tahmin Belirle</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Bu ay <strong id="bm-cat-name" style="color:var(--text)"></strong> için planladığınız tutarı girin.</p>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Bu ay <strong id="bm-cat-name" style="color:var(--text)"></strong> için planladığınız tutarı girin.</p>
         <input type="hidden" id="bm-cat-val">
         <div class="input-group">
-            <input type="number" id="bm-amt" placeholder="Örn: 1500" style="text-align:center; font-size:24px; padding:20px;">
+            <input type="number" id="bm-amt" placeholder="Örn: 1500" style="text-align:center; font-size:24px; padding:15px;">
         </div>
-        <button class="btn-huge" style="background:var(--teal);" onclick="saveBudgetLimit()">Tahmini Kaydet</button>
-        <button class="btn-huge" style="background:transparent; color:var(--text); border:1px solid var(--border-color);" onclick="vibrate(); document.getElementById('budget-modal').style.display='none'">İptal</button>
+        <button class="btn-huge" style="background:var(--teal); margin-bottom:15px;" onclick="saveBudgetLimit()">Tahmini Kaydet</button>
+        
+        <div style="text-align:left; border-top:1px solid var(--border-color); padding-top:15px; margin-top:5px;">
+            <h4 style="font-size:12px; color:var(--text-muted); text-transform:uppercase; margin:0 0 10px 0;">Bu Kategoriye Ait İşlemler</h4>
+            <div class="bm-tx-list" id="bm-tx-list">
+                </div>
+        </div>
     </div>
 </div>
 
@@ -280,7 +290,7 @@ input:focus, select:focus { border-color: var(--primary); }
     <div class="v-body">
         
         <div class="v-view" id="view-plan">
-            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Bu ay faturalarınıza veya markete ne kadar gideceğini tahmin edin. Gerçek harcamalarınızla anında kıyaslayın.</p>
+            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Harcamalarınızı tahmin edin. Kartlara tıklayarak bu ay o kategoride hangi ödemeleri yaptığınızı (✅/⏳) görün.</p>
             <div id="plan-list"></div>
         </div>
 
@@ -422,8 +432,7 @@ input:focus, select:focus { border-color: var(--primary); }
 <script>
 function vibrate() { try { if(navigator.vibrate) navigator.vibrate(15); } catch(e){} }
 
-// VERİTABANI DEĞİŞKENLERİ (BUDGETS EKLENDİ)
-const KEY_U = 'cimri_users_v5_2'; const KEY_T = 'cimri_tx_v5_2'; const KEY_L = 'cimri_loans_v5_2'; const KEY_B = 'cimri_budgets_v5_2';
+const KEY_U = 'cimri_users_v5_3'; const KEY_T = 'cimri_tx_v5_3'; const KEY_L = 'cimri_loans_v5_3'; const KEY_B = 'cimri_budgets_v5_3';
 let users=[], tx=[], loans=[], budgets=[], activeUser=null;
 let myChart = null, barChart = null, editingId = null, activeBankDetail = null, currentDetailType = '';
 let currentGoldPrice = 3050, currentUsdPrice = 36.50, currentEurPrice = 38.20, hideSavings = false;
@@ -510,7 +519,6 @@ function openVortex(viewId, title, isEdit = false) {
 
 function closeVortex() { vibrate(); const v = document.getElementById('v-layer'); v.classList.remove('active'); setTimeout(() => { renderHome(); currentDetailType=''; }, 300); }
 
-// KALEM KALEM DÜZENLEME (EDIT)
 function editTx(id) { 
     const t = tx.find(x=>x.id===id); if(!t)return; 
     editingId = id; 
@@ -581,22 +589,20 @@ function renderHome() {
     document.getElementById('ov-fin').innerText = '-' + b.expFin.toLocaleString('tr-TR');
 }
 
-// BÜTÇE TAHMİNİ MOTORU
+// BÜTÇE TAHMİNİ MOTORU & LİSTELEME
 function renderBudgets() {
     const d = document.getElementById('dateInput').value;
     const uTx = tx.filter(t=>t.uid===activeUser.id && t.date===d && t.type==='expense' && t.cat !== 'Bakiye Eşitleme');
     
     let h = '';
     catsList.forEach(c => {
-        // Gerçekleşen
         let actual = uTx.filter(t=>t.cat===c.n).reduce((a,b)=>a+b.amt,0);
-        // Tahmin (Hedef)
         let bObj = budgets.find(x=>x.uid===activeUser.id && x.month===d && x.cat===c.n);
         let est = bObj ? bObj.amt : 0;
         
         let diff = est - actual;
         let diffClass = est === 0 ? 'none' : (diff >= 0 ? 'plus' : 'minus');
-        let diffText = est === 0 ? 'Tahmin Yok' : (diff >= 0 ? `+${diff.toLocaleString('tr-TR')} ₺ Kâr` : `${diff.toLocaleString('tr-TR')} ₺ Zarar`);
+        let diffText = est === 0 ? 'Tahmin Yok' : (diff >= 0 ? `+${diff.toLocaleString('tr-TR')} ₺ Cüzdanda` : `${diff.toLocaleString('tr-TR')} ₺ Limit Aşıldı`);
         
         let perc = est > 0 ? Math.min((actual / est) * 100, 100) : 0;
         let barColor = perc >= 100 ? 'var(--danger)' : (perc > 80 ? 'var(--warning)' : 'var(--teal)');
@@ -609,11 +615,9 @@ function renderBudgets() {
             </div>
             <div class="bc-stats">
                 <span>Tahmin: ${est > 0 ? est.toLocaleString('tr-TR')+' ₺' : '-'}</span>
-                <span style="color:var(--text)">Gerçek: ${actual.toLocaleString('tr-TR')} ₺</span>
+                <span style="color:var(--text)">Gerçekleşen: ${actual.toLocaleString('tr-TR')} ₺</span>
             </div>
-            <div class="bc-bar-bg">
-                <div class="bc-bar-fill" style="width:${perc}%; background:${barColor}"></div>
-            </div>
+            <div class="bc-bar-bg"><div class="bc-bar-fill" style="width:${perc}%; background:${barColor}"></div></div>
         </div>`;
     });
     document.getElementById('plan-list').innerHTML = h;
@@ -624,6 +628,26 @@ window.openBudgetModal = function(catName, currentAmt) {
     document.getElementById('bm-cat-name').innerText = catName;
     document.getElementById('bm-cat-val').value = catName;
     document.getElementById('bm-amt').value = currentAmt > 0 ? currentAmt : '';
+    
+    // GERÇEKLEŞEN (İŞLEM LİSTESİ) DÖKÜMÜ
+    const d = document.getElementById('dateInput').value;
+    const uTx = tx.filter(t => t.uid === activeUser.id && t.date === d && t.cat === catName);
+    let h = '';
+    if(uTx.length === 0) {
+        h = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:10px;">Henüz bu kategoride harcama yok.</div>';
+    } else {
+        uTx.sort((a,b)=>b.id-a.id).forEach(t => {
+            let status = t.isPaid ? '<span style="color:var(--success); font-size:10px; border:1px solid rgba(16, 185, 129, 0.3); padding:2px 6px; border-radius:4px;">✅ Ödendi</span>' : '<span style="color:var(--warning); font-size:10px; border:1px solid rgba(245, 158, 11, 0.3); padding:2px 6px; border-radius:4px;">⏳ Bekliyor</span>';
+            h += `<div class="bm-tx-item">
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                        <span style="font-size:13px; font-weight:700; color:var(--text);">${t.desc}</span>
+                        ${status}
+                    </div>
+                    <span style="font-size:14px; font-weight:800; color:var(--danger);">${t.amt.toLocaleString('tr-TR')} ₺</span>
+                  </div>`;
+        });
+    }
+    document.getElementById('bm-tx-list').innerHTML = h;
     document.getElementById('budget-modal').style.display='flex';
 };
 
@@ -634,11 +658,9 @@ window.saveBudgetLimit = function() {
     const a = parseFloat(document.getElementById('bm-amt').value) || 0;
     
     let idx = budgets.findIndex(x=>x.uid===activeUser.id && x.month===d && x.cat===c);
-    if(idx !== -1) {
-        budgets[idx].amt = a;
-    } else {
-        budgets.push({id: Date.now(), uid: activeUser.id, month: d, cat: c, amt: a});
-    }
+    if(idx !== -1) budgets[idx].amt = a;
+    else budgets.push({id: Date.now(), uid: activeUser.id, month: d, cat: c, amt: a});
+    
     saveDB();
     document.getElementById('budget-modal').style.display='none';
     renderBudgets();
@@ -731,11 +753,11 @@ function openInvPrice(type) { vibrate(); document.getElementById('box-inv-price'
 function saveInvPrice() { vibrate(); const type = document.getElementById('ip-type').value; const p=parseFloat(document.getElementById('ip-p').value); if(p>0){ if(type==='gold') {currentGoldPrice=p; try{localStorage.setItem('dengem_gold_price',p);}catch(e){}} if(type==='usd') {currentUsdPrice=p; try{localStorage.setItem('dengem_usd_price',p);}catch(e){}} if(type==='eur') {currentEurPrice=p; try{localStorage.setItem('dengem_eur_price',p);}catch(e){}} renderAssets(); showToast("Kur Güncellendi"); } }
 function saveInv() { vibrate(); const type = document.getElementById('i-type').value; const m=parseFloat(document.getElementById('i-m').value), a=parseFloat(document.getElementById('i-a').value)||0, acc=document.getElementById('i-acc').value; let t_key = type + '_buy'; let d_text = type==='gold'?'Altın':type==='usd'?'Dolar':'Euro'; if(m>0){tx.push({id:Date.now(),uid:activeUser.id,type:t_key,cat:'Yatırım',desc:d_text+' Alımı',amt:a,grams:m,date:document.getElementById('dateInput').value,account:acc,isPaid:true}); saveDB(); renderAssets(); showToast("Kasaya Eklendi!");} }
 
-function del(id, source) { vibrate(); if(confirm("Silmek istediğinize emin misiniz?")){ tx=tx.filter(t=>t.id!==id); saveDB(); if(source==='rep') renderReports(); if(source==='ass') { renderAssets(); openBankDetail(activeBankDetail); } if(currentDetailType) renderDetailView(); if(document.getElementById('view-pending').classList.contains('active')) renderPending(); renderHome(); updateMiniWallet(); showToast("Silindi"); } }
+function del(id, source) { vibrate(); if(confirm("Bu işlemi silmek istediğinize emin misiniz?")){ tx=tx.filter(t=>t.id!==id); saveDB(); if(source==='rep') renderReports(); if(source==='ass') { renderAssets(); openBankDetail(activeBankDetail); } if(currentDetailType) renderDetailView(); if(document.getElementById('view-pending').classList.contains('active')) renderPending(); renderHome(); updateMiniWallet(); showToast("Silindi"); } }
 
-function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,budgets})); a.download="dengem_v5_2_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,budgets})); a.download="dengem_v5_3_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
 function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); localStorage.setItem(KEY_B,JSON.stringify(d.budgets||[])); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
-function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_2_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_3_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
 </script>
 </body>
 </html>
