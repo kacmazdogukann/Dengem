@@ -86,9 +86,9 @@ body {
 
 /* ANİMASYON KATMANI */
 .vortex-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 5000; display: flex; flex-direction: column; 
-    transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 1, 0.25, 1); /* YENİ: Sağdan sola açılma (Swipe destekli) */
+    transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25, 1, 0.25, 1); 
 }
-.vortex-layer.active { transform: translateX(0); }
+.vortex-layer.active { transform: translateY(0); }
 
 .v-header { padding: 15px 20px; display:flex; align-items:center; gap:15px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position:sticky; top:0; z-index:10;}
 .v-back { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border-color); color: var(--text); font-size: 18px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition:0.2s; flex-shrink:0;}
@@ -99,7 +99,7 @@ body {
 .v-wallet-lbl { font-size:8px; color:var(--text-muted); display:block; letter-spacing:1px; font-weight:800; margin-bottom:2px;}
 .v-wallet-amt { font-size:15px; font-weight:900; line-height:1; transition:0.3s;}
 
-.v-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; overflow-x: hidden; }
+.v-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px;}
 .v-view { display: none; }
 .v-view.active { display: block; animation: fadeIn 0.3s ease forwards; }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -115,8 +115,7 @@ input:focus, select:focus { border-color: var(--primary); }
 .btn-huge { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; color: white; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: 0.2s; letter-spacing: 0.5px;}
 .btn-huge:active { transform: scale(0.97); }
 
-/* YENİ: KÂR/ZARAR BÜTÇE TAHMİN KARTLARI */
-.budget-summary-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center; }
+/* BÜTÇE TAHMİN KARTLARI */
 .budget-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; cursor: pointer; transition: 0.2s;}
 .budget-card:active { transform: scale(0.98); }
 .bc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -190,7 +189,7 @@ input:focus, select:focus { border-color: var(--primary); }
 
 <div id="login-layer">
     <div class="logo-main">DEN<span>GEM</span></div>
-    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION V5.8</div>
+    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION V5.9</div>
     <div class="p-grid" id="p-list"></div>
 </div>
 
@@ -215,7 +214,7 @@ input:focus, select:focus { border-color: var(--primary); }
         <button class="btn-huge" style="background:var(--teal); margin-bottom:15px;" onclick="saveBudgetLimit()">Tahmini Kaydet</button>
         
         <div style="text-align:left; border-top:1px solid var(--border-color); padding-top:15px; margin-top:5px;">
-            <h4 style="font-size:12px; color:var(--text-muted); text-transform:uppercase; margin:0 0 10px 0;">Bu Kategoriye Ait Faturalar</h4>
+            <h4 style="font-size:12px; color:var(--text-muted); text-transform:uppercase; margin:0 0 10px 0;">Gerçekleşen İşlemler</h4>
             <div class="bm-tx-list" id="bm-tx-list"></div>
         </div>
     </div>
@@ -302,6 +301,10 @@ input:focus, select:focus { border-color: var(--primary); }
     <div class="v-body">
         
         <div class="v-view" id="view-plan">
+            <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid var(--info); color: var(--info); font-size: 11px; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 600; line-height: 1.5;">
+                ℹ️ Buradaki kâr/zarar hesaplamaları tamamen görsel bir plandır. Ana kasanızı (gerçek paranızı) kesinlikle etkilemez.
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Harcamalarınızı tahmin edin. Kartlara tıklayarak o kategorideki faturalarınızı kontrol edin.</p>
             <div id="plan-list"></div>
         </div>
 
@@ -443,7 +446,7 @@ input:focus, select:focus { border-color: var(--primary); }
 <script>
 function vibrate() { try { if(navigator.vibrate) navigator.vibrate(15); } catch(e){} }
 
-const KEY_U = 'cimri_users_v5_8'; const KEY_T = 'cimri_tx_v5_8'; const KEY_L = 'cimri_loans_v5_8'; const KEY_B = 'cimri_budgets_v5_8';
+const KEY_U = 'cimri_users_v5_9'; const KEY_T = 'cimri_tx_v5_9'; const KEY_L = 'cimri_loans_v5_9'; const KEY_B = 'cimri_budgets_v5_9';
 let users=[], tx=[], loans=[], budgets=[], activeUser=null;
 let myChart = null, barChart = null, editingId = null, activeBankDetail = null, currentDetailType = '';
 let currentGoldPrice = 3050, currentUsdPrice = 36.50, currentEurPrice = 38.20, hideSavings = false;
@@ -468,7 +471,7 @@ function fetchDB() {
     } catch(e) { users=[]; tx=[]; loans=[]; budgets=[]; }
 }
 
-// 🔙 YENİ: SOLDAN SAĞA KAYDIRARAK (SWIPE RIGHT) MENÜ KAPATMA MOTORU
+// SOLDAN SAĞA KAYDIRARAK (SWIPE RIGHT) MENÜ KAPATMA
 let swipeStartX = 0; let swipeStartY = 0;
 const vLayer = document.getElementById('v-layer');
 
@@ -480,14 +483,12 @@ vLayer.addEventListener('touchstart', e => {
 vLayer.addEventListener('touchend', e => {
     let swipeEndX = e.changedTouches[0].screenX;
     let swipeEndY = e.changedTouches[0].screenY;
-    // Eğer soldan sağa 80px kaydırılmışsa ve yukarı/aşağı (scroll) kayma 50px'den azsa menüyü kapat
     if (swipeEndX - swipeStartX > 80 && Math.abs(swipeEndY - swipeStartY) < 50) {
         closeVortex();
     }
 }, {passive: true});
 
-
-// 🔄 AŞAĞI KAYDIR YENİLE (PULL TO REFRESH)
+// AŞAĞI KAYDIR YENİLE (PULL TO REFRESH)
 let ptrStart = 0; let ptrGrid = null;
 document.addEventListener('touchstart', e => {
     ptrStart = e.touches[0].clientY;
@@ -595,17 +596,10 @@ function openVortex(viewId, title, isEdit = false) {
         document.getElementById('inc-list-content').innerHTML = renderGroupedList(l, true);
     }
 
-    // Animasyonu yumuşak aç
-    v.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.25, 1)';
     v.classList.add('active');
 }
 
-function closeVortex() { 
-    vibrate(); 
-    const v = document.getElementById('v-layer'); 
-    v.classList.remove('active'); 
-    setTimeout(() => { renderHome(); currentDetailType=''; prevVortexView=null; }, 300); 
-}
+function closeVortex() { vibrate(); const v = document.getElementById('v-layer'); v.classList.remove('active'); setTimeout(() => { renderHome(); currentDetailType=''; prevVortexView=null; }, 300); }
 
 function returnAfterSave() {
     if(prevVortexView) {
@@ -701,7 +695,6 @@ function renderHome() {
     document.getElementById('ov-fin').innerText = '-' + b.expFin.toLocaleString('tr-TR');
 }
 
-// 🔮 YENİ: KUSURSUZ KÂR/ZARAR TAHMİN LİSTESİ
 function renderBudgets() {
     const d = document.getElementById('dateInput').value;
     const uTx = tx.filter(t=>t.uid===activeUser.id && t.date===d && t.type==='expense' && t.cat !== 'Bakiye Eşitleme');
@@ -912,9 +905,9 @@ function del(id, source) {
     } 
 }
 
-function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,budgets})); a.download="dengem_v5_8_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,budgets})); a.download="dengem_v5_9_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
 function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); localStorage.setItem(KEY_B,JSON.stringify(d.budgets||[])); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
-function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_8_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_9_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
 </script>
 </body>
 </html>
