@@ -11,13 +11,14 @@
     --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7); --border-color: rgba(255, 255, 255, 0.08); 
     --text: #f8fafc; --text-muted: #94a3b8;
     --primary: #6366f1; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --info: #0ea5e9; --gold: #eab308;
-    --usd: #22c55e; --eur: #3b82f6;
+    --usd: #22c55e; --eur: #3b82f6; --teal: #14b8a6;
     --grad-inc: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    --grad-exp: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+    --grad-plan: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+    --grad-rep: linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%);
     --grad-ass: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
     --grad-loa: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
-    --grad-rep: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
     --grad-tr:  linear-gradient(135deg, #64748b 0%, #334155 100%);
-    --grad-exp: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
 }
 
 body.light-mode {
@@ -36,10 +37,10 @@ body {
 
 /* GİRİŞ EKRANI */
 #login-layer { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.logo-main { letter-spacing: 8px; font-weight: 300; font-size: 48px; margin-bottom: 30px; text-align: center; color: var(--text);}
+.logo-main { letter-spacing: 8px; font-weight: 300; font-size: 48px; margin-bottom: 20px; text-align: center; color: var(--text);}
 .logo-main span { font-weight: 900; color: var(--primary); }
-.p-grid { display:flex; gap:20px; margin-top:20px; flex-wrap:wrap; justify-content:center; }
-.p-avatar { width:75px; height:75px; border-radius:24px; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; color:white; cursor:pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 2px solid var(--border-color);}
+.p-grid { display:flex; gap:20px; margin-top:30px; flex-wrap:wrap; justify-content:center; }
+.p-avatar { width:75px; height:75px; border-radius:24px; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; color:white; cursor:pointer; transition: 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 2px solid var(--border-color);}
 .p-avatar:active { transform: scale(0.9); }
 
 /* ANA UYGULAMA (DASHBOARD) */
@@ -50,12 +51,12 @@ body {
 .app-logo-small { font-size: 26px; font-weight: 300; letter-spacing: 4px; color: var(--text); cursor:pointer; }
 .app-logo-small span { font-weight: 900; color: var(--primary); }
 
-.date-container { text-align: center; margin-bottom: 5px; }
+.date-container { text-align: center; margin-bottom: 10px; }
 .date-picker { background: transparent; border: none; color: var(--text-muted); font-size: 13px; font-weight: 800; letter-spacing: 1px; outline: none; }
 
-.hero-balance { flex: 0 0 auto; text-align: center; padding: 10px 20px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.hero-balance { flex: 0 0 auto; text-align: center; padding: 10px 20px 25px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .hero-lbl { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-.hero-amt { font-size: 46px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; display:flex; align-items:center; gap:5px; margin-bottom:12px;}
+.hero-amt { font-size: 46px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; display:flex; align-items:center; gap:5px; margin-bottom:15px;}
 .hero-pending { font-size: 12px; color: var(--warning); background:rgba(245, 158, 11, 0.15); border:1px solid rgba(245, 158, 11, 0.4); padding: 8px 18px; border-radius:20px; font-weight:700; cursor:pointer; transition:0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 .hero-pending:active { transform:scale(0.95); }
 
@@ -66,7 +67,7 @@ body {
 .sc-lbl { font-size:10px; color:var(--text-muted); font-weight:800; letter-spacing:0.5px; margin-bottom:5px;}
 .sc-val { font-size:16px; font-weight:800; }
 
-/* BÜYÜK MENÜ */
+/* KUSURSUZ 2x4 MENÜ GRID */
 .home-grid { flex: 1; padding: 0 20px 20px; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(90px, auto); gap: 12px; overflow-y: auto; padding-bottom: 40px;}
 .b-card { border-radius: 20px; padding: 18px; display: flex; flex-direction: column; justify-content: center; align-items:flex-start; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.1); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
 .b-card:active { transform: scale(0.95); }
@@ -86,7 +87,6 @@ body {
 .v-back:active { background: var(--border-color); transform:scale(0.9);}
 .v-title { font-size: 18px; font-weight: 800; color: var(--text); margin:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 
-/* YENİ: SAĞ ÜST MİNİ CÜZDAN */
 .v-wallet-badge { text-align:right; background:rgba(0,0,0,0.1); padding:6px 12px; border-radius:12px; border:1px solid var(--border-color); flex-shrink:0;}
 .v-wallet-lbl { font-size:8px; color:var(--text-muted); display:block; letter-spacing:1px; font-weight:800; margin-bottom:2px;}
 .v-wallet-amt { font-size:15px; font-weight:900; line-height:1; }
@@ -107,9 +107,21 @@ input:focus, select:focus { border-color: var(--primary); }
 .btn-huge { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; color: white; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: 0.2s; letter-spacing: 0.5px;}
 .btn-huge:active { transform: scale(0.97); }
 
-/* RAPOR, LİSTE VE VARLIKLAR */
-.chart-container { background: var(--card-bg); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; position:relative; height:220px; display:flex; justify-content:center; }
+/* BÜTÇE TAHMİN KARTLARI (YENİ) */
+.budget-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 15px; cursor: pointer; transition: 0.2s;}
+.budget-card:active { transform: scale(0.98); }
+.bc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.bc-title { font-size: 16px; font-weight: 800; color: var(--text); display:flex; align-items:center; gap:8px;}
+.bc-diff { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; letter-spacing:0.5px;}
+.bc-diff.plus { background: rgba(16, 185, 129, 0.15); color: var(--success); border:1px solid rgba(16, 185, 129, 0.3);}
+.bc-diff.minus { background: rgba(239, 68, 68, 0.15); color: var(--danger); border:1px solid rgba(239, 68, 68, 0.3);}
+.bc-diff.none { background: var(--border-color); color: var(--text-muted); }
+.bc-stats { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;}
+.bc-bar-bg { height: 10px; background: rgba(0,0,0,0.2); border-radius: 5px; overflow: hidden; border: 1px solid var(--border-color);}
+.bc-bar-fill { height: 100%; transition: width 0.5s ease; border-radius: 5px;}
 
+/* LİSTELER VE KARTLAR */
+.chart-container { background: var(--card-bg); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; position:relative; height:220px; display:flex; justify-content:center; }
 .tx-list { display:flex; flex-direction:column; gap:10px; }
 .group-details { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-color); overflow:hidden; }
 .group-summary { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 14px; list-style: none; }
@@ -147,12 +159,12 @@ input:focus, select:focus { border-color: var(--primary); }
 .loan-dot { width: 12px; height: 12px; border-radius: 3px; background: var(--border-color); display:flex; align-items:center; justify-content:center; font-size:0px; transition:0.3s;}
 .loan-dot.paid { background: var(--success); }
 
-/* MODALLAR VE TOAST */
+/* MODALLAR */
 .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 12px 25px; border-radius: 25px; font-weight: 800; font-size: 13px; transition: bottom 0.3s; z-index: 9000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .toast.show { bottom: 40px; }
 
-#user-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:8000; align-items:center; justify-content:center; }
-.um-box { background:var(--card-bg); padding:30px; border-radius:20px; width:85%; max-width:300px; border:1px solid var(--border-color); text-align:center;}
+#user-modal, #budget-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:8000; align-items:center; justify-content:center; }
+.um-box { background:var(--card-bg); padding:30px; border-radius:24px; width:85%; max-width:320px; border:1px solid var(--border-color); text-align:center;}
 .um-del-link { color: var(--danger); font-size: 12px; font-weight: 600; margin-top: 20px; display: inline-block; cursor: pointer; text-decoration: none; opacity: 0.8; border-bottom: 1px dashed var(--danger);}
 </style>
 </head>
@@ -162,7 +174,7 @@ input:focus, select:focus { border-color: var(--primary); }
 
 <div id="login-layer">
     <div class="logo-main">DEN<span>GEM</span></div>
-    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION</div>
+    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">TITANIUM EDITION V5.2</div>
     <div class="p-grid" id="p-list"></div>
 </div>
 
@@ -172,7 +184,20 @@ input:focus, select:focus { border-color: var(--primary); }
         <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Profil Ayarları</p>
         <button class="btn-huge" style="background:var(--primary);" onclick="vibrate(); document.getElementById('user-modal').style.display='none'">Kapat</button>
         <button class="btn-huge" style="background:transparent; color:var(--text); margin-bottom:15px; border:1px solid var(--border-color);" onclick="vibrate(); location.reload()">🚪 Çıkış Yap</button>
-        <span class="um-del-link" onclick="deleteCurrentUser()">Verileri ve Hesabı Sil</span>
+        <span class="um-del-link" onclick="deleteCurrentUser()">Tüm Verileri Sil</span>
+    </div>
+</div>
+
+<div id="budget-modal">
+    <div class="um-box">
+        <h3 id="bm-title" style="margin-top:0; color:var(--teal);">Tahmin Belirle</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Bu ay <strong id="bm-cat-name" style="color:var(--text)"></strong> için planladığınız tutarı girin.</p>
+        <input type="hidden" id="bm-cat-val">
+        <div class="input-group">
+            <input type="number" id="bm-amt" placeholder="Örn: 1500" style="text-align:center; font-size:24px; padding:20px;">
+        </div>
+        <button class="btn-huge" style="background:var(--teal);" onclick="saveBudgetLimit()">Tahmini Kaydet</button>
+        <button class="btn-huge" style="background:transparent; color:var(--text); border:1px solid var(--border-color);" onclick="vibrate(); document.getElementById('budget-modal').style.display='none'">İptal</button>
     </div>
 </div>
 
@@ -213,11 +238,20 @@ input:focus, select:focus { border-color: var(--primary); }
     </div>
 
     <div class="home-grid">
+        <div class="b-card" style="background:var(--grad-inc);" onclick="openVortex('view-inc', 'Gelir Ekle')">
+            <div class="b-icon">💰</div><div class="b-title">Gelir Ekle</div>
+        </div>
         <div class="b-card" style="background:var(--grad-exp)" onclick="openVortex('view-exp', 'Gider Ekle')">
             <div class="b-icon">📉</div><div class="b-title">Gider Ekle</div>
         </div>
+        <div class="b-card" style="background:var(--grad-plan)" onclick="openVortex('view-plan', 'Bütçe Tahminleri')">
+            <div class="b-icon">🔮</div><div class="b-title">Bütçe Tahmini</div>
+        </div>
         <div class="b-card" style="background:var(--grad-rep)" onclick="openVortex('view-rep', 'Aylık Raporlar')">
             <div class="b-icon">📊</div><div class="b-title">Aylık Rapor</div>
+        </div>
+        <div class="b-card" style="background:var(--grad-ass)" onclick="openVortex('view-ass', 'Varlıklarım')">
+            <div class="b-icon">🏦</div><div class="b-title">Varlıklarım</div>
         </div>
         <div class="b-card" style="background:var(--grad-loa)" onclick="openVortex('view-loa', 'Kredilerim')">
             <div class="b-icon">💳</div><div class="b-title">Krediler</div>
@@ -225,12 +259,8 @@ input:focus, select:focus { border-color: var(--primary); }
         <div class="b-card" style="background:var(--grad-tr)" onclick="openVortex('view-tr', 'Transfer')">
             <div class="b-icon">🔄</div><div class="b-title">Transfer</div>
         </div>
-        <div class="b-card" style="background:var(--grad-inc); grid-column: span 2;" onclick="openVortex('view-inc', 'Gelir Ekle')">
-            <div style="display:flex; align-items:center; gap:15px;"><div class="b-icon" style="margin:0;">💰</div><div class="b-title">Maaş / Gelir Ekle</div></div>
-        </div>
-        
-        <div class="b-card" style="background:var(--card-bg); grid-column: span 2; flex-direction:row; align-items:center; padding:15px; border-style:dashed;" onclick="openVortex('view-bak', 'Veri & Yedekleme Merkezi')">
-            <div style="font-weight:700; font-size:14px; color:var(--text-muted)">⚙️ Sistem ve Veri Yedekleme</div>
+        <div class="b-card" style="background:var(--card-bg);" onclick="openVortex('view-bak', 'Veri & Yedekleme Merkezi')">
+            <div class="b-icon">⚙️</div><div class="b-title" style="color:var(--text-muted)">Yedekleme</div>
         </div>
 
         <div class="dev-signature">by dogukankcmz</div>
@@ -249,6 +279,11 @@ input:focus, select:focus { border-color: var(--primary); }
     
     <div class="v-body">
         
+        <div class="v-view" id="view-plan">
+            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Bu ay faturalarınıza veya markete ne kadar gideceğini tahmin edin. Gerçek harcamalarınızla anında kıyaslayın.</p>
+            <div id="plan-list"></div>
+        </div>
+
         <div class="v-view" id="view-detail">
             <div id="detail-list"></div>
         </div>
@@ -258,7 +293,7 @@ input:focus, select:focus { border-color: var(--primary); }
         </div>
         
         <div class="v-view" id="view-pending">
-            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Buradaki ödemeler bütçenizden düştü, ancak henüz banka hesabınızdan çıkmadı.</p>
+            <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:0;">Buradaki ödemeler ana bütçeden düştü, ancak "Ödendi" yapana kadar banka hesabınızdan çıkmaz.</p>
             <div id="pending-list"></div>
         </div>
 
@@ -387,12 +422,14 @@ input:focus, select:focus { border-color: var(--primary); }
 <script>
 function vibrate() { try { if(navigator.vibrate) navigator.vibrate(15); } catch(e){} }
 
-const KEY_U = 'cimri_users_v5_1'; const KEY_T = 'cimri_tx_v5_1'; const KEY_L = 'cimri_loans_v5_1';
-let users=[], tx=[], loans=[], activeUser=null;
+// VERİTABANI DEĞİŞKENLERİ (BUDGETS EKLENDİ)
+const KEY_U = 'cimri_users_v5_2'; const KEY_T = 'cimri_tx_v5_2'; const KEY_L = 'cimri_loans_v5_2'; const KEY_B = 'cimri_budgets_v5_2';
+let users=[], tx=[], loans=[], budgets=[], activeUser=null;
 let myChart = null, barChart = null, editingId = null, activeBankDetail = null, currentDetailType = '';
 let currentGoldPrice = 3050, currentUsdPrice = 36.50, currentEurPrice = 38.20, hideSavings = false;
 
 const bankAccounts = ['Nakit (Cüzdan)', 'Ziraat Bankası', 'Vakıfbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Akbank', 'Enpara', 'QNB Finansbank', 'Denizbank'];
+const catsList = [{n:'Market', i:'🛒'}, {n:'Aidat', i:'🏢'}, {n:'Fatura', i:'⚡'}, {n:'Yakıt', i:'⛽'}, {n:'Sağlık', i:'💊'}, {n:'Kredi Kartı Ödemesi', i:'💳'}, {n:'Kredi Ödemesi', i:'🏦'}, {n:'Ek Hesap (KMH)', i:'📉'}, {n:'Diğer', i:'🔹'}];
 const bKats = ['Kredi Kartı Ödemesi', 'Kredi Ödemesi', 'Ek Hesap (KMH)'];
 
 window.onload = function() {
@@ -400,12 +437,13 @@ window.onload = function() {
         let u = localStorage.getItem(KEY_U); users = u ? JSON.parse(u) : []; 
         let t = localStorage.getItem(KEY_T); tx = t ? JSON.parse(t) : []; 
         let l = localStorage.getItem(KEY_L); loans = l ? JSON.parse(l) : []; 
+        let b = localStorage.getItem(KEY_B); budgets = b ? JSON.parse(b) : []; 
         currentGoldPrice = parseFloat(localStorage.getItem('dengem_gold_price')) || 3050;
         currentUsdPrice = parseFloat(localStorage.getItem('dengem_usd_price')) || 36.50;
         currentEurPrice = parseFloat(localStorage.getItem('dengem_eur_price')) || 38.20;
         hideSavings = localStorage.getItem('dengem_hide_savings') === 'true';
         loadTheme();
-    } catch(e) { users=[]; tx=[]; loans=[]; }
+    } catch(e) { users=[]; tx=[]; loans=[]; budgets=[]; }
     
     document.querySelectorAll('.bank-sel').forEach(s => { s.innerHTML = bankAccounts.map(b=>`<option value="${b}">${b}</option>`).join('') + `<option value="Dışarıdan Nakit">Dışarıdan</option>`; });
     let d = new Date(); document.getElementById('dateInput').value = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
@@ -416,7 +454,7 @@ function toggleTheme() { const isLight = document.body.classList.toggle('light-m
 function loadTheme() { let saved='dark'; try{saved=localStorage.getItem('dengem_theme')||'dark';}catch(e){} if(saved==='light'){document.body.classList.add('light-mode'); document.getElementById('theme-icon').innerText = '🌙';}else{document.getElementById('theme-icon').innerText = '☀️';} }
 
 function showToast(msg) { vibrate(); const t=document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2500); }
-function saveDB() { try{localStorage.setItem(KEY_U,JSON.stringify(users)); localStorage.setItem(KEY_T,JSON.stringify(tx)); localStorage.setItem(KEY_L,JSON.stringify(loans));}catch(e){} }
+function saveDB() { try{localStorage.setItem(KEY_U,JSON.stringify(users)); localStorage.setItem(KEY_T,JSON.stringify(tx)); localStorage.setItem(KEY_L,JSON.stringify(loans)); localStorage.setItem(KEY_B,JSON.stringify(budgets));}catch(e){} }
 
 function initLogin() {
     const d = document.getElementById('p-list');
@@ -425,7 +463,7 @@ function initLogin() {
     d.innerHTML = h;
 }
 function addUser() { const n=prompt("Kullanıcı Adı:"); if(n){ users.push({id:'u'+Date.now(), name:n, color:['#ef4444','#f59e0b','#10b981','#0ea5e9','#8b5cf6','#ec4899'][Math.floor(Math.random()*6)]}); saveDB(); initLogin(); showToast("Eklendi"); } }
-function deleteCurrentUser() { if(confirm("Her şey silinecek! Onaylıyor musunuz?")){ users=users.filter(u=>u.id!==activeUser.id); tx=tx.filter(t=>t.uid!==activeUser.id); loans=loans.filter(l=>l.uid!==activeUser.id); saveDB(); location.reload(); } }
+function deleteCurrentUser() { if(confirm("Her şey silinecek! Onaylıyor musunuz?")){ users=users.filter(u=>u.id!==activeUser.id); tx=tx.filter(t=>t.uid!==activeUser.id); loans=loans.filter(l=>l.uid!==activeUser.id); budgets=budgets.filter(b=>b.uid!==activeUser.id); saveDB(); location.reload(); } }
 
 function login(id) {
     vibrate(); activeUser = users.find(u => u.id === id); if(!activeUser) return;
@@ -435,23 +473,18 @@ function login(id) {
     renderHome();
 }
 
-// MİNİ CÜZDAN GÜNCELLEME (HER YERDE CANLI)
 function updateMiniWallet() {
     const b = calcBudget(document.getElementById('dateInput').value);
     const w = document.getElementById('v-wallet-amt');
-    if(w) {
-        w.innerText = b.net.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
-        w.style.color = b.net >= 0 ? 'var(--success)' : 'var(--danger)';
-    }
+    if(w) { w.innerText = b.net.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺'; w.style.color = b.net >= 0 ? 'var(--success)' : 'var(--danger)'; }
 }
 
 function openVortex(viewId, title, isEdit = false) {
     vibrate(); 
-    if(!isEdit) editingId = null; // Düzenleme modunda değilsek temizle
+    if(!isEdit) editingId = null; 
     const v = document.getElementById('v-layer'); document.getElementById('v-title').innerText = title;
     
-    // Mini cüzdanı sadece ekleme/düzenleme/liste ekranlarında göster (Varlıklar vs. hariç)
-    const showWalletViews = ['view-exp', 'view-inc', 'view-tr', 'view-detail', 'view-inc-list', 'view-pending'];
+    const showWalletViews = ['view-exp', 'view-inc', 'view-tr', 'view-detail', 'view-inc-list', 'view-pending', 'view-plan'];
     document.getElementById('v-wallet').style.display = showWalletViews.includes(viewId) ? 'block' : 'none';
     if(showWalletViews.includes(viewId)) updateMiniWallet();
 
@@ -461,6 +494,7 @@ function openVortex(viewId, title, isEdit = false) {
     if(viewId === 'view-rep') renderReports();
     if(viewId === 'view-ass') renderAssets();
     if(viewId === 'view-loa') renderLoans();
+    if(viewId === 'view-plan') renderBudgets();
     if(viewId === 'view-exp' && !isEdit) { document.getElementById('exp-amt').value=''; document.getElementById('exp-desc').value=''; document.getElementById('exp-warning-text').style.display='block';}
     if(viewId === 'view-inc' && !isEdit) { document.getElementById('inc-amt').value=''; document.getElementById('inc-desc').value=''; document.getElementById('inc-sav').checked=false;}
     if(viewId === 'view-tr' && !isEdit) { document.getElementById('tr-amt').value=''; document.getElementById('tr-sav').checked=false;}
@@ -476,28 +510,20 @@ function openVortex(viewId, title, isEdit = false) {
 
 function closeVortex() { vibrate(); const v = document.getElementById('v-layer'); v.classList.remove('active'); setTimeout(() => { renderHome(); currentDetailType=''; }, 300); }
 
-// KALEM KALEM DÜZENLEME (EDIT) FONKSİYONU ✏️
+// KALEM KALEM DÜZENLEME (EDIT)
 function editTx(id) { 
     const t = tx.find(x=>x.id===id); if(!t)return; 
     editingId = id; 
     if(t.type==='income') {
-        document.getElementById('inc-desc').value=t.desc; 
-        document.getElementById('inc-amt').value=t.amt; 
-        document.getElementById('inc-acc').value=t.account; 
-        document.getElementById('inc-sav').checked=t.isSavings||false; 
+        document.getElementById('inc-desc').value=t.desc; document.getElementById('inc-amt').value=t.amt; document.getElementById('inc-acc').value=t.account; document.getElementById('inc-sav').checked=t.isSavings||false; 
         openVortex('view-inc', 'Geliri Düzenle', true);
     } else if(t.type==='expense') {
         document.getElementById('exp-cat').value=t.cat; checkExpCat();
         if(bKats.includes(t.cat)) document.getElementById('exp-bank-sel').value=t.desc; else document.getElementById('exp-desc').value=t.desc;
-        document.getElementById('exp-amt').value=t.amt; 
-        document.getElementById('exp-acc').value=t.account; 
-        document.getElementById('exp-warning-text').style.display='none'; // Edit modunda uyarıyı gizle
+        document.getElementById('exp-amt').value=t.amt; document.getElementById('exp-acc').value=t.account; document.getElementById('exp-warning-text').style.display='none';
         openVortex('view-exp', 'Gideri Düzenle', true);
     } else if(t.type==='transfer') {
-        document.getElementById('tr-amt').value=t.amt; 
-        document.getElementById('tr-from').value=t.account; 
-        document.getElementById('tr-to').value=t.toAccount; 
-        document.getElementById('tr-sav').checked=t.isSavings||false; 
+        document.getElementById('tr-amt').value=t.amt; document.getElementById('tr-from').value=t.account; document.getElementById('tr-to').value=t.toAccount; document.getElementById('tr-sav').checked=t.isSavings||false; 
         openVortex('view-tr', 'Transferi Düzenle', true);
     } 
 }
@@ -535,8 +561,7 @@ window.togglePaid = function(id) {
         if(document.getElementById('view-ass').classList.contains('active')) { renderAssets(); openBankDetail(activeBankDetail); }
         if(document.getElementById('view-detail').classList.contains('active')) renderDetailView();
         if(document.getElementById('view-pending').classList.contains('active')) renderPending();
-        renderHome();
-        updateMiniWallet();
+        renderHome(); updateMiniWallet();
         showToast(tx[i].isPaid ? "✅ Bankadan Düşüldü!" : "⏳ Bankaya İade Edildi."); 
     } 
 };
@@ -547,7 +572,7 @@ function renderHome() {
     m.innerText = b.net.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
     
     const p = document.getElementById('main-pending');
-    if(b.pending > 0) { p.style.display = 'block'; p.innerText = `⏳ Bekleyen Ödemeler: ${b.pending.toLocaleString('tr-TR')} ₺ 👉`; } 
+    if(b.pending > 0) { p.style.display = 'inline-block'; p.innerText = `⏳ Bekleyen Ödemeler: ${b.pending.toLocaleString('tr-TR')} ₺ 👉`; } 
     else { p.style.display = 'none'; }
 
     document.getElementById('ov-inc').innerText = '+' + b.inc.toLocaleString('tr-TR');
@@ -556,30 +581,74 @@ function renderHome() {
     document.getElementById('ov-fin').innerText = '-' + b.expFin.toLocaleString('tr-TR');
 }
 
-// YENİ: BEKLEYEN ÖDEMELER LİSTESİ EKRANI
-window.openPendingView = function() {
-    openVortex('view-pending', 'Bekleyen Ödemeler');
-    renderPending();
+// BÜTÇE TAHMİNİ MOTORU
+function renderBudgets() {
+    const d = document.getElementById('dateInput').value;
+    const uTx = tx.filter(t=>t.uid===activeUser.id && t.date===d && t.type==='expense' && t.cat !== 'Bakiye Eşitleme');
+    
+    let h = '';
+    catsList.forEach(c => {
+        // Gerçekleşen
+        let actual = uTx.filter(t=>t.cat===c.n).reduce((a,b)=>a+b.amt,0);
+        // Tahmin (Hedef)
+        let bObj = budgets.find(x=>x.uid===activeUser.id && x.month===d && x.cat===c.n);
+        let est = bObj ? bObj.amt : 0;
+        
+        let diff = est - actual;
+        let diffClass = est === 0 ? 'none' : (diff >= 0 ? 'plus' : 'minus');
+        let diffText = est === 0 ? 'Tahmin Yok' : (diff >= 0 ? `+${diff.toLocaleString('tr-TR')} ₺ Kâr` : `${diff.toLocaleString('tr-TR')} ₺ Zarar`);
+        
+        let perc = est > 0 ? Math.min((actual / est) * 100, 100) : 0;
+        let barColor = perc >= 100 ? 'var(--danger)' : (perc > 80 ? 'var(--warning)' : 'var(--teal)');
+
+        h += `
+        <div class="budget-card" onclick="openBudgetModal('${c.n}', ${est})">
+            <div class="bc-header">
+                <div class="bc-title">${c.i} ${c.n}</div>
+                <div class="bc-diff ${diffClass}">${diffText}</div>
+            </div>
+            <div class="bc-stats">
+                <span>Tahmin: ${est > 0 ? est.toLocaleString('tr-TR')+' ₺' : '-'}</span>
+                <span style="color:var(--text)">Gerçek: ${actual.toLocaleString('tr-TR')} ₺</span>
+            </div>
+            <div class="bc-bar-bg">
+                <div class="bc-bar-fill" style="width:${perc}%; background:${barColor}"></div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('plan-list').innerHTML = h;
+}
+
+window.openBudgetModal = function(catName, currentAmt) {
+    vibrate();
+    document.getElementById('bm-cat-name').innerText = catName;
+    document.getElementById('bm-cat-val').value = catName;
+    document.getElementById('bm-amt').value = currentAmt > 0 ? currentAmt : '';
+    document.getElementById('budget-modal').style.display='flex';
 };
 
-function renderPending() {
-    const date = document.getElementById('dateInput').value;
-    const uT = tx.filter(x=>x.uid===activeUser.id && x.date===date && x.type==='expense' && !x.isPaid);
-    document.getElementById('pending-list').innerHTML = renderGroupedList(uT, true);
-}
+window.saveBudgetLimit = function() {
+    vibrate();
+    const d = document.getElementById('dateInput').value;
+    const c = document.getElementById('bm-cat-val').value;
+    const a = parseFloat(document.getElementById('bm-amt').value) || 0;
+    
+    let idx = budgets.findIndex(x=>x.uid===activeUser.id && x.month===d && x.cat===c);
+    if(idx !== -1) {
+        budgets[idx].amt = a;
+    } else {
+        budgets.push({id: Date.now(), uid: activeUser.id, month: d, cat: c, amt: a});
+    }
+    saveDB();
+    document.getElementById('budget-modal').style.display='none';
+    renderBudgets();
+    showToast("Tahmin Kaydedildi");
+};
 
+window.openPendingView = function() { openVortex('view-pending', 'Bekleyen Ödemeler'); renderPending(); };
+function renderPending() { const date = document.getElementById('dateInput').value; const uT = tx.filter(x=>x.uid===activeUser.id && x.date===date && x.type==='expense' && !x.isPaid); document.getElementById('pending-list').innerHTML = renderGroupedList(uT, true); }
 window.openDetailView = function(title, type) { vibrate(); currentDetailType = type; openVortex('view-detail', title); renderDetailView(); };
-
-function renderDetailView() {
-    if(!currentDetailType) return;
-    const date = document.getElementById('dateInput').value;
-    const uT = tx.filter(x=>x.uid===activeUser.id && x.date===date);
-    let l = []; 
-    if(currentDetailType==='ev') l=uT.filter(x=>x.type==='expense'&&!bKats.includes(x.cat)&&x.cat!=='Bakiye Eşitleme'); 
-    if(currentDetailType==='finans') l=uT.filter(x=>x.type==='expense'&&bKats.includes(x.cat)&&x.cat!=='Bakiye Eşitleme');
-
-    document.getElementById('detail-list').innerHTML = renderGroupedList(l, true);
-}
+function renderDetailView() { if(!currentDetailType) return; const date = document.getElementById('dateInput').value; const uT = tx.filter(x=>x.uid===activeUser.id && x.date===date); let l = []; if(currentDetailType==='ev') l=uT.filter(x=>x.type==='expense'&&!bKats.includes(x.cat)&&x.cat!=='Bakiye Eşitleme'); if(currentDetailType==='finans') l=uT.filter(x=>x.type==='expense'&&bKats.includes(x.cat)&&x.cat!=='Bakiye Eşitleme'); document.getElementById('detail-list').innerHTML = renderGroupedList(l, true); }
 
 function renderReports() {
     const d = document.getElementById('dateInput').value; const b = calcBudget(d);
@@ -647,97 +716,26 @@ function renderLoans() {
 }
 
 function checkExpCat() { let c = document.getElementById('exp-cat').value; document.getElementById('exp-desc-box').style.display = bKats.includes(c) ? 'none' : 'block'; document.getElementById('exp-bank-box').style.display = bKats.includes(c) ? 'block' : 'none'; }
-
-// DÜZELTİLMİŞ VE GÜÇLENDİRİLMİŞ KAYDETME (EDIT) MOTORU
-function saveExpense() { 
-    const c=document.getElementById('exp-cat').value, a=parseFloat(document.getElementById('exp-amt').value), d=bKats.includes(c)?document.getElementById('exp-bank-sel').value:(document.getElementById('exp-desc').value||c), acc=document.getElementById('exp-acc').value; 
-    if(a){ 
-        vibrate(); 
-        if(editingId) {
-            let i=tx.findIndex(x=>x.id===editingId);
-            tx[i] = {...tx[i], cat:c, desc:d, amt:a, account:acc};
-            showToast("Gider Güncellendi");
-        } else {
-            tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:c,desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:false}); 
-            showToast("Bütçeden Düşüldü");
-        }
-        saveDB(); closeVortex(); 
-    } 
-}
-function saveIncome() { 
-    const a=parseFloat(document.getElementById('inc-amt').value), d=document.getElementById('inc-desc').value||'Gelir', acc=document.getElementById('inc-acc').value, s=document.getElementById('inc-sav').checked; 
-    if(a){ 
-        vibrate(); 
-        if(editingId) {
-            let i=tx.findIndex(x=>x.id===editingId);
-            tx[i] = {...tx[i], desc:d, amt:a, account:acc, isSavings:s};
-            showToast("Gelir Güncellendi");
-        } else {
-            tx.push({id:Date.now(),uid:activeUser.id,type:'income',cat:'Gelir',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:true,isSavings:s}); 
-            showToast("Gelir Eklendi");
-        }
-        saveDB(); closeVortex(); 
-    } 
-}
-function saveTransfer() { 
-    const a=parseFloat(document.getElementById('tr-amt').value), f=document.getElementById('tr-from').value, t=document.getElementById('tr-to').value, s=document.getElementById('tr-sav').checked; 
-    if(f===t)return showToast("Aynı hesap olamaz!"); 
-    if(a){ 
-        vibrate(); 
-        if(editingId) {
-            let i=tx.findIndex(x=>x.id===editingId);
-            tx[i] = {...tx[i], amt:a, account:f, toAccount:t, isSavings:s};
-            showToast("Transfer Güncellendi");
-        } else {
-            tx.push({id:Date.now(),uid:activeUser.id,type:'transfer',cat:'Transfer',desc:'Transfer',amt:a,date:document.getElementById('dateInput').value,account:f,toAccount:t,isSavings:s,isPaid:true}); 
-            showToast("Aktarıldı");
-        }
-        saveDB(); closeVortex(); 
-    } 
-}
+function saveExpense() { const c=document.getElementById('exp-cat').value, a=parseFloat(document.getElementById('exp-amt').value), d=bKats.includes(c)?document.getElementById('exp-bank-sel').value:(document.getElementById('exp-desc').value||c), acc=document.getElementById('exp-acc').value; if(a){ vibrate(); if(editingId) { let i=tx.findIndex(x=>x.id===editingId); tx[i] = {...tx[i], cat:c, desc:d, amt:a, account:acc}; showToast("Güncellendi"); } else { tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:c,desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:false}); showToast("Bütçeden Düşüldü"); } saveDB(); closeVortex(); } }
+function saveIncome() { const a=parseFloat(document.getElementById('inc-amt').value), d=document.getElementById('inc-desc').value||'Gelir', acc=document.getElementById('inc-acc').value, s=document.getElementById('inc-sav').checked; if(a){ vibrate(); if(editingId) { let i=tx.findIndex(x=>x.id===editingId); tx[i] = {...tx[i], desc:d, amt:a, account:acc, isSavings:s}; showToast("Güncellendi"); } else { tx.push({id:Date.now(),uid:activeUser.id,type:'income',cat:'Gelir',desc:d,amt:a,date:document.getElementById('dateInput').value,account:acc,isPaid:true,isSavings:s}); showToast("Gelir Eklendi"); } saveDB(); closeVortex(); } }
+function saveTransfer() { const a=parseFloat(document.getElementById('tr-amt').value), f=document.getElementById('tr-from').value, t=document.getElementById('tr-to').value, s=document.getElementById('tr-sav').checked; if(f===t)return showToast("Aynı hesap olamaz!"); if(a){ vibrate(); if(editingId) { let i=tx.findIndex(x=>x.id===editingId); tx[i] = {...tx[i], amt:a, account:f, toAccount:t, isSavings:s}; showToast("Güncellendi"); } else { tx.push({id:Date.now(),uid:activeUser.id,type:'transfer',cat:'Transfer',desc:'Transfer',amt:a,date:document.getElementById('dateInput').value,account:f,toAccount:t,isSavings:s,isPaid:true}); showToast("Aktarıldı"); } saveDB(); closeVortex(); } }
 
 function saveLoan() { vibrate(); const n=document.getElementById('l-n').value, a=parseFloat(document.getElementById('l-a').value), t=parseInt(document.getElementById('l-t').value), p=parseInt(document.getElementById('l-p').value)||0; if(n&&a&&t){ loans.push({id:Date.now(),uid:activeUser.id,name:n,amt:a,totalM:t,paidM:p}); saveDB(); renderLoans(); showToast("Kredi Başladı!"); } }
 function payLoan(id) { vibrate(); const i=loans.findIndex(l=>l.id===id); if(i!==-1&&loans[i].paidM<loans[i].totalM){ loans[i].paidM+=1; tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:'Kredi Ödemesi',desc:loans[i].name+' Taksiti',amt:loans[i].amt,date:document.getElementById('dateInput').value,account:'Ziraat Bankası',isPaid:true}); saveDB(); renderLoans(); showToast("Ödendi!"); } }
 function delLoan(id) { vibrate(); if(confirm("Silinsin mi?")){ loans=loans.filter(l=>l.id!==id); saveDB(); renderLoans(); showToast("Silindi"); } }
 
-function openBankDetail(b) {
-    vibrate(); activeBankDetail=b; const {banks}=calcBanks(); const cB=banks[b]||0;
-    document.getElementById('box-bank-detail').style.display='block'; document.getElementById('box-add-inv').style.display='none'; document.getElementById('box-inv-price').style.display='none';
-    document.getElementById('bd-name').innerText=b; document.getElementById('bd-amt').innerText=cB.toLocaleString('tr-TR')+' ₺'; document.getElementById('bd-amt').style.color=cB>=0?'var(--text)':'var(--danger)';
-    
-    const bT=tx.filter(t=>t.uid===activeUser.id&&(t.account===b||t.toAccount===b)).sort((a,b)=>b.id-a.id);
-    let h='<div class="tx-list">'; 
-    bT.forEach(t=>{ 
-        let s='', c='var(--text)', info=t.desc; 
-        if(t.type==='income'){s='+';c='var(--success)';} else if(t.type==='expense'){s='-';c='var(--danger)';} else if(t.type==='transfer'){if(t.account===b){s='-';c='var(--danger)';info='Tr. -> '+t.toAccount;}if(t.toAccount===b){s='+';c='var(--success)';info='Tr. <- '+t.account;}} else if(t.type.includes('_buy')){s='-';c='var(--gold)';info=`Yatırım (${t.grams})`;} if(t.cat==='Bakiye Eşitleme') info='⚖️ Varlık Girişi';
-        h+=`<div class="g-item" style="padding:10px;"><div class="g-info"><div class="g-desc" style="font-size:12px;">${info} ${(t.type==='expense'&&!t.isPaid)?'<span class="tx-badge">BEKLİYOR</span>':''}</div><div style="font-size:10px;color:var(--text-muted);">${t.date}</div></div><div class="g-amt-del"><span style="font-weight:900;color:${c};font-size:13px;">${s}${t.amt.toLocaleString('tr-TR')} ₺</span><button class="btn-act" style="background:rgba(239, 68, 68, 0.1);color:var(--danger);width:24px;height:24px;font-size:10px;" onclick="del(${t.id},'ass')">✕</button></div></div>`; 
-    }); document.getElementById('bd-list').innerHTML=h+'</div>';
-}
-
+function openBankDetail(b) { vibrate(); activeBankDetail=b; const {banks}=calcBanks(); const cB=banks[b]||0; document.getElementById('box-bank-detail').style.display='block'; document.getElementById('box-add-inv').style.display='none'; document.getElementById('box-inv-price').style.display='none'; document.getElementById('bd-name').innerText=b; document.getElementById('bd-amt').innerText=cB.toLocaleString('tr-TR')+' ₺'; document.getElementById('bd-amt').style.color=cB>=0?'var(--text)':'var(--danger)'; const bT=tx.filter(t=>t.uid===activeUser.id&&(t.account===b||t.toAccount===b)).sort((a,b)=>b.id-a.id); let h='<div class="tx-list">'; bT.forEach(t=>{ let s='', c='var(--text)', info=t.desc; if(t.type==='income'){s='+';c='var(--success)';} else if(t.type==='expense'){s='-';c='var(--danger)';} else if(t.type==='transfer'){if(t.account===b){s='-';c='var(--danger)';info='Tr. -> '+t.toAccount;}if(t.toAccount===b){s='+';c='var(--success)';info='Tr. <- '+t.account;}} else if(t.type.includes('_buy')){s='-';c='var(--gold)';info=`Yatırım (${t.grams})`;} if(t.cat==='Bakiye Eşitleme') info='⚖️ Varlık Girişi'; h+=`<div class="g-item" style="padding:10px;"><div class="g-info"><div class="g-desc" style="font-size:12px;">${info} ${(t.type==='expense'&&!t.isPaid)?'<span class="tx-badge">BEKLİYOR</span>':''}</div><div style="font-size:10px;color:var(--text-muted);">${t.date}</div></div><div class="g-amt-del"><span style="font-weight:900;color:${c};font-size:13px;">${s}${t.amt.toLocaleString('tr-TR')} ₺</span><button class="btn-act" style="background:rgba(255,0,0,0.1);color:var(--danger);width:24px;height:24px;font-size:10px;" onclick="del(${t.id},'ass')">✕</button></div></div>`; }); document.getElementById('bd-list').innerHTML=h+'</div>'; }
 function saveAdjust() { const rB=parseFloat(document.getElementById('bd-adj-amt').value); if(isNaN(rB))return showToast("Hata!"); const {banks}=calcBanks(); const d=rB-(banks[activeBankDetail]||0); if(d===0)return showToast("Zaten doğru!"); tx.push({id:Date.now(),uid:activeUser.id,type:d>0?'income':'expense',cat:'Bakiye Eşitleme',desc:'Varlık Girişi',amt:Math.abs(d),date:document.getElementById('dateInput').value,account:activeBankDetail,isPaid:true}); saveDB(); renderAssets(); openBankDetail(activeBankDetail); showToast("Banka Güncellendi"); }
 
 function openInvPrice(type) { vibrate(); document.getElementById('box-inv-price').style.display='block'; document.getElementById('box-add-inv').style.display='none'; document.getElementById('box-bank-detail').style.display='none'; document.getElementById('ip-type').value = type; document.getElementById('ip-title').innerText = type==='gold'?'Altın Kuru':type==='usd'?'Dolar Kuru':'Euro Kuru'; document.getElementById('ip-p').value = type==='gold'?currentGoldPrice:type==='usd'?currentUsdPrice:currentEurPrice; }
 function saveInvPrice() { vibrate(); const type = document.getElementById('ip-type').value; const p=parseFloat(document.getElementById('ip-p').value); if(p>0){ if(type==='gold') {currentGoldPrice=p; try{localStorage.setItem('dengem_gold_price',p);}catch(e){}} if(type==='usd') {currentUsdPrice=p; try{localStorage.setItem('dengem_usd_price',p);}catch(e){}} if(type==='eur') {currentEurPrice=p; try{localStorage.setItem('dengem_eur_price',p);}catch(e){}} renderAssets(); showToast("Kur Güncellendi"); } }
 function saveInv() { vibrate(); const type = document.getElementById('i-type').value; const m=parseFloat(document.getElementById('i-m').value), a=parseFloat(document.getElementById('i-a').value)||0, acc=document.getElementById('i-acc').value; let t_key = type + '_buy'; let d_text = type==='gold'?'Altın':type==='usd'?'Dolar':'Euro'; if(m>0){tx.push({id:Date.now(),uid:activeUser.id,type:t_key,cat:'Yatırım',desc:d_text+' Alımı',amt:a,grams:m,date:document.getElementById('dateInput').value,account:acc,isPaid:true}); saveDB(); renderAssets(); showToast("Kasaya Eklendi!");} }
 
-function del(id, source) { 
-    vibrate(); 
-    if(confirm("Bu işlemi silmek istediğinize emin misin?")){ 
-        tx=tx.filter(t=>t.id!==id); 
-        saveDB(); 
-        if(source==='rep') renderReports(); 
-        if(source==='ass') { renderAssets(); openBankDetail(activeBankDetail); } 
-        if(currentDetailType) renderDetailView(); 
-        if(document.getElementById('view-pending').classList.contains('active')) renderPending();
-        renderHome(); 
-        updateMiniWallet();
-        showToast("Silindi"); 
-    } 
-}
+function del(id, source) { vibrate(); if(confirm("Silmek istediğinize emin misiniz?")){ tx=tx.filter(t=>t.id!==id); saveDB(); if(source==='rep') renderReports(); if(source==='ass') { renderAssets(); openBankDetail(activeBankDetail); } if(currentDetailType) renderDetailView(); if(document.getElementById('view-pending').classList.contains('active')) renderPending(); renderHome(); updateMiniWallet(); showToast("Silindi"); } }
 
-function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans})); a.download="dengem_v5_1_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
-function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
-function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_1_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,budgets})); a.download="dengem_v5_2_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); localStorage.setItem(KEY_B,JSON.stringify(d.budgets||[])); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
+function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v5_2_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
 </script>
 </body>
 </html>
