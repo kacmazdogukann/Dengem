@@ -13,7 +13,7 @@
     --primary: #6366f1; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --info: #0ea5e9; --gold: #eab308;
     --usd: #22c55e; --eur: #3b82f6; --teal: #14b8a6;
     
-    /* YENİ: MODERN GÖLGELER (MATERIAL / SOFT NEUMORPHISM) */
+    /* MODERN GÖLGELER (MATERIAL / SOFT NEUMORPHISM) */
     --soft-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     --inner-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     
@@ -47,6 +47,10 @@ body {
 .p-avatar { width:75px; height:75px; border-radius:24px; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; color:white; cursor:pointer; transition: 0.2s; box-shadow: var(--soft-shadow); border: 2px solid var(--border-color);}
 .p-avatar:active { transform: scale(0.9); }
 
+/* YENİLEME BALONU (PULL TO REFRESH) */
+#ptr-indicator { position:fixed; top:-50px; left:0; width:100%; text-align:center; z-index:9999; transition:0.3s cubic-bezier(0.25, 1, 0.25, 1); opacity:0; pointer-events:none;}
+.ptr-box { display:inline-block; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text); padding:10px 20px; border-radius:30px; font-size:12px; font-weight:800; box-shadow:0 10px 25px rgba(0,0,0,0.3); backdrop-filter:blur(10px);}
+
 /* ANA UYGULAMA (DASHBOARD) */
 #app-layer { display:none; width:100%; height:100%; flex-direction:column; position:relative; }
 .top-header { padding: 15px 20px 5px; display:flex; justify-content:space-between; align-items:center; z-index: 10; flex-shrink: 0;}
@@ -75,7 +79,7 @@ body {
 .fw-amt { font-size: 26px; font-weight: 900; color: var(--text); }
 .fw-sub { font-size: 10px; color: var(--text-muted); margin-top: 6px; font-weight:600;}
 
-/* DİNAMİK BÜTÇE KARTLARI (KURUMSAL TASARIM) */
+/* DİNAMİK BÜTÇE KARTLARI */
 .dash-overview { padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
 .sub-card { background:var(--card-bg); padding:16px; border-radius:18px; border: 1px solid var(--border-color); display:flex; flex-direction:column; justify-content:center; cursor:pointer; transition:0.2s; box-shadow: var(--soft-shadow);}
 .sub-card:active { transform:scale(0.95); }
@@ -192,7 +196,7 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 
 <div id="login-layer">
     <div class="logo-main" onclick="if(confirm('Sistemi sıfırlamak ister misiniz?')) { localStorage.clear(); location.reload(); }">DEN<span>GEM</span></div>
-    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">PROFESSIONAL EDITION V9.0</div>
+    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">PROFESSIONAL EDITION V9.1</div>
     <div class="p-grid" id="p-list"></div>
 </div>
 
@@ -464,33 +468,33 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 <script>
 function vibrate() { try { if(navigator.vibrate) navigator.vibrate(15); } catch(e){} }
 
-const KEY_U = 'cimri_users_v9'; 
-const KEY_T = 'cimri_tx_v9'; 
-const KEY_L = 'cimri_loans_v9'; 
-const KEY_F = 'cimri_future_v9'; 
+const KEY_U = 'cimri_users_v9_1'; 
+const KEY_T = 'cimri_tx_v9_1'; 
+const KEY_L = 'cimri_loans_v9_1'; 
+const KEY_F = 'cimri_future_v9_1'; 
 
 let users=[], tx=[], loans=[], futurePlan={inc:0, items:{}, hidden:[]}, activeUser=null;
 let myChart = null, barChart = null, editingId = null, activeBankDetail = null, currentDetailType = '';
 let currentGoldPrice = 3050, currentUsdPrice = 36.50, currentEurPrice = 38.20, hideSavings = false;
+
 let prevVortexView = null, prevVortexTitle = '';
 
 const bankAccounts = ['Nakit (Cüzdan)', 'Ziraat Bankası', 'Vakıfbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Akbank', 'Enpara', 'QNB Finansbank', 'Denizbank'];
-// DIŞARIDAN GİDER KATEGORİSİ EKLENDİ
 const catsList = [{n:'Market', i:'🛒'}, {n:'Aidat', i:'🏢'}, {n:'Fatura', i:'⚡'}, {n:'Yakıt', i:'⛽'}, {n:'Sağlık', i:'💊'}, {n:'Dışarıdan Gider', i:'💸'}, {n:'Kredi Kartı Ödemesi', i:'💳'}, {n:'Kredi Ödemesi', i:'🏦'}, {n:'Ek Hesap (KMH)', i:'📉'}, {n:'Diğer', i:'🔹'}];
 const bKats = ['Kredi Kartı Ödemesi', 'Kredi Ödemesi', 'Ek Hesap (KMH)'];
 
 function fetchDB() {
     try {
-        let u = localStorage.getItem(KEY_U) || localStorage.getItem('cimri_users_v8_6') || localStorage.getItem('cimri_users_v8_1'); 
+        let u = localStorage.getItem(KEY_U) || localStorage.getItem('cimri_users_v9') || localStorage.getItem('cimri_users_v8_6'); 
         users = u ? JSON.parse(u) : []; if(!Array.isArray(users)) users=[];
         
-        let t = localStorage.getItem(KEY_T) || localStorage.getItem('cimri_tx_v8_6') || localStorage.getItem('cimri_tx_v8_1'); 
+        let t = localStorage.getItem(KEY_T) || localStorage.getItem('cimri_tx_v9') || localStorage.getItem('cimri_tx_v8_6'); 
         tx = t ? JSON.parse(t) : []; if(!Array.isArray(tx)) tx=[];
         
-        let l = localStorage.getItem(KEY_L) || localStorage.getItem('cimri_loans_v8_6') || localStorage.getItem('cimri_loans_v8_1'); 
+        let l = localStorage.getItem(KEY_L) || localStorage.getItem('cimri_loans_v9') || localStorage.getItem('cimri_loans_v8_6'); 
         loans = l ? JSON.parse(l) : []; if(!Array.isArray(loans)) loans=[];
         
-        let f = localStorage.getItem(KEY_F) || localStorage.getItem('cimri_future_v8_6'); 
+        let f = localStorage.getItem(KEY_F) || localStorage.getItem('cimri_future_v9'); 
         futurePlan = f ? JSON.parse(f) : { inc: 0, items: {}, hidden: [] };
         if(!futurePlan.items) futurePlan.items = {};
         if(!futurePlan.hidden) futurePlan.hidden = [];
@@ -502,7 +506,6 @@ function fetchDB() {
     } catch(e) { users=[]; tx=[]; loans=[]; futurePlan={inc:0, items:{}, hidden:[]}; }
 }
 
-// 🛡️ GÜVENLİ SOLDAN SAĞA KAYDIRMA (Sadece Kenardan Çekilirse Kapanır)
 let swipeStartX = 0; let swipeStartY = 0;
 const vLayer = document.getElementById('v-layer');
 vLayer.addEventListener('touchstart', e => { swipeStartX = e.changedTouches[0].screenX; swipeStartY = e.changedTouches[0].screenY; }, {passive: true});
@@ -512,7 +515,6 @@ vLayer.addEventListener('touchend', e => {
     if (swipeStartX < 40 && swipeEndX - swipeStartX > 70 && Math.abs(swipeEndY - swipeStartY) < 50) { closeVortex(); } 
 }, {passive: true});
 
-// AŞAĞI KAYDIR YENİLE
 let ptrStart = 0; let ptrGrid = null;
 document.addEventListener('touchstart', e => { ptrStart = e.touches[0].clientY; ptrGrid = e.target.closest('.dashboard-scroll') || e.target.closest('.v-body'); }, {passive:true});
 document.addEventListener('touchend', e => {
@@ -541,7 +543,6 @@ function loadTheme() { let saved='dark'; try{saved=localStorage.getItem('dengem_
 function showToast(msg) { vibrate(); const t=document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2500); }
 function saveDB() { try{localStorage.setItem(KEY_U,JSON.stringify(users)); localStorage.setItem(KEY_T,JSON.stringify(tx)); localStorage.setItem(KEY_L,JSON.stringify(loans)); localStorage.setItem(KEY_F,JSON.stringify(futurePlan));}catch(e){} }
 
-// KULLANICI LİSTESİ VE SİLME (MODALA TAŞINDIĞI İÇİN BURADAKİ X'LER KALKTI)
 function initLogin() {
     const d = document.getElementById('p-list'); let h = '';
     if(Array.isArray(users)) { 
@@ -564,8 +565,7 @@ window.deleteSpecificUser = function(id) {
         users = users.filter(u => u.id !== id);
         tx = tx.filter(t => t.uid !== id);
         loans = loans.filter(l => l.uid !== id);
-        saveDB(); 
-        location.reload();
+        saveDB(); location.reload();
     }
 };
 
@@ -581,7 +581,6 @@ function login(id) {
     renderHome();
 }
 
-// 🙈 GİZLİLİK (HAYALET) MODU HER YERDE
 window.toggleSavingsVisibility = function() {
     vibrate(); hideSavings = !hideSavings;
     try { localStorage.setItem('dengem_hide_savings', hideSavings); } catch(e){}
@@ -616,30 +615,30 @@ function renderHome() {
     const p = document.getElementById('main-pending');
     if(b.pending > 0 && !hideSavings) { p.style.display = 'inline-block'; p.innerText = `⏳ Bekleyen Ödemeler: ${b.pending.toLocaleString('tr-TR')} ₺ 👉`; } else { p.style.display = 'none'; }
 
-    // Gelecek Cüzdanı Matematik (Gizlenmişler hesaba katılmaz)
-    let expectedInc = futurePlan.inc || 0;
-    let totalExpectedExp = 0;
-    let uniqueItems = {};
-    for(let i = tx.length-1; i >= 0; i--) {
-        let t = tx[i];
-        if(t.uid === activeUser.id && t.type === 'expense' && t.cat !== 'Bakiye Eşitleme') {
-            let key = t.cat + '|||' + t.desc;
-            if(!uniqueItems[key]) uniqueItems[key] = { lastAmt: t.amt };
+    try {
+        let expectedInc = futurePlan.inc || 0;
+        let totalExpectedExp = 0;
+        let uniqueItems = {};
+        for(let i = tx.length-1; i >= 0; i--) {
+            let t = tx[i];
+            if(t.uid === activeUser.id && t.type === 'expense' && t.cat !== 'Bakiye Eşitleme') {
+                let key = t.cat + '|||' + t.desc;
+                if(!uniqueItems[key]) uniqueItems[key] = { lastAmt: t.amt };
+            }
         }
-    }
-    for(let key in uniqueItems) {
-        if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; // Silinenleri yoksay
-        let estAmt = futurePlan.items[key] !== undefined ? futurePlan.items[key] : uniqueItems[key].lastAmt;
-        totalExpectedExp += parseFloat(estAmt) || 0;
-    }
-    const fNet = expectedInc - totalExpectedExp;
-    const fBalEl = document.getElementById('future-bal');
-    if(fBalEl) {
-        fBalEl.innerText = hideSavings ? '*** ₺' : fNet.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
-        fBalEl.style.color = fNet >= 0 ? 'white' : 'var(--danger)';
-    }
+        for(let key in uniqueItems) {
+            if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; 
+            let estAmt = futurePlan.items[key] !== undefined ? futurePlan.items[key] : uniqueItems[key].lastAmt;
+            totalExpectedExp += parseFloat(estAmt) || 0;
+        }
+        const fNet = expectedInc - totalExpectedExp;
+        const fBalEl = document.getElementById('future-bal');
+        if(fBalEl) {
+            fBalEl.innerText = hideSavings ? '*** ₺' : fNet.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
+            fBalEl.style.color = fNet >= 0 ? 'white' : 'var(--danger)';
+        }
+    } catch(e) {}
 
-    // TIKLA YAZILARI KALDIRILDI VE KURUMSALLAŞTIRILDI
     let topCards = `
         <div class="sub-card" style="border-left:4px solid var(--success);" onclick="vibrate(); openVortex('view-inc-list', 'Bu Ay Giren Gelir')">
             <div class="sc-lbl">BU AY GİREN</div>
@@ -728,13 +727,11 @@ window.togglePaid = function(id) {
     } 
 };
 
-// 🔮 YENİ: GELİŞMİŞ YÖNETİCİ ÖZETLİ (SIRALI/SİLİNEBİLİR) PROJEKSİYON MOTORU 🔮
 window.previewFuturePlan = function() {
     let totalInc = parseFloat(document.getElementById('fp-inc').value) || 0;
     let totalExp = 0; let evTotal = 0; let finTotal = 0;
 
     document.querySelectorAll('.fp-input').forEach(inp => {
-        // Parent gizliyse (silinmişse) atla
         if(inp.closest('.fp-item-row').style.display === 'none') return;
         
         let val = inp.value.trim();
@@ -756,14 +753,13 @@ window.previewFuturePlan = function() {
     netEl.style.color = net >= 0 ? 'var(--success)' : 'var(--danger)';
 };
 
-// Gideri Projeksiyondan Silme Fonksiyonu
 window.deleteFutureItem = function(key, btnEl) {
     vibrate();
     futurePlan.hidden = futurePlan.hidden || [];
     if(!futurePlan.hidden.includes(key)) futurePlan.hidden.push(key);
-    futurePlan.items[key] = 0; // Sıfırla
-    btnEl.closest('.fp-item-row').style.display = 'none'; // Ekranda gizle
-    previewFuturePlan(); // Hesabı güncelle
+    futurePlan.items[key] = 0; 
+    btnEl.closest('.fp-item-row').style.display = 'none'; 
+    previewFuturePlan(); 
 };
 
 function renderFuturePlan() {
@@ -778,16 +774,15 @@ function renderFuturePlan() {
 
     let arr = [];
     for(let key in uniqueItems) {
-        if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; // Silinenleri Listeye Alma
+        if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; 
         
         let item = uniqueItems[key];
         let estAmt = futurePlan.items[key] !== undefined ? futurePlan.items[key] : item.lastAmt;
-        let group = bKats.includes(item.cat) ? 'finans' : 'ev'; // Kabaca 2 gruba böl
+        let group = bKats.includes(item.cat) ? 'finans' : 'ev'; 
         
         arr.push({ key: key, cat: item.cat, desc: item.desc, estAmt: estAmt, lastAmt: item.lastAmt, group: group });
     }
 
-    // BÜYÜKTEN KÜÇÜĞE SIRALAMA
     arr.sort((a,b) => (parseFloat(b.lastAmt)||0) - (parseFloat(a.lastAmt)||0));
 
     let h = '';
@@ -819,15 +814,13 @@ function renderFuturePlan() {
     } else {
         document.getElementById('fp-list').innerHTML = h;
         document.getElementById('fp-save-btn').style.display = 'block';
-        previewFuturePlan(); // Rakamları Hesapla
+        previewFuturePlan(); 
     }
 }
 
-// 💾 YENİ: TÜM BOŞLUKLARI OTOMATİK 0 YAPAN KAYIT MOTORU
 window.saveFuturePlanItems = function() {
     vibrate();
     document.querySelectorAll('.fp-input').forEach(inp => {
-        // Ekranda görünenleri kaydet
         if(inp.closest('.fp-item-row').style.display !== 'none') {
             let key = inp.getAttribute('data-key');
             let val = inp.value.trim();
@@ -849,10 +842,9 @@ function renderDetailView() { if(!currentDetailType) return; const date = docume
 window.openPendingView = function() { openVortex('view-pending', 'Bekleyen Ödemeler'); renderPending(); };
 function renderPending() { const date = document.getElementById('dateInput').value; const uT = tx.filter(x=>x.uid===activeUser.id && x.date===date && x.type==='expense' && !x.isPaid); document.getElementById('pending-list').innerHTML = renderGroupedList(uT, false); }
 
-// 📊 ZAMAN FİLTRELİ GELİŞMİŞ RAPORLAR 📊
 window.renderReports = function() {
     const filter = document.getElementById('report-timeframe') ? document.getElementById('report-timeframe').value : 'current';
-    const currDate = document.getElementById('dateInput').value; // YYYY-MM
+    const currDate = document.getElementById('dateInput').value; 
     let filteredTx = [];
 
     if(filter === 'current') {
@@ -875,7 +867,6 @@ window.renderReports = function() {
     const cT = {}; 
     filteredTx.filter(t=>t.type==='expense').forEach(t=>{ cT[t.cat]=(cT[t.cat]||0)+t.amt; }); 
     
-    // Yatırımları ekle
     let gld = filteredTx.filter(t=> (t.type==='gold_buy'||t.type==='usd_buy'||t.type==='eur_buy') && t.account!=='Dışarıdan Nakit').reduce((a,b)=>a+b.amt,0);
     let sav = filteredTx.filter(t=>t.type==='transfer' && t.isSavings).reduce((a,b)=>a+b.amt,0);
     if((gld+sav)>0) cT['Yatırım/Birikim'] = (gld+sav);
@@ -910,10 +901,10 @@ function renderGroupedList(l, oA=false) {
 }
 
 function renderAssets() {
-    document.getElementById('box-add-inv').style.display='none'; document.getElementById('box-inv-price').style.display='none'; document.getElementById('box-bank-detail').style.display='none';
+    document.getElementById('box-add-inv').style.display='none'; 
+    document.getElementById('box-inv-price').style.display='none'; 
     const { banks, tG, tU, tE } = calcBanks();
     
-    // ALTIN VE KUR SABİT HAFIZA ÇAĞRISI (Eğer silinmemişse burası doğru tutarı alır)
     let gV = tG * currentGoldPrice, uV = tU * currentUsdPrice, eV = tE * currentEurPrice;
     let net = Object.values(banks).reduce((a,b)=>a+b,0) + gV + uV + eV;
     
@@ -983,9 +974,9 @@ function del(id, source) {
     } 
 }
 
-function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan})); a.download="dengem_v9_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan})); a.download="dengem_v9_1_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
 function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); if(d.futurePlan) localStorage.setItem(KEY_F,JSON.stringify(d.futurePlan)); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
-function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v9_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v9_1_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
 </script>
 </body>
 </html>
