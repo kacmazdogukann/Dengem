@@ -33,10 +33,7 @@ body.light-mode {
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family:'Segoe UI', system-ui, sans-serif; }
-body { 
-    margin:0; background-color: var(--bg); color:var(--text); height:100vh; overflow:hidden; 
-    transition: background-color 0.3s, color 0.3s;
-}
+body { margin:0; background-color: var(--bg); color:var(--text); height:100vh; overflow:hidden; transition: background-color 0.3s, color 0.3s; }
 
 /* GİRİŞ EKRANI */
 #login-layer { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; }
@@ -62,7 +59,7 @@ body {
 .date-container { text-align: center; margin-bottom: 10px; flex-shrink: 0;}
 .date-picker { background: transparent; border: none; color: var(--text-muted); font-size: 13px; font-weight: 800; letter-spacing: 1px; outline: none; padding:5px; border-radius:8px;}
 
-/* TEK PARÇA AKICI SCROLL ALANI */
+/* AKICI SCROLL ALANI */
 .dashboard-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 90px; }
 
 .hero-balance { text-align: center; padding: 5px 20px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
@@ -72,7 +69,7 @@ body {
 .hero-pending { font-size: 12px; color: var(--warning); background:var(--card-bg); border:1px solid var(--border-color); padding: 8px 18px; border-radius:20px; font-weight:700; cursor:pointer; transition:0.2s; box-shadow: var(--soft-shadow); margin-bottom:15px;}
 .hero-pending:active { transform:scale(0.95); }
 
-/* DİNAMİK BÜTÇE KARTLARI */
+/* BÜTÇE KARTLARI */
 .dash-overview { padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
 .sub-card { background:var(--card-bg); padding:16px; border-radius:18px; border: 1px solid var(--border-color); display:flex; flex-direction:column; justify-content:center; cursor:pointer; transition:0.2s; box-shadow: var(--soft-shadow);}
 .sub-card:active { transform:scale(0.95); }
@@ -85,6 +82,7 @@ body {
 .b-card:active { transform: scale(0.95); }
 .b-icon { font-size: 28px; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 .b-title { font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.5px;}
+
 .dev-signature { text-align: center; font-size: 11px; color: var(--text-muted); padding: 25px 0; font-weight: 600; opacity: 0.6; letter-spacing: 2px; grid-column: span 2;}
 
 /* HIZLI EKLE BUTONU */
@@ -96,6 +94,8 @@ body {
     transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 1, 0.25, 1); 
 }
 .vortex-layer.active { transform: translateX(0); }
+
+/* DENGEM LOGOLU GİZLİ KAÇIŞ HEADER'I */
 .v-header { padding: 15px 20px; display:flex; align-items:center; gap:15px; background: var(--bg); border-bottom: 1px solid var(--border-color); position:sticky; top:0; z-index:10; box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
 .v-back { width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text); font-size: 18px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition:0.2s; flex-shrink:0; box-shadow:var(--soft-shadow);}
 .v-back:active { transform:scale(0.9);}
@@ -123,34 +123,25 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 .btn-huge { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 14px; font-weight: 800; cursor: pointer; color: white; margin-top: 10px; box-shadow: var(--soft-shadow); transition: 0.2s; letter-spacing: 0.5px; text-transform: uppercase;}
 .btn-huge:active { transform: scale(0.97); }
 
-/* PROJEKSİYON (GELECEK PLAN) KARTLARI */
-.fp-cluster-box { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 15px; overflow: hidden; box-shadow: var(--soft-shadow); cursor:pointer; transition:0.2s;}
-.fp-cluster-box:active { transform:scale(0.98); }
-.fp-cluster-head { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center;}
-.fp-item-row { display:flex; justify-content:space-between; align-items:center; background:var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:10px; box-shadow:var(--soft-shadow); transition:0.2s;}
-.fp-input { width:90px; padding:8px 10px; font-size:14px; font-weight:800; text-align:right; background:var(--bg); border:1px solid var(--border-color); color:var(--text); border-radius:8px; outline:none; transition:0.2s; box-shadow:var(--inner-shadow);}
+/* PROJEKSİYON YÖNETİCİ ÖZETİ (DASHBOARD KARTLARI) */
+.fp-summary-grid { display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:20px;}
+.fp-net-card { grid-column: span 2; background:var(--card-bg); padding:20px; border-radius:18px; border:1px solid var(--border-color); box-shadow:var(--soft-shadow); text-align:center;}
+.fp-sum-lbl { font-size:10px; font-weight:800; color:var(--text-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;}
+.fp-sum-val { font-size:18px; font-weight:900; color:var(--text); transition:0.3s;}
+
+/* PROJEKSİYON SEKMELERİ İÇİ KARTLAR */
+.fp-item-row { display:flex; justify-content:space-between; align-items:center; background:transparent; padding:12px 5px; border-bottom:1px dashed var(--border-color); transition:0.2s;}
+.fp-input { width:85px; padding:8px 10px; font-size:14px; font-weight:800; text-align:right; background:var(--bg); border:1px solid var(--border-color); color:var(--text); border-radius:8px; outline:none; transition:0.2s; box-shadow:var(--inner-shadow);}
 .fp-input:focus { border-color:var(--primary); }
 .fp-save-btn { position: sticky; bottom: 10px; background: var(--primary); z-index: 100; border: 1px solid rgba(255,255,255,0.2);}
-.fp-del-btn { background:rgba(239, 68, 68, 0.1); color:var(--danger); border:none; border-radius:8px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; margin-left:10px; transition:0.2s;}
+.fp-del-btn { background:rgba(239, 68, 68, 0.1); color:var(--danger); border:none; border-radius:8px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; margin-left:8px; transition:0.2s;}
 .fp-del-btn:active { transform:scale(0.9); }
 .is-deleted { opacity:0.3; filter:grayscale(1); pointer-events:none; }
-
-/* PROJEKSİYON YÖNETİCİ ÖZETİ */
-.fp-summary-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;}
-.fp-sum-card { background:var(--card-bg); padding:15px; border-radius:16px; border:1px solid var(--border-color); box-shadow:var(--soft-shadow); text-align:center;}
-.fp-sum-lbl { font-size:10px; font-weight:800; color:var(--text-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;}
-.fp-sum-val { font-size:18px; font-weight:900; color:var(--text);}
-.fp-net-card { grid-column: span 2; background:var(--card-bg); padding:20px; border-radius:16px; border:1px solid var(--border-color); box-shadow:var(--soft-shadow); text-align:center;}
 
 /* LİSTELER VE KARTLAR */
 .chart-container { background: var(--card-bg); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; position:relative; height:220px; display:flex; justify-content:center; box-shadow:var(--soft-shadow);}
 .tx-list { display:flex; flex-direction:column; gap:10px; }
-.group-details { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-color); overflow:hidden; margin-bottom:12px; box-shadow:var(--soft-shadow);}
-.group-summary { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 14px; list-style: none; }
-.group-summary::-webkit-details-marker { display: none; }
-.group-items { background: var(--bg); border-top:1px solid var(--border-color);}
-.g-item { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
-.g-item:last-child { border-bottom: none; }
+.g-item { background:var(--card-bg); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); border-radius:14px; box-shadow:var(--soft-shadow); margin-bottom:8px;}
 .g-desc { font-size: 14px; font-weight: 600; display:flex; align-items:center; gap:8px;}
 .tx-badge { background: var(--border-color); color: var(--text-muted); padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-top:5px; display:inline-block; }
 .g-amt-del { display: flex; align-items: center; gap: 8px; }
@@ -163,7 +154,7 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 @keyframes pulse { 0%{transform:scale(1);} 50%{transform:scale(1.05);} 100%{transform:scale(1);} }
 .btn-act { width: 32px; height: 32px; border-radius: 8px; border: none; font-size:12px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
 
-/* VARLIKLAR */
+/* VARLIKLAR VE KREDİLER */
 .assets-hero { background: var(--grad-ass); border-radius: 20px; padding: 25px; color: white; margin-bottom: 20px; position:relative; overflow:hidden; box-shadow:var(--soft-shadow);}
 .assets-hero::after { content:''; position:absolute; top:-50px; right:-50px; width:200px; height:200px; background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
 .bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;}
@@ -173,22 +164,19 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 .inv-title { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;}
 .inv-amt { font-size:18px; font-weight:900; transition:0.3s; }
 .inv-val { font-size:12px; color:var(--text-muted); transition:0.3s; }
-
-/* KREDİLER */
 .loan-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow:var(--soft-shadow);}
 .loan-dots { display: flex; flex-wrap: wrap; gap: 4px; margin: 15px 0; background: var(--bg); padding: 12px; border-radius: 12px; border:1px solid var(--border-color); box-shadow:var(--inner-shadow);}
 .loan-dot { width: 12px; height: 12px; border-radius: 3px; background: var(--border-color); display:flex; align-items:center; justify-content:center; font-size:0px; transition:0.3s;}
 .loan-dot.paid { background: var(--success); }
 
-/* 🛡️ Z-INDEX HATASI ÇÖZÜLEN NATIVE MODALLAR 🛡️ */
+/* Z-INDEX ZIRHLI NATIVE MODALLAR (Asla Engellenemez) */
 .toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 12px 25px; border-radius: 25px; font-weight: 800; font-size: 13px; transition: bottom 0.3s; z-index: 10001; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .toast.show { bottom: 40px; }
-/* BÜTÜN MODALLAR ARTIK EN ÜST KATMANDA (z-index: 10000) */
 .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:10000; align-items:center; justify-content:center; backdrop-filter:blur(5px);}
 .um-box { background:var(--card-bg); padding:25px; border-radius:24px; width:90%; max-width:400px; max-height:85vh; overflow-y:auto; border:1px solid var(--border-color); text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.5);}
 .um-del-link { color: var(--danger); font-size: 12px; font-weight: 600; margin-top: 20px; display: inline-block; cursor: pointer; text-decoration: none; opacity: 0.8; border-bottom: 1px dashed var(--danger);}
-
 .report-filter { width:100%; padding:12px; border-radius:12px; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text); font-weight:bold; font-size:14px; margin-bottom:20px; box-shadow:var(--soft-shadow); outline:none;}
+
 </style>
 </head>
 <body class="dark-mode">
@@ -223,15 +211,13 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 
 <div id="login-layer">
     <div class="logo-main" onclick="resetSystem()">DEN<span>GEM</span></div>
-    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">PROFESSIONAL V9.7</div>
+    <div style="color:var(--text-muted); font-size:12px; font-weight:700; margin-top:-20px; letter-spacing:2px;">PROFESSIONAL V9.8</div>
     
     <div class="p-grid" id="p-list">
         <div class="p-avatar-wrap" onclick="addUser()">
             <div class="p-avatar" style="background:transparent; color:var(--text-muted)">+</div>
         </div>
     </div>
-    
-    <button style="margin-top:50px; background:transparent; color:var(--danger); border:1px dashed var(--danger); padding:10px 20px; border-radius:12px; font-size:12px; cursor:pointer;" onclick="resetSystem()">⚠️ Sistemi Sıfırla (Acil Durum)</button>
 </div>
 
 <div class="modal-overlay" id="user-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
@@ -259,27 +245,39 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
     </div>
 </div>
 
-<div class="modal-overlay" id="fp-add-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
+<div class="modal-overlay" id="fp-add-exp-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
     <div class="um-box" style="text-align:left;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="margin:0; color:var(--primary);">Yeni Beklenti Ekle</h3>
-            <button class="v-back" style="width:30px;height:30px;font-size:14px;" onclick="document.getElementById('fp-add-modal').style.display='none'">✕</button>
+            <h3 style="margin:0; color:var(--primary);" id="fp-add-exp-title">Yeni Kalem</h3>
+            <button class="v-back" style="width:30px;height:30px;font-size:14px;" onclick="document.getElementById('fp-add-exp-modal').style.display='none'">✕</button>
         </div>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Gelecek ayki sürpriz gelir veya giderlerinizi plana dahil edin.</p>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Bu kategoriye eklenecek yeni gideri belirleyin.</p>
         
+        <input type="hidden" id="fp-add-exp-cat">
+        <input type="hidden" id="fp-add-exp-group">
         <div class="input-group">
-            <select id="fp-new-type">
-                <option value="expense">📉 Yeni Gider Kalemi</option>
-                <option value="income">💰 Ekstra Gelir Kalemi</option>
-            </select>
+            <input type="text" id="fp-add-exp-desc" placeholder="Açıklama (Örn: Aidat Zamı)">
         </div>
         <div class="input-group">
-            <input type="text" id="fp-new-desc" placeholder="Açıklama (Örn: Tatil, Prim...)">
+            <input type="number" id="fp-add-exp-amt" placeholder="Tahmini Tutar (TL)">
+        </div>
+        <button class="btn-huge" style="background:var(--primary);" onclick="saveFpCategoryItem()">Kategoriye Ekle</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="fp-add-inc-modal" onclick="if(event.target === this) { this.style.display='none'; vibrate(); }">
+    <div class="um-box" style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 style="margin:0; color:var(--success);">Ekstra Gelir Ekle</h3>
+            <button class="v-back" style="width:30px;height:30px;font-size:14px;" onclick="document.getElementById('fp-add-inc-modal').style.display='none'">✕</button>
         </div>
         <div class="input-group">
-            <input type="number" id="fp-new-amt" placeholder="Tutar (TL)">
+            <input type="text" id="fp-inc-desc" placeholder="Açıklama (Örn: Prim, İkramiye...)">
         </div>
-        <button class="btn-huge" style="background:var(--primary);" onclick="saveCustomFutureItem()">Plana Ekle</button>
+        <div class="input-group">
+            <input type="number" id="fp-inc-amt" placeholder="Tutar (TL)">
+        </div>
+        <button class="btn-huge" style="background:var(--success);" onclick="saveFpCustomInc()">Gelir Ekle</button>
     </div>
 </div>
 
@@ -355,30 +353,40 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
         
         <div class="v-view" id="view-future">
             <div id="fp-main-dashboard">
-                <div class="fp-summary-grid">
-                    <div class="fp-net-card">
-                        <div class="fp-sum-lbl">GELECEK AY KALACAK NET KÂR</div>
-                        <div id="fp-net" style="font-size:36px; font-weight:900; color:var(--success); transition:0.3s;">0 ₺</div>
+                <div class="fp-net-card" style="margin-bottom:15px;">
+                    <div class="fp-sum-lbl">GELECEK AY KALACAK NET KÂR</div>
+                    <div id="fp-net" style="font-size:40px; font-weight:900; color:var(--success); transition:0.3s;">0 ₺</div>
+                </div>
+
+                <div class="dash-overview" style="margin-bottom:15px;">
+                    <div class="sub-card" style="border-left:4px solid var(--success); padding:12px;">
+                        <div class="sc-lbl">BEKLENEN GELİR (MAAŞ)</div>
+                        <input type="number" id="fp-inc" placeholder="0 ₺" oninput="previewFuturePlan()" style="width:100%; padding:0; background:transparent; border:none; font-size:18px; font-weight:900; color:var(--success); outline:none;">
                     </div>
-                    <div class="fp-sum-card" style="border-bottom: 3px solid var(--success);">
-                        <div class="fp-sum-lbl">SABİT GELİR (MAAŞ)</div>
-                        <input type="number" id="fp-inc" placeholder="0" oninput="previewFuturePlan()" style="width:100%; text-align:center; background:transparent; border:none; font-size:18px; font-weight:900; color:var(--text); outline:none;">
+                    <div class="sub-card" style="border-left:4px solid var(--danger); padding:12px;">
+                        <div class="sc-lbl">TOPLAM GİDER</div>
+                        <div class="sc-val" style="color:var(--danger); font-size:18px;" id="fp-tot-exp">0 ₺</div>
                     </div>
-                    <div class="fp-sum-card" style="border-bottom: 3px solid var(--danger);">
-                        <div class="fp-sum-lbl">TOPLAM GİDER</div>
-                        <div id="fp-tot-exp" class="fp-sum-val">0 ₺</div>
+                    <div class="sub-card" style="border-left:4px solid var(--warning); padding:12px;" onclick="openFpTab('ev')">
+                        <div class="sc-lbl">🏠 EV & YAŞAM</div>
+                        <div class="sc-val" style="color:var(--warning); font-size:18px;" id="fp-dash-ev">0 ₺</div>
+                    </div>
+                    <div class="sub-card" style="border-left:4px solid var(--danger); padding:12px;" onclick="openFpTab('finans')">
+                        <div class="sc-lbl">💳 KART & FİNANS</div>
+                        <div class="sc-val" style="color:var(--danger); font-size:18px;" id="fp-dash-fin">0 ₺</div>
+                    </div>
+                    <div class="sub-card" style="border-left:4px solid var(--info); padding:12px; grid-column: span 2; text-align:center;" onclick="openFpTab('diger')">
+                        <div class="sc-lbl">🔹 DİĞER GİDERLER</div>
+                        <div class="sc-val" style="color:var(--info); font-size:18px;" id="fp-dash-dig">0 ₺</div>
                     </div>
                 </div>
 
                 <div id="fp-custom-inc-list"></div>
-
-                <h3 style="font-size:14px; margin: 25px 0 15px; color:var(--text-muted); border-bottom:1px solid var(--border-color); padding-bottom:10px;">📉 GİDER KATEGORİLERİ</h3>
-                <div id="fp-category-cards"></div>
-                
-                <button class="btn-huge" style="background:var(--card-bg); color:var(--text); border:1px dashed var(--primary); margin-bottom:15px; box-shadow:none;" onclick="openAddFutureItem()">➕ YENİ BEKLENTİ (GELİR/GİDER) EKLE</button>
+                <button class="btn-huge" style="background:rgba(16, 185, 129, 0.1); color:var(--success); border:1px dashed var(--success); margin-bottom:15px; box-shadow:none;" onclick="vibrate(); document.getElementById('fp-add-inc-modal').style.display='flex'">➕ EKSTRA GELİR EKLE</button>
             </div>
 
-            <div id="fp-tab-container" style="display:none;"></div>
+            <div id="fp-tab-container"></div>
+            
             <button class="btn-huge fp-save-btn" id="fp-save-btn" onclick="saveFuturePlanItems()" style="display:none; margin-top:20px;">💾 PROJEKSİYONU KAYDET</button>
         </div>
 
@@ -518,10 +526,10 @@ input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
 <script>
 function vibrate() { try { if(navigator.vibrate) navigator.vibrate(15); } catch(e){} }
 
-const KEY_U = 'cimri_users_v9_7'; 
-const KEY_T = 'cimri_tx_v9_7'; 
-const KEY_L = 'cimri_loans_v9_7'; 
-const KEY_F = 'cimri_future_v9_7'; 
+const KEY_U = 'cimri_users_v9_8'; 
+const KEY_T = 'cimri_tx_v9_8'; 
+const KEY_L = 'cimri_loans_v9_8'; 
+const KEY_F = 'cimri_future_v9_8'; 
 
 let users=[], tx=[], loans=[], futurePlan={inc:0, items:{}, hidden:[], customInc:{}}, activeUser=null;
 let myChart = null, barChart = null, editingId = null, activeBankDetail = null, currentDetailType = '';
@@ -530,20 +538,22 @@ let prevVortexView = null, prevVortexTitle = '';
 
 const bankAccounts = ['Nakit (Cüzdan)', 'Ziraat Bankası', 'Vakıfbank', 'Garanti BBVA', 'Yapı Kredi', 'İş Bankası', 'Akbank', 'Enpara', 'QNB Finansbank', 'Denizbank'];
 const catsList = [{n:'Market', i:'🛒'}, {n:'Aidat', i:'🏢'}, {n:'Fatura', i:'⚡'}, {n:'Yakıt', i:'⛽'}, {n:'Sağlık', i:'💊'}, {n:'Dışarıdan Gider', i:'💸'}, {n:'Kredi Kartı Ödemesi', i:'💳'}, {n:'Kredi Ödemesi', i:'🏦'}, {n:'Ek Hesap (KMH)', i:'📉'}, {n:'Diğer', i:'🔹'}];
+const eKats = ['Market', 'Aidat', 'Fatura', 'Yakıt', 'Sağlık'];
 const bKats = ['Kredi Kartı Ödemesi', 'Kredi Ödemesi', 'Ek Hesap (KMH)'];
+const dKats = ['Diğer', 'Dışarıdan Gider'];
 
 function fetchDB() {
     try {
-        let u = localStorage.getItem(KEY_U) || localStorage.getItem('cimri_users_v9_6') || localStorage.getItem('cimri_users_v9_5'); 
+        let u = localStorage.getItem(KEY_U) || localStorage.getItem('cimri_users_v9_7') || localStorage.getItem('cimri_users_v9_6'); 
         users = u ? JSON.parse(u) : []; if(!Array.isArray(users)) users=[];
         
-        let t = localStorage.getItem(KEY_T) || localStorage.getItem('cimri_tx_v9_6') || localStorage.getItem('cimri_tx_v9_5'); 
+        let t = localStorage.getItem(KEY_T) || localStorage.getItem('cimri_tx_v9_7') || localStorage.getItem('cimri_tx_v9_6'); 
         tx = t ? JSON.parse(t) : []; if(!Array.isArray(tx)) tx=[];
         
-        let l = localStorage.getItem(KEY_L) || localStorage.getItem('cimri_loans_v9_6') || localStorage.getItem('cimri_loans_v9_5'); 
+        let l = localStorage.getItem(KEY_L) || localStorage.getItem('cimri_loans_v9_7') || localStorage.getItem('cimri_loans_v9_6'); 
         loans = l ? JSON.parse(l) : []; if(!Array.isArray(loans)) loans=[];
         
-        let f = localStorage.getItem(KEY_F) || localStorage.getItem('cimri_future_v9_6') || localStorage.getItem('cimri_future_v9_5'); 
+        let f = localStorage.getItem(KEY_F) || localStorage.getItem('cimri_future_v9_7'); 
         futurePlan = f ? JSON.parse(f) : { inc: 0, items: {}, hidden: [], customInc: {} };
         if(!futurePlan.items) futurePlan.items = {};
         if(!futurePlan.hidden) futurePlan.hidden = [];
@@ -556,7 +566,6 @@ function fetchDB() {
     } catch(e) { users=[]; tx=[]; loans=[]; futurePlan={inc:0, items:{}, hidden:[], customInc:{}}; }
 }
 
-// GÜVENLİ ONAY (CONFIRM) MOTORU
 let confirmCallback = null;
 window.openConfirm = function(title, desc, btnText, callback) {
     vibrate();
@@ -566,33 +575,16 @@ window.openConfirm = function(title, desc, btnText, callback) {
     confirmCallback = callback;
     document.getElementById('confirm-modal').style.display = 'flex';
 };
+window.closeConfirm = function() { vibrate(); document.getElementById('confirm-modal').style.display = 'none'; confirmCallback = null; };
+document.getElementById('confirm-yes-btn').addEventListener('click', function() { vibrate(); if(confirmCallback) confirmCallback(); closeConfirm(); });
 
-window.closeConfirm = function() {
-    vibrate();
-    document.getElementById('confirm-modal').style.display = 'none';
-    confirmCallback = null;
-};
+window.resetSystem = function() { openConfirm("Sistemi Sıfırla", "Tüm sistemi ve verileri tamamen sıfırlamak ister misiniz?", "Sıfırla", function() { localStorage.clear(); location.reload(); }); };
 
-document.getElementById('confirm-yes-btn').addEventListener('click', function() {
-    vibrate();
-    if(confirmCallback) confirmCallback();
-    closeConfirm();
-});
-
-// SİSTEM SIFIRLAMA
-window.resetSystem = function() {
-    openConfirm("Sistemi Sıfırla", "Tüm sistemi ve verileri tamamen sıfırlamak ister misiniz? Bu işlem geri alınamaz.", "Sıfırla", function() {
-        localStorage.clear(); location.reload();
-    });
-};
-
-// GÜVENLİ KAYDIRMA
 let swipeStartX = 0; let swipeStartY = 0;
 const vLayer = document.getElementById('v-layer');
 vLayer.addEventListener('touchstart', e => { swipeStartX = e.changedTouches[0].screenX; swipeStartY = e.changedTouches[0].screenY; }, {passive: true});
 vLayer.addEventListener('touchend', e => { 
-    let swipeEndX = e.changedTouches[0].screenX; 
-    let swipeEndY = e.changedTouches[0].screenY; 
+    let swipeEndX = e.changedTouches[0].screenX; let swipeEndY = e.changedTouches[0].screenY; 
     if (swipeStartX < 40 && swipeEndX - swipeStartX > 70 && Math.abs(swipeEndY - swipeStartY) < 50) { closeVortex(); } 
 }, {passive: true});
 
@@ -603,10 +595,7 @@ document.addEventListener('touchend', e => {
     let ptrEnd = e.changedTouches[0].clientY;
     if(ptrEnd - ptrStart > 130) {
         vibrate(); const ptrEl = document.getElementById('ptr-indicator');
-        if(ptrEl) {
-            ptrEl.style.transform = 'translateY(80px)'; ptrEl.style.opacity = '1';
-            setTimeout(()=>{ location.reload(); }, 600);
-        }
+        if(ptrEl) { ptrEl.style.transform = 'translateY(80px)'; ptrEl.style.opacity = '1'; setTimeout(()=>{ location.reload(); }, 600); }
     }
 }, {passive:true});
 
@@ -617,7 +606,7 @@ window.onload = function() {
         let d = new Date(); let monthInput = document.getElementById('dateInput');
         if(monthInput) monthInput.value = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
         initLogin();
-    } catch(e) { document.getElementById('p-list').innerHTML = `<div class="p-avatar-wrap" onclick="addUser()"><div class="p-avatar" style="background:transparent; color:var(--text-muted)">+</div></div>`; }
+    } catch(e) { document.getElementById('p-list').innerHTML = `<div class="p-avatar-wrap" onclick="addUser()"><div class="p-avatar" style="background:transparent; color:white">+</div></div>`; }
 };
 
 function toggleTheme() { const isLight = document.body.classList.toggle('light-mode'); try{localStorage.setItem('dengem_theme', isLight ? 'light' : 'dark');}catch(e){} document.getElementById('theme-icon').innerText = isLight ? '🌙' : '☀️'; if(myChart) renderReports(); }
@@ -633,9 +622,7 @@ function initLogin() {
                 if(u && u.id) { 
                     let initial = (u.name && u.name.length > 0) ? u.name[0].toUpperCase() : 'U'; 
                     let col = u.color || 'var(--primary)'; 
-                    h += `<div class="p-avatar-wrap" onclick="login('${u.id}')">
-                            <div class="p-avatar" style="background:${col}">${initial}</div>
-                          </div>`; 
+                    h += `<div class="p-avatar-wrap" onclick="login('${u.id}')"><div class="p-avatar" style="background:${col}">${initial}</div></div>`; 
                 } 
             }); 
         }
@@ -644,54 +631,12 @@ function initLogin() {
     } catch(e) { document.getElementById('p-list').innerHTML = `<div class="p-avatar-wrap" onclick="addUser()"><div class="p-avatar" style="background:transparent; color:var(--text-muted)">+</div></div>`; }
 }
 
-// Z-INDEX HATASI GİDERİLMİŞ KULLANICI EKLEME
-window.addUser = function() {
-    vibrate();
-    document.getElementById('add-user-modal').style.display = 'flex';
-    document.getElementById('new-user-name').value = '';
-    setTimeout(() => document.getElementById('new-user-name').focus(), 100);
-};
+window.addUser = function() { vibrate(); document.getElementById('add-user-modal').style.display = 'flex'; document.getElementById('new-user-name').value = ''; setTimeout(() => document.getElementById('new-user-name').focus(), 100); };
+window.confirmAddUser = function() { const n = document.getElementById('new-user-name').value.trim(); if(n) { users.push({ id:'u'+Date.now(), name:n, color:['#ef4444','#f59e0b','#10b981','#0ea5e9','#8b5cf6','#ec4899'][Math.floor(Math.random()*6)] }); saveDB(); initLogin(); showToast("Eklendi"); document.getElementById('add-user-modal').style.display = 'none'; } else { showToast("Lütfen isim girin!"); } };
+window.deleteSpecificUser = function(id) { openConfirm("Kullanıcıyı Sil", "Bu kullanıcıyı kalıcı olarak silmek istediğinize emin misiniz?", "Sil", function() { users = users.filter(u => u.id !== id); tx = tx.filter(t => t.uid !== id); loans = loans.filter(l => l.uid !== id); saveDB(); location.reload(); }); };
+function deleteCurrentUser() { openConfirm("Verileri Temizle", "Tüm verileriniz silinecek! Onaylıyor musunuz?", "Tümünü Sil", function() { users=users.filter(u=>u.id!==activeUser.id); tx=tx.filter(t=>t.uid!==activeUser.id); loans=loans.filter(l=>l.uid!==activeUser.id); futurePlan={inc:0, items:{}, hidden:[], customInc:{}}; saveDB(); location.reload(); }); }
 
-window.confirmAddUser = function() {
-    const n = document.getElementById('new-user-name').value.trim();
-    if(n) { 
-        users.push({
-            id:'u'+Date.now(), 
-            name:n, 
-            color:['#ef4444','#f59e0b','#10b981','#0ea5e9','#8b5cf6','#ec4899'][Math.floor(Math.random()*6)]
-        }); 
-        saveDB(); 
-        initLogin(); 
-        showToast("Eklendi");
-        document.getElementById('add-user-modal').style.display = 'none';
-    } else {
-        showToast("Lütfen bir isim girin!");
-    }
-};
-
-window.deleteSpecificUser = function(id) {
-    openConfirm("Kullanıcıyı Sil", "Bu kullanıcıyı kalıcı olarak silmek istediğinize emin misiniz?", "Sil", function() {
-        users = users.filter(u => u.id !== id);
-        tx = tx.filter(t => t.uid !== id);
-        loans = loans.filter(l => l.uid !== id);
-        saveDB(); location.reload();
-    });
-};
-
-function deleteCurrentUser() { 
-    openConfirm("Verileri Temizle", "Tüm verileriniz silinecek! Onaylıyor musunuz?", "Tümünü Sil", function() {
-        users=users.filter(u=>u.id!==activeUser.id); tx=tx.filter(t=>t.uid!==activeUser.id); loans=loans.filter(l=>l.uid!==activeUser.id); futurePlan={inc:0, items:{}, hidden:[], customInc:{}}; saveDB(); location.reload(); 
-    });
-}
-
-function login(id) {
-    vibrate(); activeUser = users.find(u => u.id === id); if(!activeUser) return;
-    document.getElementById('login-layer').style.display='none'; document.getElementById('app-layer').style.display='flex';
-    let initial = (activeUser.name && activeUser.name.length > 0) ? activeUser.name[0].toUpperCase() : 'U';
-    document.getElementById('u-icon').innerText = initial; document.getElementById('u-icon').style.background = activeUser.color || 'var(--primary)';
-    document.getElementById('um-name').innerText = activeUser.name || 'Kullanıcı';
-    renderHome();
-}
+function login(id) { vibrate(); activeUser = users.find(u => u.id === id); if(!activeUser) return; document.getElementById('login-layer').style.display='none'; document.getElementById('app-layer').style.display='flex'; let initial = (activeUser.name && activeUser.name.length > 0) ? activeUser.name[0].toUpperCase() : 'U'; document.getElementById('u-icon').innerText = initial; document.getElementById('u-icon').style.background = activeUser.color || 'var(--primary)'; document.getElementById('um-name').innerText = activeUser.name || 'Kullanıcı'; renderHome(); }
 
 window.toggleSavingsVisibility = function() { vibrate(); hideSavings = !hideSavings; try { localStorage.setItem('dengem_hide_savings', hideSavings); } catch(e){} renderHome(); if(document.getElementById('view-ass').classList.contains('active')) renderAssets(); };
 
@@ -721,34 +666,6 @@ function renderHome() {
     const p = document.getElementById('main-pending');
     if(b.pending > 0 && !hideSavings) { p.style.display = 'inline-block'; p.innerText = `⏳ Bekleyen Ödemeler: ${b.pending.toLocaleString('tr-TR')} ₺ 👉`; } else { p.style.display = 'none'; }
 
-    try {
-        let expectedInc = futurePlan.inc || 0;
-        if(futurePlan.customInc) { for(let k in futurePlan.customInc) expectedInc += futurePlan.customInc[k]; }
-        
-        let totalExpectedExp = 0;
-        let uniqueItems = {};
-        for(let i = tx.length-1; i >= 0; i--) {
-            let t = tx[i];
-            if(t.uid === activeUser.id && t.type === 'expense' && t.cat !== 'Bakiye Eşitleme') {
-                let key = t.cat + '|||' + t.desc;
-                if(!uniqueItems[key]) uniqueItems[key] = { lastAmt: t.amt };
-            }
-        }
-        for(let k in futurePlan.items) { if(k.startsWith('Custom|||')) uniqueItems[k] = { lastAmt: 0 }; }
-        
-        for(let key in uniqueItems) {
-            if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; 
-            let estAmt = futurePlan.items[key] !== undefined ? futurePlan.items[key] : uniqueItems[key].lastAmt;
-            totalExpectedExp += parseFloat(estAmt) || 0;
-        }
-        const fNet = expectedInc - totalExpectedExp;
-        const fBalEl = document.getElementById('future-bal');
-        if(fBalEl) {
-            fBalEl.innerText = hideSavings ? '*** ₺' : fNet.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' ₺';
-            fBalEl.style.color = fNet >= 0 ? 'white' : 'var(--danger)';
-        }
-    } catch(e) {}
-
     let topCards = `
         <div class="sub-card" style="border-left:4px solid var(--success);" onclick="vibrate(); openVortex('view-inc-list', 'Bu Ay Giren Gelir')">
             <div class="sc-lbl">BU AY GİREN</div>
@@ -759,7 +676,7 @@ function renderHome() {
             <div class="sc-val" style="color:var(--info)">${hideSavings ? '***' : '-' + b.b_sav.toLocaleString('tr-TR')} ₺</div>
         </div>
         <div class="sub-card" style="border-left:4px solid var(--warning);" onclick="vibrate(); openDetailView('Ev Giderleri', 'ev')">
-            <div class="sc-lbl">EV GİDERLER</div>
+            <div class="sc-lbl">EV GİDERLERİ</div>
             <div class="sc-val" style="color:var(--warning)">${hideSavings ? '***' : '-' + b.expEv.toLocaleString('tr-TR')} ₺</div>
         </div>
         <div class="sub-card" style="border-left:4px solid var(--danger);" onclick="vibrate(); openDetailView('Finans Giderleri', 'finans')">
@@ -841,105 +758,130 @@ window.togglePaid = function(id) {
     } 
 };
 
-// SÜRPRİZ BEKLENTİ (GELİR/GİDER) EKLEME MOTORU
-window.openAddFutureItem = function() {
-    vibrate(); document.getElementById('fp-add-modal').style.display='flex';
-};
+// 🟢 📂 PROJEKSİYON (GELECEK PLAN) YENİ KUSURSUZ MİMARİSİ 📂 🟢
 
-window.saveCustomFutureItem = function() {
-    vibrate();
-    let type = document.getElementById('fp-new-type').value;
-    let desc = document.getElementById('fp-new-desc').value.trim();
-    let amt = parseFloat(document.getElementById('fp-new-amt').value) || 0;
-    
-    if(!desc || amt <= 0) return showToast("Geçerli isim ve tutar girin!");
-
-    if(type === 'income') {
-        futurePlan.customInc = futurePlan.customInc || {};
-        let key = 'Inc|||' + desc + '_' + Date.now();
-        futurePlan.customInc[key] = amt;
-    } else {
-        let key = 'Custom|||Diğer|||' + desc;
-        futurePlan.items[key] = amt;
-        if(futurePlan.hidden) futurePlan.hidden = futurePlan.hidden.filter(h => h !== key);
-    }
-    
-    saveDB();
-    document.getElementById('fp-new-desc').value = '';
-    document.getElementById('fp-new-amt').value = '';
-    document.getElementById('fp-add-modal').style.display='none';
-    
-    if(type === 'expense') { renderFuturePlan(); openFpTab('Diğer'); } else { renderFuturePlan(); }
-    showToast("Plana eklendi!");
-};
-
-window.deleteCustomInc = function(key) {
-    openConfirm("Geliri Sil", "Bu ekstra geliri silmek istiyor musunuz?", "Sil", function() {
-        delete futurePlan.customInc[key];
-        saveDB(); renderFuturePlan();
-    });
-};
+let currentFpGroup = null;
 
 function resetFpTabs() {
     document.getElementById('fp-main-dashboard').style.display = 'block';
     document.getElementById('fp-tab-container').style.display = 'none';
     document.getElementById('fp-save-btn').style.display = 'none';
+    currentFpGroup = null;
 }
 
-window.openFpTab = function(safeCatName) {
+window.openFpTab = function(gKey) {
     vibrate();
     document.getElementById('fp-main-dashboard').style.display = 'none';
     document.querySelectorAll('.fp-tab-content').forEach(el => el.style.display = 'none');
-    let tab = document.getElementById('fp-tab-' + safeCatName);
+    let tab = document.getElementById('fp-tab-' + gKey);
     if(tab) tab.style.display = 'block';
     document.getElementById('fp-tab-container').style.display = 'block';
     document.getElementById('fp-save-btn').style.display = 'block';
+    currentFpGroup = gKey;
 };
 
 window.closeFpTabs = function() { vibrate(); resetFpTabs(); previewFuturePlan(); };
+
+window.openFpAddModal = function(catName) {
+    vibrate();
+    document.getElementById('fp-add-exp-cat').value = catName;
+    document.getElementById('fp-add-exp-title').innerText = "Yeni " + catName;
+    document.getElementById('fp-add-exp-desc').value = '';
+    document.getElementById('fp-add-exp-amt').value = '';
+    document.getElementById('fp-add-exp-modal').style.display = 'flex';
+    setTimeout(() => document.getElementById('fp-add-exp-desc').focus(), 100);
+};
+
+window.saveFpCategoryItem = function() {
+    vibrate();
+    let cat = document.getElementById('fp-add-exp-cat').value;
+    let desc = document.getElementById('fp-add-exp-desc').value.trim();
+    let amt = parseFloat(document.getElementById('fp-add-exp-amt').value) || 0;
+    
+    if(!desc || amt <= 0) return showToast("Açıklama ve tutar girin!");
+    
+    let key = 'Custom|||' + cat + '|||' + desc + '_' + Date.now();
+    futurePlan.items[key] = amt;
+    if(futurePlan.hidden) futurePlan.hidden = futurePlan.hidden.filter(h => h !== key);
+    
+    saveDB();
+    document.getElementById('fp-add-exp-modal').style.display = 'none';
+    renderFuturePlan();
+    if(currentFpGroup) openFpTab(currentFpGroup);
+    showToast("Eklendi!");
+};
+
+window.saveFpCustomInc = function() {
+    vibrate();
+    let desc = document.getElementById('fp-inc-desc').value.trim();
+    let amt = parseFloat(document.getElementById('fp-inc-amt').value) || 0;
+    if(!desc || amt <= 0) return showToast("Açıklama ve tutar girin!");
+    
+    futurePlan.customInc = futurePlan.customInc || {};
+    let key = 'Inc|||' + desc + '_' + Date.now();
+    futurePlan.customInc[key] = amt;
+    
+    saveDB();
+    document.getElementById('fp-add-inc-modal').style.display='none';
+    document.getElementById('fp-inc-desc').value = '';
+    document.getElementById('fp-inc-amt').value = '';
+    renderFuturePlan();
+    showToast("Ekstra Gelir Eklendi!");
+};
+
+window.deleteCustomInc = function(key) {
+    openConfirm("Geliri Sil", "Bu ekstra geliri silmek istiyor musunuz?", "Sil", function() {
+        delete futurePlan.customInc[key]; saveDB(); renderFuturePlan();
+    });
+};
 
 window.previewFuturePlan = function() {
     let totalInc = parseFloat(document.getElementById('fp-inc').value) || 0;
     if(futurePlan.customInc) { for(let k in futurePlan.customInc) totalInc += futurePlan.customInc[k]; }
 
-    let totalExp = 0; let evTotal = 0; let finTotal = 0;
+    let totalExp = 0; let evSum = 0; let finSum = 0; let digSum = 0;
+    let catSums = {};
 
     document.querySelectorAll('.fp-input').forEach(inp => {
         if(inp.closest('.fp-item-row').classList.contains('is-deleted')) return;
         let val = inp.value.trim(); let amt = val === '' ? 0 : parseFloat(val); totalExp += amt;
-        let catGroup = inp.getAttribute('data-group');
-        if(catGroup === 'ev') evTotal += amt;
-        if(catGroup === 'finans') finTotal += amt;
+        
+        let gKey = inp.getAttribute('data-group');
+        let catKey = inp.getAttribute('data-cat');
+        
+        if(gKey === 'ev') evSum += amt;
+        if(gKey === 'finans') finSum += amt;
+        if(gKey === 'diger') digSum += amt;
+        
+        catSums[catKey] = (catSums[catKey] || 0) + amt;
     });
 
     let te = document.getElementById('fp-tot-exp'); if(te) te.innerText = totalExp.toLocaleString('tr-TR') + ' ₺';
-    let ee = document.getElementById('fp-ev-exp'); if(ee) ee.innerText = evTotal.toLocaleString('tr-TR') + ' ₺';
-    let fe = document.getElementById('fp-fin-exp'); if(fe) fe.innerText = finTotal.toLocaleString('tr-TR') + ' ₺';
+    let ee = document.getElementById('fp-dash-ev'); if(ee) ee.innerText = evSum.toLocaleString('tr-TR') + ' ₺';
+    let fe = document.getElementById('fp-dash-fin'); if(fe) fe.innerText = finSum.toLocaleString('tr-TR') + ' ₺';
+    let de = document.getElementById('fp-dash-dig'); if(de) de.innerText = digSum.toLocaleString('tr-TR') + ' ₺';
+
+    for(let c in catSums) { let el = document.getElementById('cat-sum-' + c); if(el) el.innerText = catSums[c].toLocaleString('tr-TR') + ' ₺'; }
 
     let net = totalInc - totalExp; let netEl = document.getElementById('fp-net');
     if(netEl) { netEl.innerText = net.toLocaleString('tr-TR') + ' ₺'; netEl.style.color = net >= 0 ? 'var(--success)' : 'var(--danger)'; }
 };
 
 window.deleteFutureItem = function(key, btnEl) {
-    if(key.startsWith('Custom|||')) {
-        delete futurePlan.items[key]; 
-    } else {
-        futurePlan.hidden = futurePlan.hidden || [];
-        if(!futurePlan.hidden.includes(key)) futurePlan.hidden.push(key);
-        futurePlan.items[key] = 0; 
-    }
-    let row = btnEl.closest('.fp-item-row');
-    row.classList.add('is-deleted'); row.style.display = 'none'; 
+    vibrate();
+    if(key.startsWith('Custom|||')) { delete futurePlan.items[key]; } 
+    else { futurePlan.hidden = futurePlan.hidden || []; if(!futurePlan.hidden.includes(key)) futurePlan.hidden.push(key); futurePlan.items[key] = 0; }
+    let row = btnEl.closest('.fp-item-row'); row.classList.add('is-deleted'); row.style.display = 'none'; 
     previewFuturePlan(); 
 };
 
 function renderFuturePlan() {
-    let uniqueItems = {};
+    let fpItems = [];
     for(let i = tx.length-1; i >= 0; i--) {
         let t = tx[i];
         if(t.uid === activeUser.id && t.type === 'expense' && t.cat !== 'Bakiye Eşitleme') {
             let key = t.cat + '|||' + t.desc;
-            if(!uniqueItems[key]) uniqueItems[key] = { cat: t.cat, desc: t.desc, lastAmt: t.amt };
+            if(!fpItems.some(x=>x.key===key)) fpItems.push({ key: key, cat: t.cat, desc: t.desc, lastAmt: t.amt, isCustom: false });
         }
     }
     
@@ -947,64 +889,64 @@ function renderFuturePlan() {
         for(let k in futurePlan.items) {
             if(k.startsWith('Custom|||')) {
                 let parts = k.split('|||');
-                if(!uniqueItems[k]) uniqueItems[k] = { cat: parts[1], desc: parts[2], lastAmt: 0, isCustom: true };
+                if(!fpItems.some(x=>x.key===k)) fpItems.push({ key: k, cat: parts[1], desc: parts[2], lastAmt: 0, isCustom: true });
             }
         }
     }
 
-    let cats = {};
-    for(let key in uniqueItems) {
-        if(futurePlan.hidden && futurePlan.hidden.includes(key)) continue; 
-        let item = uniqueItems[key];
-        if(!cats[item.cat]) cats[item.cat] = [];
-        let estAmt = futurePlan.items[key] !== undefined ? futurePlan.items[key] : item.lastAmt;
-        let group = bKats.includes(item.cat) ? 'finans' : 'ev'; 
-        cats[item.cat].push({ key: key, desc: item.desc, estAmt: estAmt, lastAmt: item.lastAmt, group: group, isCustom: item.isCustom });
-    }
+    fpItems = fpItems.filter(x => !(futurePlan.hidden && futurePlan.hidden.includes(x.key)));
+    fpItems.sort((a,b) => (parseFloat(b.lastAmt)||0) - (parseFloat(a.lastAmt)||0));
 
-    let cardsHtml = ''; let tabsHtml = '';
+    let tabsHtml = '';
+    const groups = {
+        'ev': { title: '🏠 EV & YAŞAM', cats: eKats, color: 'var(--warning)' },
+        'finans': { title: '💳 KART & FİNANS', cats: bKats, color: 'var(--danger)' },
+        'diger': { title: '🔹 DİĞER GİDERLER', cats: dKats, color: 'var(--info)' }
+    };
 
-    for(let c in cats) {
-        let icon = catsList.find(x=>x.n===c)?.i || '📌';
-        let catSum = cats[c].reduce((sum, item) => sum + (parseFloat(item.estAmt) || 0), 0);
-        let safeCatName = c.replace(/\s+/g, '');
-        let groupColor = bKats.includes(c) ? 'var(--danger)' : 'var(--warning)';
-
-        cardsHtml += `
-        <div class="fp-cluster-box" style="border-left:4px solid ${groupColor};" onclick="openFpTab('${safeCatName}')">
-            <div class="fp-cluster-head" style="border:none; background:var(--card-bg);">
-                <div style="display:flex; flex-direction:column; gap:4px;">
-                    <span style="font-size:14px; font-weight:800; color:var(--text);">${icon} ${c.toUpperCase()}</span>
-                    <span style="font-size:10px; color:var(--text-muted);">${cats[c].length} Kalem</span>
-                </div>
-                <span style="font-size:16px; font-weight:900; color:${groupColor};">${catSum.toLocaleString('tr-TR')} ₺</span>
-            </div>
-        </div>`;
-
-        tabsHtml += `<div id="fp-tab-${safeCatName}" class="fp-tab-content" style="display:none;">
-            <button class="btn-huge" style="background:var(--card-bg); color:var(--text); border:1px solid var(--border-color); margin-bottom:15px; box-shadow:var(--soft-shadow);" onclick="closeFpTabs()">🔙 Klasörlere Dön</button>
-            <div style="background:var(--card-bg); border-radius:16px; border:1px solid var(--border-color); padding:10px; box-shadow:var(--soft-shadow);">
-            <h3 style="font-size:14px; margin: 10px 10px 15px; color:${groupColor}; border-bottom:1px solid var(--border-color); padding-bottom:10px;">${icon} ${c.toUpperCase()}</h3>
-        `;
-
-        cats[c].forEach(item => {
-            let valToShow = item.estAmt === 0 && !item.isCustom ? '' : item.estAmt; 
-            let prevText = item.isCustom ? '<span style="color:var(--primary)">Manuel Eklendi</span>' : `Önceki Ay: ${item.lastAmt.toLocaleString('tr-TR')} ₺`;
-            tabsHtml += `
-            <div class="fp-item-row" style="background:transparent; box-shadow:none; padding:10px 5px; border-bottom:1px dashed var(--border-color); border-radius:0;">
-                <div style="flex:1; padding-right:10px;">
-                    <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px;">${item.desc}</div>
-                    <div style="font-size:10px; color:var(--text-muted);">${prevText}</div>
-                </div>
-                <div style="display:flex; align-items:center;">
-                    <input type="number" class="fp-input" data-key="${item.key}" data-group="${item.group}" value="${valToShow}" placeholder="0" oninput="previewFuturePlan()">
-                    <button class="fp-del-btn" onclick="openConfirm('Kalemi Sil', 'Bu kalemi listeden çıkarmak istiyor musunuz?', 'Sil', function(){ deleteFutureItem('${item.key}', document.querySelector('[data-key=\\'${item.key}\\']')); })">🗑️</button>
-                </div>
-            </div>`;
+    for(let gKey in groups) {
+        let g = groups[gKey];
+        tabsHtml += `<div id="fp-tab-${gKey}" class="fp-tab-content" style="display:none;">
+            <button class="btn-huge" style="background:var(--card-bg); color:var(--text); border:1px solid var(--border-color); margin-bottom:15px; box-shadow:var(--soft-shadow);" onclick="closeFpTabs()">🔙 Özet Ekrana Dön</button>
+            <div style="background:var(--card-bg); border-radius:16px; border:1px solid var(--border-color); padding:15px 15px 5px; box-shadow:var(--soft-shadow);">
+            <h3 style="font-size:14px; margin: 0 0 15px; color:${g.color}; border-bottom:1px solid var(--border-color); padding-bottom:10px;">${g.title} DETAYLARI</h3>`;
+        
+        g.cats.forEach(c => {
+            let itemsInCat = fpItems.filter(x => x.cat === c);
+            let safeCat = c.replace(/\s+/g, '');
+            let icon = catsList.find(x=>x.n===c)?.i || '📌';
+            
+            tabsHtml += `<div style="margin-bottom:25px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding-left:5px;">
+                    <div style="font-size:13px; font-weight:800; color:var(--text-muted);">${icon} ${c.toUpperCase()}</div>
+                    <div style="font-size:13px; font-weight:900; color:${g.color};" id="cat-sum-${safeCat}">0 ₺</div>
+                </div>`;
+                
+            itemsInCat.forEach(item => {
+                let estAmt = futurePlan.items[item.key] !== undefined ? futurePlan.items[item.key] : item.lastAmt;
+                let valToShow = estAmt === 0 && !item.isCustom ? '' : estAmt; 
+                let prevText = item.isCustom ? '<span style="color:var(--primary)">Manuel Eklendi</span>' : `Önceki Ay: ${item.lastAmt.toLocaleString('tr-TR')} ₺`;
+                
+                tabsHtml += `<div class="fp-item-row" style="background:rgba(0,0,0,0.1); box-shadow:none; padding:10px; border:1px solid var(--border-color); border-radius:10px; margin-bottom:8px;">
+                    <div style="flex:1; padding-right:10px;">
+                        <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px;">${item.desc}</div>
+                        <div style="font-size:10px; color:var(--text-muted);">${prevText}</div>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        <input type="number" class="fp-input" data-key="${item.key}" data-group="${gKey}" data-cat="${safeCat}" value="${valToShow}" placeholder="0" oninput="previewFuturePlan()">
+                        <button class="fp-del-btn" onclick="deleteFutureItem('${item.key}', this)">🗑️</button>
+                    </div>
+                </div>`;
+            });
+            
+            tabsHtml += `<button style="width:100%; padding:10px; background:transparent; border:1px dashed var(--border-color); color:var(--text-muted); border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; margin-top:5px; transition:0.2s;" onclick="openFpAddModal('${c}')">➕ Yeni ${c} Ekle</button>`;
+            tabsHtml += `</div>`;
         });
         tabsHtml += `</div></div>`;
     }
+    document.getElementById('fp-tab-container').innerHTML = tabsHtml;
 
+    // Ekstra Gelirleri Ekrana Bas
     let customIncHtml = '';
     if(futurePlan.customInc && Object.keys(futurePlan.customInc).length > 0) {
         for(let k in futurePlan.customInc) {
@@ -1024,11 +966,6 @@ function renderFuturePlan() {
     let inc = parseFloat(futurePlan.inc) || 0;
     document.getElementById('fp-inc').value = inc > 0 ? inc : '';
     
-    if(Object.keys(cats).length === 0) { document.getElementById('fp-category-cards').innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;">Geçmiş harcamanız bulunmuyor. Eklemek için butonu kullanın.</div>'; } 
-    else {
-        document.getElementById('fp-category-cards').innerHTML = cardsHtml;
-        document.getElementById('fp-tab-container').innerHTML = tabsHtml;
-    }
     previewFuturePlan(); 
 }
 
@@ -1046,6 +983,7 @@ window.saveFuturePlanItems = function() {
     saveDB(); renderHome(); showToast("Plan Kaydedildi!"); closeVortex(); 
 };
 
+// 📂 EV/KART DETAY SEKMELERİ
 function resetDetailTabs() { document.getElementById('detail-category-cards').style.display = 'block'; document.getElementById('detail-tab-container').style.display = 'none'; }
 window.openDetailTab = function(safeCatName) { vibrate(); document.getElementById('detail-category-cards').style.display = 'none'; document.querySelectorAll('.dt-tab-content').forEach(el => el.style.display = 'none'); let tab = document.getElementById('dt-tab-' + safeCatName); if(tab) tab.style.display = 'block'; document.getElementById('detail-tab-container').style.display = 'block'; };
 window.closeDetailTabs = function() { vibrate(); resetDetailTabs(); };
@@ -1188,7 +1126,7 @@ function saveIncome() { const a=parseFloat(document.getElementById('inc-amt').va
 function saveTransfer() { const a=parseFloat(document.getElementById('tr-amt').value), f=document.getElementById('tr-from').value, t=document.getElementById('tr-to').value, s=document.getElementById('tr-sav').checked; if(f===t)return showToast("Aynı hesap olamaz!"); if(a){ vibrate(); if(editingId) { let i=tx.findIndex(x=>x.id===editingId); tx[i] = {...tx[i], amt:a, account:f, toAccount:t, isSavings:s}; showToast("Güncellendi"); } else { tx.push({id:Date.now(),uid:activeUser.id,type:'transfer',cat:'Transfer',desc:'Transfer',amt:a,date:document.getElementById('dateInput').value,account:f,toAccount:t,isSavings:s,isPaid:true}); showToast("Aktarıldı"); } saveDB(); returnAfterSave(); } }
 function saveLoan() { vibrate(); const n=document.getElementById('l-n').value, a=parseFloat(document.getElementById('l-a').value), t=parseInt(document.getElementById('l-t').value), p=parseInt(document.getElementById('l-p').value)||0; if(n&&a&&t){ loans.push({id:Date.now(),uid:activeUser.id,name:n,amt:a,totalM:t,paidM:p}); saveDB(); renderLoans(); showToast("Kredi Başladı!"); } }
 function payLoan(id) { vibrate(); const i=loans.findIndex(l=>l.id===id); if(i!==-1&&loans[i].paidM<loans[i].totalM){ loans[i].paidM+=1; tx.push({id:Date.now(),uid:activeUser.id,type:'expense',cat:'Kredi Ödemesi',desc:loans[i].name+' Taksiti',amt:loans[i].amt,date:document.getElementById('dateInput').value,account:'Ziraat Bankası',isPaid:true}); saveDB(); renderLoans(); showToast("Ödendi!"); } }
-function delLoan(id) { openConfirm("Krediyi Sil", "Bu krediyi silmek istediğinize emin misiniz?", "Sil", function() { loans=loans.filter(l=>l.id!==id); saveDB(); renderLoans(); showToast("Silindi"); }); }
+function delLoan(id) { openConfirm("Krediyi Sil", "Krediyi silmek istediğinize emin misiniz?", "Sil", function() { loans=loans.filter(l=>l.id!==id); saveDB(); renderLoans(); showToast("Silindi"); }); }
 
 function openBankDetail(b) { vibrate(); activeBankDetail=b; const {banks}=calcBanks(); const cB=banks[b]||0; document.getElementById('bank-modal').style.display='flex'; document.getElementById('bd-name').innerText=b; document.getElementById('bd-amt').innerText=cB.toLocaleString('tr-TR')+' ₺'; document.getElementById('bd-amt').style.color=cB>=0?'var(--text)':'var(--danger)'; const bT=tx.filter(t=>t.uid===activeUser.id&&(t.account===b||t.toAccount===b)).sort((a,b)=>b.id-a.id); let h='<div class="tx-list">'; bT.forEach(t=>{ let s='', c='var(--text)', info=t.desc; if(t.type==='income'){s='+';c='var(--success)';} else if(t.type==='expense'){s='-';c='var(--danger)';} else if(t.type==='transfer'){if(t.account===b){s='-';c='var(--danger)';info='Tr. -> '+t.toAccount;}if(t.toAccount===b){s='+';c='var(--success)';info='Tr. <- '+t.account;}} else if(t.type.includes('_buy')){s='-';c='var(--gold)';info=`Yatırım (${t.grams})`;} if(t.cat==='Bakiye Eşitleme') info='⚖️ Varlık Girişi'; h+=`<div class="g-item" style="padding:10px; border-bottom:1px solid var(--border-color);"><div class="g-info"><div class="g-desc" style="font-size:12px;">${info} ${(t.type==='expense'&&!t.isPaid)?'<span class="tx-badge">BEKLİYOR</span>':''}</div><div style="font-size:10px;color:var(--text-muted);">${t.date}</div></div><div class="g-amt-del"><span style="font-weight:900;color:${c};font-size:13px;">${s}${t.amt.toLocaleString('tr-TR')} ₺</span><button class="btn-act" style="background:rgba(239, 68, 68, 0.1);color:var(--danger);width:24px;height:24px;font-size:10px;" onclick="del(${t.id},'ass')">✕</button></div></div>`; }); document.getElementById('bd-list').innerHTML=h+'</div>'; }
 function saveAdjust() { const rB=parseFloat(document.getElementById('bd-adj-amt').value); if(isNaN(rB))return showToast("Hata!"); const {banks}=calcBanks(); const d=rB-(banks[activeBankDetail]||0); if(d===0)return showToast("Zaten doğru!"); tx.push({id:Date.now(),uid:activeUser.id,type:d>0?'income':'expense',cat:'Bakiye Eşitleme',desc:'Varlık Girişi',amt:Math.abs(d),date:document.getElementById('dateInput').value,account:activeBankDetail,isPaid:true}); saveDB(); renderAssets(); openBankDetail(activeBankDetail); showToast("Banka Güncellendi"); }
@@ -1209,9 +1147,9 @@ window.del = function(id, source) {
     });
 };
 
-function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan})); a.download="dengem_v9_7_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportData() { vibrate(); const a=document.createElement('a'); a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan})); a.download="dengem_v9_8_yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
 function importData() { vibrate(); const f=document.getElementById('backupFile').files[0]; if(!f)return showToast("Dosya seçin!"); const r=new FileReader(); r.onload=e=>{try{const d=JSON.parse(e.target.result); if(d.users){localStorage.setItem(KEY_U,JSON.stringify(d.users)); localStorage.setItem(KEY_T,JSON.stringify(d.tx)); localStorage.setItem(KEY_L,JSON.stringify(d.loans||[])); if(d.futurePlan) localStorage.setItem(KEY_F,JSON.stringify(d.futurePlan)); alert("Yüklendi!"); location.reload();}}catch{showToast("Hata!");}}; r.readAsText(f); }
-function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v9_7_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+function exportCSV() { vibrate(); const u=tx.filter(t=>t.uid===activeUser.id); if(!u.length)return showToast("Kayıt yok."); let c="data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n"; u.forEach(t=>{ c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`; }); const a=document.createElement('a'); a.href=encodeURI(c); a.download="dengem_v9_8_excel.csv"; document.body.appendChild(a); a.click(); a.remove(); }
 </script>
 </body>
 </html>
