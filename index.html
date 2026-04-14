@@ -141,8 +141,8 @@ radial-gradient(ellipse 40% 30% at 80% 80%,rgba(0,194,122,.05) 0%,transparent 70
 
 .fg{margin-bottom:14px;}
 .fl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:7px;display:flex;justify-content:space-between;}
-input:not([type=checkbox]):not([type=file]):not([type=month]),select{width:100%;padding:13px 15px;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;outline:none;-webkit-appearance:none;transition:border-color .18s,box-shadow .18s,background .15s;}
-input:focus,select:focus{border-color:var(--ac);background:var(--s3);box-shadow:0 0 0 3px rgba(68,136,255,.12);}
+input:not([type=checkbox]):not([type=file]):not([type=month]),select, textarea{width:100%;padding:13px 15px;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;outline:none;-webkit-appearance:none;transition:border-color .18s,box-shadow .18s,background .15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--ac);background:var(--s3);box-shadow:0 0 0 3px rgba(68,136,255,.12);}
 select option{background:var(--s2);}
 .chk-row{display:flex;align-items:flex-start;gap:12px;background:var(--s2);padding:13px 15px;border-radius:var(--r);border:1px solid var(--b1);cursor:pointer;margin-top:10px;}
 .chk-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac);flex-shrink:0;margin-top:2px;padding:0;background:none;border:none;}
@@ -248,7 +248,6 @@ select option{background:var(--s2);}
 .fpmini{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:12px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
 .fpmini:active{transform:scale(.96);}
 .fpmini-bar{position:absolute;top:0;left:0;right:0;height:2px;}
-/* YAZILAR KÜÇÜLTÜLDÜ (Gelecek Ay Planı) */
 .fpmini-l{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
 .fpmini-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(11px,3vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fpmini-p{font-size:8px;color:var(--t3);margin-top:3px;}
@@ -357,6 +356,18 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
     <div class="modal-acts">
       <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="closeConf()">İptal</button>
       <button class="btn btn-rd" id="mc-y" style="flex:1;margin:0;">Evet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-pay-confirm">
+  <div class="modal-c">
+    <div class="modal-t" style="color:var(--gr)">Ödemeyi Onayla</div>
+    <div class="modal-d">Fatura vb. için gerçekleşen tutarı düzenleyerek onaylayın. (Bütçeye asıl tutar işlenir)</div>
+    <div class="fg"><label class="fl">Gerçekleşen Tutar (TL)</label><input type="number" id="pay-conf-a"></div>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-pay-confirm')">İptal</button>
+      <button class="btn btn-gr" style="flex:1;margin:0;" onclick="confirmPayPendingAction()">Onayla & Öde</button>
     </div>
   </div>
 </div>
@@ -552,9 +563,19 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
 
 <div class="page" id="page-assets">
   <div class="ass-hero">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
       <div><div class="ass-lbl">Net Servet</div><div class="ass-tot" id="ass-tot">0 ₺</div></div>
       <div class="hero-eye" onclick="vib();toggleHide()" id="ass-eye">👁️</div>
+    </div>
+    <div style="display:flex; gap:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px;">
+       <div style="flex:1;">
+         <div style="font-size:9px; color:var(--t2); text-transform:uppercase; font-weight:700;">Nakit & Banka</div>
+         <div style="font-family:'Bricolage Grotesque'; font-size:16px; font-weight:800; color:var(--t1);" id="ass-try">0 ₺</div>
+       </div>
+       <div style="flex:1;">
+         <div style="font-size:9px; color:var(--t2); text-transform:uppercase; font-weight:700;">Altın & Döviz</div>
+         <div style="font-family:'Bricolage Grotesque'; font-size:16px; font-weight:800; color:var(--gd);" id="ass-inv">0 ₺</div>
+       </div>
     </div>
   </div>
   <div class="sec-h"><span class="sec-t">Banka Hesapları</span></div>
@@ -692,6 +713,7 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
     <div class="sp-item" onclick="closeSP();openBS('bs-exp','Gider Ekle')"><div class="sp-ico" style="background:var(--rd2);">📉</div><div><div class="sp-item-t">Gider Ekle</div><div class="sp-item-s">Harcama kaydet</div></div></div>
     <div class="sp-item" onclick="closeSP();openBS('bs-tr','Transfer')"><div class="sp-ico" style="background:var(--ac2);">🔄</div><div><div class="sp-item-t">Transfer Yap</div><div class="sp-item-s">Hesaplar arası aktarım</div></div></div>
     <div class="sp-div"></div>
+    <div class="sp-item" onclick="openNotes()"><div class="sp-ico" style="background:var(--am2);">📝</div><div><div class="sp-item-t">Notlarım</div><div class="sp-item-s">Hızlı notlar al & kaydet</div></div></div>
     <div class="sp-item" onclick="closeSP();goTab('plan')"><div class="sp-ico" style="background:var(--gr2);">🔮</div><div><div class="sp-item-t">Aylık Planlar</div><div class="sp-item-s">Bütçe tahminle</div></div></div>
     <div class="sp-item" onclick="closeSP();goTab('assets')"><div class="sp-ico" style="background:rgba(0,184,204,.12);">🏦</div><div><div class="sp-item-t">Varlıklarım</div><div class="sp-item-s">Banka & yatırım</div></div></div>
     <div class="sp-item" onclick="closeSP();openBS('bs-loans','Kredilerim')"><div class="sp-ico" style="background:var(--am2);">💳</div><div><div class="sp-item-t">Kredilerim</div><div class="sp-item-s">Taksit takibi</div></div></div>
@@ -703,6 +725,15 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
 </div>
 
 <div class="bs-overlay" id="bs-ov" onclick="closeBS()"></div>
+
+<div class="bsheet" id="bs-notes">
+  <div class="bs-handle"></div>
+  <div class="bs-hd"><div class="bs-title disp">📝 Notlarım</div><div class="bs-x" onclick="closeBS()">✕</div></div>
+  <div class="bs-body" style="display:flex; flex-direction:column; height: 60vh;">
+    <textarea id="note-area" style="flex:1; width:100%; background:var(--bg); border:1px solid var(--b2); border-radius:var(--r); color:var(--t1); padding:12px; font-family:inherit; font-size:14px; resize:none; outline:none;" placeholder="Aklınızdakileri veya harcama notlarınızı buraya yazabilirsiniz..."></textarea>
+    <button class="btn btn-ac" style="margin-top:12px;" onclick="saveNotes()">Kaydet</button>
+  </div>
+</div>
 
 <div class="bsheet" id="bs-spill-det">
   <div class="bs-handle"></div>
@@ -804,13 +835,13 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
 
 <script>
 // ═══════════════════════════════════════
-// DENGEM v14 — SWIPE, FP PER MONTH, PIN SECURITY
+// DENGEM v15 — SWIPE BACK, ACTUAL AMOUNT, NOTES, ASSET BREAKDOWN
 // ═══════════════════════════════════════
 const vib=()=>{try{navigator.vibrate&&navigator.vibrate(10);}catch(e){}};
 
 const KU='dng_u14',KT='dng_t14',KL='dng_l14',KF='dng_f14';
 let users=[],tx=[],loans=[],fpData={};
-let AU=null,editId=null,activeBD=null,fpCatKey=null;
+let AU=null,editId=null,activeBD=null,fpCatKey=null,pendingPayId=null;
 let chPie=null,chBar=null;
 let goldP=3050,usdP=36.5,eurP=38.2,hideN=false;
 let assetsUnlocked=false;
@@ -829,7 +860,7 @@ function fetchDB(){
     const f=localStorage.getItem(KF);
     if(f){
       let parsed = JSON.parse(f);
-      if(parsed.items) { // Eski versiyon uyumluluğu
+      if(parsed.items) {
          let d = new Date();
          let cm = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
          fpData = {}; fpData[cm] = parsed;
@@ -856,24 +887,21 @@ function getFp() {
 function showModal(id){document.getElementById(id).classList.add('show');}
 function hideModal(id){document.getElementById(id).classList.remove('show');}
 
-// ── SWIPE BACK (Sola Kaydırma ile Kapatma) ──
+// ── SWIPE TO GO BACK (iOS EDGE SWIPE GİBİ - YENİLENDİ) ──
 let swX=0, swY=0;
-document.addEventListener('touchstart', e => { swX = e.touches[0].clientX; swY = e.touches[0].clientY; }, {passive:true});
+document.addEventListener('touchstart', e => { 
+  swX = e.touches[0].clientX; 
+  swY = e.touches[0].clientY; 
+}, {passive:true});
 document.addEventListener('touchend', e => {
   let dx = e.changedTouches[0].clientX - swX;
   let dy = e.changedTouches[0].clientY - swY;
-  // Sağa doğru kaydırma (> 80px) ve dikey kaydırmanın az olması (< 50px)
-  if (dx > 80 && Math.abs(dy) < 50) {
-    // 1. Modalları kontrol et
+  // Ekranın sol kenarından (<50px) başlayıp, sağa doğru en az 50px kaydırma varsa ve dikeyde fazla sapmadıysa
+  if (swX < 50 && dx > 50 && Math.abs(dy) < 50) {
     let openModal = document.querySelector('.modal-bg.show');
-    if (openModal && openModal.id !== 'm-pinset' && openModal.id !== 'm-pin-change' && openModal.id !== 'm-ass-pin') { 
-        hideModal(openModal.id); return; 
-    }
-    // 2. Alt Menü (Bottom Sheet) kontrol et
+    if (openModal && !['m-pinset', 'm-pin-change', 'm-ass-pin'].includes(openModal.id)) { hideModal(openModal.id); return; }
     if (openBSid) { closeBS(); return; }
-    // 3. Kategori Alt Görünümü kontrol et (Planlar içindeki Geri butonu)
     if (document.getElementById('fp-catview').style.display === 'block') { closeFpCat(); return; }
-    // 4. Yan Panel kontrol et
     if (document.getElementById('sp').classList.contains('open')) { closeSP(); return; }
   }
 }, {passive:true});
@@ -957,7 +985,7 @@ window.onload=function(){
   const d=new Date();
   let m = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
   document.getElementById('dateInp').value= m;
-  document.getElementById('fp-month-inp').value = m; // Gelecek Ay başlangıç tarihi
+  document.getElementById('fp-month-inp').value = m;
   updateDate();
   initLogin();
   const sv=localStorage.getItem('dng_active');
@@ -1005,7 +1033,7 @@ function confirmAddUser(){
   const n=document.getElementById('nu-name').value.trim();
   if(!n)return toast('İsim girin!');
   const colors=['#e63356','#d97706','#059669','#2563eb','#7c3aed','#db2777','#0891b2'];
-  users.push({id:'u'+Date.now(),name:n,color:colors[Math.floor(Math.random()*colors.length)],pin:null});
+  users.push({id:'u'+Date.now(),name:n,color:colors[Math.floor(Math.random()*colors.length)],pin:null, notes:''});
   saveDB();initLogin();toast('Profil oluşturuldu!');hideModal('m-adduser');
 }
 function selectProf(id){
@@ -1019,7 +1047,7 @@ function doLogin(id){
   document.getElementById('scr-login').style.display='none';
   document.getElementById('scr-pin').classList.remove('visible');
   const app=document.getElementById('scr-app');app.style.display='flex';
-  assetsUnlocked = false; // reset varlıklar pin state
+  assetsUnlocked = false; 
   renderHome();renderSettings();
 }
 function logoutUser(){vib();localStorage.removeItem('dng_active');location.reload();}
@@ -1067,7 +1095,6 @@ window.pinForgot=function(){
     document.getElementById('sec-a-inp').value = '';
     showModal('m-sec-ans');
   } else {
-    // Güvenlik sorusu ayarlanmamışsa eskisi gibi uyarı ile sıfırlar
     openConf('PIN Sıfırla','Güvenlik sorusu tanımlı değil. PIN kodunuz direkt kaldırılacak.','Sıfırla',()=>{
       if(pinTgt){pinTgt.pin=null;saveDB();initLogin();toast('PIN kaldırıldı!');doLogin(pinTgt.id);}
     },false);
@@ -1206,6 +1233,22 @@ window.assPinKey=function(k){
 };
 
 // ═══════════════════════════════════
+// NOTLARIM (NOTEPAD)
+// ═══════════════════════════════════
+window.openNotes=function(){
+  vib(); closeSP();
+  document.getElementById('note-area').value = AU.notes || '';
+  openBS('bs-notes');
+};
+window.saveNotes=function(){
+  vib();
+  AU.notes = document.getElementById('note-area').value;
+  saveDB();
+  toast('✅ Notlar kaydedildi!');
+  closeBS();
+};
+
+// ═══════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════
 let curTab='home';
@@ -1252,6 +1295,13 @@ function closeBS(){
   if(openBSid){document.getElementById(openBSid).classList.remove('open');openBSid=null;}
   document.getElementById('bs-ov').classList.remove('vis');
   editId=null;
+}
+
+function refreshAllData() {
+  renderHome();
+  if(curTab==='reports')renderReports();
+  if(curTab==='assets')renderAssets();
+  if(curTab==='pending')renderPending();
 }
 
 // ═══════════════════════════════════
@@ -1317,7 +1367,6 @@ function renderHome(){
   const pEv=pTx.filter(t=>!bKats.includes(t.cat)).reduce((s,t)=>s+t.amt,0);
   const pFin=pTx.filter(t=>bKats.includes(t.cat)).reduce((s,t)=>s+t.amt,0);
 
-  // SIRALAMA VE TIKLAMA DEĞİŞTİRİLDİ (Detay Alt Menüsü Açılacak)
   document.getElementById('stats-sc').innerHTML=`
     <div class="spill a" onclick="openSpill('ev')"><div class="spill-l">Ev Giderleri</div><div class="spill-v" style="color:var(--am)">${H?'***':'-'+fs(b.expEv)} ₺</div><div class="spill-p">Geçen (${pn}): ${fs(pEv)} ₺</div></div>
     <div class="spill r" onclick="openSpill('finans')"><div class="spill-l">Kart & Finans</div><div class="spill-v" style="color:var(--rd)">${H?'***':'-'+fs(b.expFin)} ₺</div><div class="spill-p">Geçen (${pn}): ${fs(pFin)} ₺</div></div>
@@ -1356,7 +1405,7 @@ window.openSpill=function(type){
 window.toggleHide=function(){vib();hideN=!hideN;try{localStorage.setItem('dng_hide',hideN);}catch(e){}renderHome();if(curTab==='assets')renderAssets();};
 
 // ═══════════════════════════════════
-// PENDING PAGE
+// PENDING PAGE & CONFIRM PAY
 // ═══════════════════════════════════
 function renderPending(){
   if(!AU)return;
@@ -1373,11 +1422,32 @@ function renderPending(){
   });
   document.getElementById('pend-list').innerHTML=h;
 }
-window.payPending=function(id){
-  vib();const i=tx.findIndex(x=>x.id===id);if(i<0)return;
-  const el=document.getElementById('pi-'+id);
-  if(el){el.classList.add('out');}
-  setTimeout(()=>{tx[i].isPaid=true;saveDB();renderPending();renderHome();toast('✅ Bankadan düşüldü!');},320);
+
+window.payPending = function(id) {
+   vib();
+   const t = tx.find(x => x.id === id);
+   if(!t) return;
+   pendingPayId = id;
+   document.getElementById('pay-conf-a').value = t.amt;
+   showModal('m-pay-confirm');
+};
+
+window.confirmPayPendingAction = function() {
+   vib();
+   const a = parseFloat(document.getElementById('pay-conf-a').value);
+   if(!a) return toast('Geçerli bir tutar girin!');
+   const i = tx.findIndex(x => x.id === pendingPayId);
+   if(i < 0) return;
+   
+   tx[i].amt = a;
+   tx[i].isPaid = true;
+   saveDB();
+   hideModal('m-pay-confirm');
+   
+   const el = document.getElementById('pi-'+pendingPayId);
+   if(el) el.classList.add('out');
+   
+   setTimeout(()=>{ refreshAllData(); toast('✅ Ödendi ve gerçek tutar işlendi!'); }, 300);
 };
 
 // ═══════════════════════════════════
@@ -1389,10 +1459,18 @@ function renderAssets(){
   const H=hideN;
   const f=v=>v.toLocaleString('tr-TR',{minimumFractionDigits:2});
   const f0=v=>v.toLocaleString('tr-TR',{maximumFractionDigits:0});
-  const gV=tG*goldP,uV=tU*usdP,eV=tE*eurP;
-  const net=Object.values(banks).reduce((s,v)=>s+v,0)+gV+uV+eV;
+  
+  const gV=tG*goldP, uV=tU*usdP, eV=tE*eurP;
+  const bankTot = Object.values(banks).reduce((s,v)=>s+v,0);
+  const invTot = gV + uV + eV;
+  const net= bankTot + invTot;
+  
   document.getElementById('ass-tot').innerText=H?'*** ₺':f(net)+' ₺';
   document.getElementById('ass-eye').innerText=H?'🙈':'👁️';
+  
+  document.getElementById('ass-try').innerText = H ? '***' : f(bankTot) + ' ₺';
+  document.getElementById('ass-inv').innerText = H ? '***' : f(invTot) + ' ₺';
+
   let bH='';
   Object.entries(banks).forEach(([b,a])=>{
     bH+=`<div class="bank-c" onclick="openBankDetail('${b}')"><div class="bank-n">${b}</div><div class="bank-a" style="color:${a>=0?'var(--t1)':'var(--rd)'};">${H?'***':f(a)} ₺</div></div>`;
@@ -1480,7 +1558,7 @@ function saveExpense(){
   if(editId){const i=tx.findIndex(x=>x.id===editId);if(i>=0)tx[i]={...tx[i],cat:c,desc:d,amt:a,account:acc};toast('Güncellendi!');}
   else{tx.push({id:Date.now(),uid:AU.id,type:'expense',cat:c,desc:d,amt:a,date,account:acc,isPaid:false});toast('Gider eklendi!');}
   saveDB();closeBS();editId=null;
-  renderHome();if(curTab==='pending')renderPending();
+  refreshAllData();
 }
 function saveIncome(){
   const a=parseFloat(document.getElementById('inc-a').value),d=document.getElementById('inc-d').value||'Gelir',acc=document.getElementById('inc-acc').value,s=document.getElementById('inc-sav').checked;
@@ -1488,13 +1566,13 @@ function saveIncome(){
   const date=document.getElementById('dateInp').value;
   if(editId){const i=tx.findIndex(x=>x.id===editId);if(i>=0)tx[i]={...tx[i],desc:d,amt:a,account:acc,isSavings:s};toast('Güncellendi!');}
   else{tx.push({id:Date.now(),uid:AU.id,type:'income',cat:'Gelir',desc:d,amt:a,date,account:acc,isPaid:true,isSavings:s});toast('Gelir eklendi!');}
-  saveDB();closeBS();editId=null;renderHome();
+  saveDB();closeBS();editId=null;refreshAllData();
 }
 function saveTransfer(){
   const a=parseFloat(document.getElementById('tr-a').value),f=document.getElementById('tr-from').value,t2=document.getElementById('tr-to').value,s=document.getElementById('tr-sav').checked;
   if(f===t2)return toast('Aynı hesap seçilemez!');if(!a)return toast('Tutar girin!');vib();
   tx.push({id:Date.now(),uid:AU.id,type:'transfer',cat:'Transfer',desc:'Transfer',amt:a,date:document.getElementById('dateInp').value,account:f,toAccount:t2,isSavings:s,isPaid:true});
-  saveDB();closeBS();renderHome();if(curTab==='assets')renderAssets();toast('Transfer yapıldı!');
+  saveDB();closeBS();refreshAllData();toast('Transfer yapıldı!');
 }
 
 // ═══════════════════════════════════
@@ -1504,9 +1582,7 @@ function delTx(id,src){
   openConf('İşlemi Sil','Bu işlemi kalıcı olarak silmek istiyor musunuz?','Sil',()=>{
     tx=tx.filter(t=>t.id!==id);saveDB();
     if(src==='ass'){renderAssets();if(document.getElementById('m-bank').classList.contains('show'))openBankDetail(activeBD);}
-    if(curTab==='reports')renderReports();
-    if(curTab==='pending')renderPending();
-    renderHome();toast('Silindi!');
+    refreshAllData();toast('Silindi!');
   });
 }
 window.delTx=delTx;
@@ -1516,16 +1592,19 @@ function editTx(id){
   else if(t.type==='expense'){document.getElementById('exp-cat').value=t.cat;checkExpCat();if(bKats.includes(t.cat))document.getElementById('exp-b-sel').value=t.desc;else document.getElementById('exp-d').value=t.desc;document.getElementById('exp-a').value=t.amt;document.getElementById('exp-acc').value=t.account;document.getElementById('exp-warn').style.display='none';openBS('bs-exp','Gideri Düzenle');}
   else if(t.type==='transfer'){document.getElementById('tr-a').value=t.amt;document.getElementById('tr-from').value=t.account;document.getElementById('tr-to').value=t.toAccount;document.getElementById('tr-sav').checked=!!t.isSavings;openBS('bs-tr','Transferi Düzenle');}
 }
+
 window.togglePaid=function(id){
-  vib();const i=tx.findIndex(x=>x.id===id);if(i<0)return;
-  tx[i].isPaid=!tx[i].isPaid;saveDB();
-  const paid=tx[i].isPaid;
-  renderHome();
-  if(curTab==='reports')renderReports();
-  if(curTab==='assets')renderAssets();
-  if(curTab==='pending')renderPending();
-  if(document.getElementById('bs-spill-det').classList.contains('open')) { hideModal('bs-spill-det'); }
-  toast(paid?'✅ Bankadan düşüldü!':'⏳ Bankaya iade edildi.');
+  vib();const t=tx.find(x=>x.id===id);if(!t)return;
+  if(!t.isPaid) {
+     pendingPayId = id;
+     document.getElementById('pay-conf-a').value = t.amt;
+     showModal('m-pay-confirm');
+  } else {
+     t.isPaid = false;
+     saveDB();
+     refreshAllData();
+     toast('⏳ Bankaya iade edildi.');
+  }
 };
 
 // ═══════════════════════════════════
@@ -1627,14 +1706,14 @@ function payLoan(id){
   if(i<0||loans[i].paidM>=loans[i].totalM)return toast('Tüm taksitler ödendi!');
   loans[i].paidM++;
   tx.push({id:Date.now(),uid:AU.id,type:'expense',cat:'Kredi Ödemesi',desc:loans[i].name+' Taksiti',amt:loans[i].amt,date:document.getElementById('dateInp').value,account:'Ziraat Bankası',isPaid:true});
-  saveDB();renderLoans();renderHome();toast('Ödendi!');
+  saveDB();renderLoans();refreshAllData();toast('Ödendi!');
 }
 window.undoLoan=function(id){
   vib();const i=loans.findIndex(l=>l.id===id);
   if(i<0||loans[i].paidM<=0)return toast('Geri alınacak taksit yok!');
   loans[i].paidM--;
   for(let j=tx.length-1;j>=0;j--){if(tx[j].uid===AU.id&&tx[j].cat==='Kredi Ödemesi'&&tx[j].desc.includes(loans[i].name)){tx.splice(j,1);break;}}
-  saveDB();renderLoans();renderHome();toast('Geri alındı!');
+  saveDB();renderLoans();refreshAllData();toast('Geri alındı!');
 };
 function delLoan(id){openConf('Krediyi Sil','Bu krediyi silmek istiyor musunuz?','Sil',()=>{loans=loans.filter(l=>l.id!==id);saveDB();renderLoans();toast('Silindi!');});}
 
@@ -1798,8 +1877,8 @@ function renderSettings(){
 // ═══════════════════════════════════
 // BACKUP
 // ═══════════════════════════════════
-function exportData(){vib();const a=document.createElement('a');a.href='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan:fpData}));a.download='dengem_v14_yedek.json';document.body.appendChild(a);a.click();a.remove();}
-function exportCSV(){vib();const u=tx.filter(t=>t.uid===AU.id);if(!u.length)return toast('Kayıt yok.');let c='data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n';u.forEach(t=>{c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`;});const a=document.createElement('a');a.href=encodeURI(c);a.download='dengem_v14.csv';document.body.appendChild(a);a.click();a.remove();}
+function exportData(){vib();const a=document.createElement('a');a.href='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan:fpData}));a.download='dengem_v15_yedek.json';document.body.appendChild(a);a.click();a.remove();}
+function exportCSV(){vib();const u=tx.filter(t=>t.uid===AU.id);if(!u.length)return toast('Kayıt yok.');let c='data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n';u.forEach(t=>{c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`;});const a=document.createElement('a');a.href=encodeURI(c);a.download='dengem_v15.csv';document.body.appendChild(a);a.click();a.remove();}
 function importData(){vib();const f=document.getElementById('bak-f').files[0];if(!f)return toast('Dosya seçin!');const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.users){localStorage.setItem(KU,JSON.stringify(d.users));localStorage.setItem(KT,JSON.stringify(d.tx));localStorage.setItem(KL,JSON.stringify(d.loans||[]));if(d.futurePlan)localStorage.setItem(KF,JSON.stringify(d.futurePlan));alert('Yüklendi!');location.reload();}}catch{toast('Hata! Dosyayı kontrol edin.');}};r.readAsText(f);}
 </script>
 
