@@ -248,15 +248,15 @@ select option{background:var(--s2);}
 .fpmini{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:12px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
 .fpmini:active{transform:scale(.96);}
 .fpmini-bar{position:absolute;top:0;left:0;right:0;height:2px;}
-/* YAZILAR KÜÇÜLTÜLDÜ (Gelecek Ay Planı) */
 .fpmini-l{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
 .fpmini-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(11px,3vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fpmini-p{font-size:8px;color:var(--t3);margin-top:3px;}
 .fp-catview{display:none;padding:0 14px;}
-.fp-item-row{display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:10px 12px;margin-bottom:7px;}
-.fp-inp{width:80px;padding:6px 8px;font-size:12px;font-weight:800;text-align:right;background:var(--bg);border:1px solid var(--b2);color:var(--t1);border-radius:8px;outline:none;font-family:'Bricolage Grotesque',sans-serif;transition:.18s;flex-shrink:0;}
+/* YENİDEN DÜZENLENEN PLAN LİSTESİ BÖLÜMÜ (PUNTOLAR KÜÇÜLTÜLDÜ) */
+.fp-item-row{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:8px 10px;margin-bottom:7px;}
+.fp-inp{width:65px;padding:5px 6px;font-size:11px;font-weight:800;text-align:right;background:var(--bg);border:1px solid var(--b2);color:var(--t1);border-radius:8px;outline:none;font-family:'Bricolage Grotesque',sans-serif;transition:.18s;flex-shrink:0;}
 .fp-inp:focus{border-color:var(--ac);}
-.fp-del-btn{width:28px;height:28px;border-radius:8px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.13s;flex-shrink:0;}
+.fp-del-btn{width:26px;height:26px;border-radius:8px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:.13s;flex-shrink:0;}
 .fp-del-btn:active{transform:scale(.82);}
 .fp-custom-inc-row{display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid rgba(0,194,122,.2);border-radius:var(--r);padding:10px 14px;margin:0 14px 8px;}
 
@@ -638,7 +638,7 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
  <div class="set-sec">
    <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);">
      <div id="set-av" style="width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;position:relative;">
-       <div style="position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.2),transparent 55%);"></div>
+       <div style="position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.2),transparent 55%);</div>
      </div>
      <div><div id="set-name" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;"></div><div style="font-size:11px;color:var(--t2);margin-top:2px;">Aktif Hesap</div></div>
    </div>
@@ -1733,12 +1733,12 @@ function renderFpCatContent(){
  g.cats.forEach(c=>{
    const catItems=items.filter(x=>x.cat===c);if(!catItems.length)return;
    const ico=CATS.find(x=>x.n===c)?.i||'📌',sc=c.replace(/\s+/g,'');
-   h+=`<details open style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden;margin-bottom:9px;"><summary style="list-style:none;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;border-left:3px solid ${g.col};font-size:13px;font-weight:800;"><span>${ico} ${c.toUpperCase()}</span><span style="font-family:'Bricolage Grotesque',sans-serif;color:${g.col};" id="csum-${sc}">0 ₺</span></summary><div style="padding:9px 10px;">`;
+   h+=`<details open style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden;margin-bottom:9px;"><summary style="list-style:none;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;border-left:3px solid ${g.col};font-size:12px;font-weight:800;"><span>${ico} ${c.toUpperCase()}</span><span style="font-family:'Bricolage Grotesque',sans-serif;color:${g.col};" id="csum-${sc}">0 ₺</span></summary><div style="padding:8px 10px;">`;
    catItems.forEach(item=>{
      const est=fpr.items[item.key]!==undefined?fpr.items[item.key]:item.last;
      const val=est===0&&!item.custom?'':est;
      const desc=item.custom?item.desc.split('_')[0]:item.desc;
-     h+=`<div class="fp-item-row"><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${desc}</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">${item.custom?'<span style="color:var(--ac)">Manuel</span>':`Geçen: ${item.last.toLocaleString('tr-TR')} ₺`}</div></div><input type="number" class="fp-inp" data-key="${item.key}" data-group="${fpCatKey}" data-cat="${sc}" value="${val}" placeholder="0" oninput="previewFP()"><button class="fp-del-btn" onclick="openConf('Kalemi Sil','Bu kalemi listeden çıkarmak istiyor musunuz?','Sil',()=>delFpItem('${item.key}'))">🗑</button></div>`;
+     h+=`<div class="fp-item-row"><div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${desc}</div><div style="font-size:9px;color:var(--t3);margin-top:2px;">${item.custom?'<span style="color:var(--ac)">Manuel</span>':`Geçen: ${item.last.toLocaleString('tr-TR')} ₺`}</div></div><input type="number" class="fp-inp" data-key="${item.key}" data-group="${fpCatKey}" data-cat="${sc}" value="${val}" placeholder="0" oninput="previewFP()"><button class="fp-del-btn" onclick="openConf('Kalemi Sil','Bu kalemi listeden çıkarmak istiyor musunuz?','Sil',()=>delFpItem('${item.key}'))">🗑</button></div>`;
    });
    h+=`<button style="width:100%;padding:8px;background:transparent;border:1px dashed var(--b2);color:var(--t2);border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;" onclick="openFpAddModal('${c}')">➕ ${c} Ekle</button></div></details>`;
  });
