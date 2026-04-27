@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
+<style>.fp-item-row{flex-wrap:nowrap !important; overflow:hidden !important;} .fp-item-row>div:first-child{min-width:0 !important; flex:1 !important;} .fp-inp{width:65px !important; min-width:65px !important; flex-shrink:0 !important; padding:4px !important;} .fp-del-btn{width:32px !important; min-width:32px !important; flex-shrink:0 !important; padding:0 !important;}</style>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Dengem</title>
@@ -1800,13 +1803,7 @@ function renderSettings(){
 // ═══════════════════════════════════
 function exportData(){vib();const a=document.createElement('a');a.href='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan:fpData}));a.download='dengem_v14_yedek.json';document.body.appendChild(a);a.click();a.remove();}
 function exportCSV(){vib();const u=tx.filter(t=>t.uid===AU.id);if(!u.length)return toast('Kayıt yok.');let c='data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n';u.forEach(t=>{c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`;});const a=document.createElement('a');a.href=encodeURI(c);a.download='dengem_v14.csv';document.body.appendChild(a);a.click();a.remove();}
-function importData(){vib();const f=document.getElementById('bak-f').files[0];if(!f)return toast('Dosya seçin!');const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.users){localStorage.setItem(KU,JSON.stringify(d.users));localStorage.setItem(KT,JSON.stringify(d.tx));localStorage.setItem(KL,JSON.stringify(d.loans||[]));if(d.futurePlan)localStorage.setItem(KF,JSON.stringify(d.futurePlan));alert('Yüklendi!');location. <style>
-.fp-item-row { overflow: hidden !important; } 
-.fp-item-row > div:first-child { min-width: 0 !important; } 
-.fp-inp { width: 65px !important; min-width: 65px !important; flex-shrink: 0 !important; padding: 4px !important; } 
-.fp-del-btn { width: 30px !important; min-width: 30px !important; flex-shrink: 0 !important; padding: 0 !important; }
-</style>
-();}}catch{toast('Hata! Dosyayı kontrol edin.');}};r.readAsText(f);}
+function importData(){vib();const f=document.getElementById('bak-f').files[0];if(!f)return toast('Dosya seçin!');const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.users){localStorage.setItem(KU,JSON.stringify(d.users));localStorage.setItem(KT,JSON.stringify(d.tx));localStorage.setItem(KL,JSON.stringify(d.loans||[]));if(d.futurePlan)localStorage.setItem(KF,JSON.stringify(d.futurePlan));alert('Yüklendi!');location.reload();}}catch{toast('Hata! Dosyayı kontrol edin.');}};r.readAsText(f);}
 </script>
 
 </body>
