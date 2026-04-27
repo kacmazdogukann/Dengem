@@ -1738,15 +1738,7 @@ function renderFpCatContent(){
      const est=fpr.items[item.key]!==undefined?fpr.items[item.key]:item.last;
      const val=est===0&&!item.custom?'':est;
      const desc=item.custom?item.desc.split('_')[0]:item.desc;
-           h+=`<div style="display:flex; align-items:center; gap:6px; background:var(--s2); border:1px solid var(--b1); border-radius:var(--r); padding:8px 10px; margin-bottom:7px; width:100%; box-sizing:border-box; overflow:hidden; flex-wrap:nowrap !important;">
-            <div style="flex:1; min-width:0; display:flex; flex-direction:column;">
-              <div style="font-size:11px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--t1);">${desc}</div>
-              <div style="font-size:9px; color:var(--t3); margin-top:2px;">${item.custom?'<span style="color:var(--ac)">Manuel</span>':`Geçen: ${item.last.toLocaleString('tr-TR')} ₺`}</div>
-            </div>
-            <input type="number" data-key="${item.key}" data-group="${fpCatKey}" data-cat="${sc}" value="${val}" placeholder="0" oninput="previewFP()" style="flex:0 0 60px !important; width:60px !important; padding:6px; font-size:12px; font-weight:800; text-align:right; background:var(--bg); border:1px solid var(--b2); color:var(--ac); border-radius:6px; outline:none;">
-            <button onclick="previewFP(); toast('✅ Kaydedildi');" style="flex:0 0 30px !important; width:30px !important; height:30px !important; border-radius:6px; border:none; background:var(--gr2); color:var(--gr); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; margin:0; padding:0;">✓</button>
-            <button onclick="openConf('Sil','Silmek istiyor musunuz?','Sil',()=>delFpItem('${item.key}'))" style="flex:0 0 30px !important; width:30px !important; height:30px !important; border-radius:6px; border:none; background:var(--rd2); color:var(--rd); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; margin:0; padding:0;">🗑</button>
-          </div>`;
+     h+=`<div class="fp-item-row"><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${desc}</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">${item.custom?'<span style="color:var(--ac)">Manuel</span>':`Geçen: ${item.last.toLocaleString('tr-TR')} ₺`}</div></div><input type="number" class="fp-inp" data-key="${item.key}" data-group="${fpCatKey}" data-cat="${sc}" value="${val}" placeholder="0" oninput="previewFP()"><button class="fp-del-btn" onclick="openConf('Kalemi Sil','Bu kalemi listeden çıkarmak istiyor musunuz?','Sil',()=>delFpItem('${item.key}'))">🗑</button></div>`;
    });
    h+=`<button style="width:100%;padding:8px;background:transparent;border:1px dashed var(--b2);color:var(--t2);border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;" onclick="openFpAddModal('${c}')">➕ ${c} Ekle</button></div></details>`;
  });
@@ -1808,10 +1800,14 @@ function renderSettings(){
 // ═══════════════════════════════════
 function exportData(){vib();const a=document.createElement('a');a.href='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({users,tx,loans,futurePlan:fpData}));a.download='dengem_v14_yedek.json';document.body.appendChild(a);a.click();a.remove();}
 function exportCSV(){vib();const u=tx.filter(t=>t.uid===AU.id);if(!u.length)return toast('Kayıt yok.');let c='data:text/csv;charset=utf-8,\uFEFFTarih;Tur;Kategori;Hesap;Tutar;Durum;Aciklama\r\n';u.forEach(t=>{c+=`${t.date};${t.type};${t.cat};${t.account};${t.amt};${t.isPaid===false?'Bekliyor':'Odendi'};${(t.desc||'').replace(/;/g,',')}\r\n`;});const a=document.createElement('a');a.href=encodeURI(c);a.download='dengem_v14.csv';document.body.appendChild(a);a.click();a.remove();}
-function importData(){vib();const f=document.getElementById('bak-f').files[0];if(!f)return toast('Dosya seçin!');const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.users){localStorage.setItem(KU,JSON.stringify(d.users));localStorage.setItem(KT,JSON.stringify(d.tx));localStorage.setItem(KL,JSON.stringify(d.loans||[]));if(d.futurePlan)localStorage.setItem(KF,JSON.stringify(d.futurePlan));alert('Yüklendi!');location.reload();}}catch{toast('Hata! Dosyayı kontrol edin.');}};r.readAsText(f);}
+function importData(){vib();const f=document.getElementById('bak-f').files[0];if(!f)return toast('Dosya seçin!');const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.users){localStorage.setItem(KU,JSON.stringify(d.users));localStorage.setItem(KT,JSON.stringify(d.tx));localStorage.setItem(KL,JSON.stringify(d.loans||[]));if(d.futurePlan)localStorage.setItem(KF,JSON.stringify(d.futurePlan));alert('Yüklendi!');location. <style>
+.fp-item-row { overflow: hidden !important; } 
+.fp-item-row > div:first-child { min-width: 0 !important; } 
+.fp-inp { width: 65px !important; min-width: 65px !important; flex-shrink: 0 !important; padding: 4px !important; } 
+.fp-del-btn { width: 30px !important; min-width: 30px !important; flex-shrink: 0 !important; padding: 0 !important; }
+</style>
+();}}catch{toast('Hata! Dosyayı kontrol edin.');}};r.readAsText(f);}
 </script>
-
-<style>.fp-item-row { width: 100% !important; box-sizing: border-box !important; } .fp-inp, .fp-del-btn { flex-shrink: 0 !important; max-width: 75px !important; }</style>
 
 </body>
 </html>
