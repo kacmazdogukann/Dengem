@@ -160,120 +160,6 @@ select option{background:var(--s2);}
 .btn-dashed{background:transparent;border:1.5px dashed var(--b2);color:var(--t2);box-shadow:none;}
 .btn-dashed::after{display:none;}
 
-.hero{margin:4px 14px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r3);padding:18px 20px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.hero::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(68,136,255,.1),transparent 70%);top:-50px;right:-50px;pointer-events:none;}
-.hero-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
-.hero-eye{width:26px;height:26px;border-radius:8px;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:.13s;flex-shrink:0;}
-.hero-eye:active{transform:scale(.86);}
-.hero-amt{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,8.5vw,46px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:14px;display:flex;align-items:flex-start;gap:3px;overflow:hidden;max-width:100%;}
-.hero-cur{font-size:clamp(16px,4vw,22px);margin-top:5px;color:var(--t2);flex-shrink:0;}
-.hero-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;}
-.hero-chips{display:flex;flex-wrap:wrap;gap:7px;}
-.chip{display:flex;align-items:center;gap:5px;background:var(--s1);border:1px solid var(--b1);padding:7px 12px;border-radius:10px;cursor:pointer;transition:.13s;box-shadow:var(--sh);}
-.chip:active{transform:scale(.95);}
-.chip-ico{font-size:13px;}
-.chip-lbl{font-size:10px;font-weight:600;color:var(--t2);}
-.chip-val{font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:800;}
-
-.sec-h{display:flex;justify-content:space-between;align-items:center;padding:0 14px;margin:10px 0 7px;}
-.sec-t{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);}
-.sec-act{font-size:11px;font-weight:700;color:var(--ac);cursor:pointer;}
-
-.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px;margin-bottom:12px;}
-.qa{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
-.qa-ico{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--sh);transition:transform .15s;position:relative;overflow:hidden;}
-.qa-ico::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 55%);}
-.qa:active .qa-ico{transform:scale(.88);}
-.qa-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2);}
-
-.stats-scroll{display:flex;gap:8px;padding:0 14px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;}
-.stats-scroll::-webkit-scrollbar{display:none;}
-.spill{flex-shrink:0;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:12px 14px;min-width:118px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.spill::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
-.spill.g::after{background:var(--gr);}
-.spill.r::after{background:var(--rd);}
-.spill.a::after{background:var(--am);}
-.spill.c::after{background:var(--cy);}
-.spill:active{transform:scale(.96);}
-.spill-l{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--t2);margin-bottom:4px;}
-.spill-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(13px,3.5vw,17px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.spill-p{font-size:9px;color:var(--t3);margin-top:3px;}
-
-.plan-card{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,194,122,.25);border-radius:var(--r2);padding:15px 18px;cursor:pointer;transition:.13s;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.plan-card::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,122,.1),transparent 70%);pointer-events:none;}
-.plan-card:active{transform:scale(.98);}
-.pc-t{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px;}
-.pc-s{font-size:11px;color:var(--t2);}
-.pc-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,5vw,22px);font-weight:800;color:var(--gr);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%;text-align:right;}
-
-.pend-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(245,166,35,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.pend-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.12),transparent 70%);pointer-events:none;}
-.pend-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.pend-tot{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;color:var(--am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pend-sub{font-size:11px;color:var(--t2);margin-top:4px;}
-.pitem{display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:13px 14px;margin:0 14px 9px;box-shadow:var(--sh);transition:opacity .3s,transform .3s;}
-.pitem.out{opacity:0;transform:translateX(50px);}
-.pitem-ico{width:42px;height:42px;border-radius:13px;background:var(--am2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.pitem-info{flex:1;min-width:0;}
-.pitem-d{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pitem-m{font-size:10px;color:var(--t2);margin-top:2px;}
-.pitem-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
-.pitem-a{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--am);}
-.pitem-pay{padding:7px 13px;border-radius:9px;border:none;background:var(--am);font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;color:#000;cursor:pointer;transition:.13s;flex-shrink:0;}
-.pitem-pay:active{transform:scale(.88);}
-
-.ass-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,184,204,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.ass-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,204,.1),transparent 70%);}
-.ass-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.ass-tot{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;color:var(--cy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bank-grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 14px;margin-bottom:14px;}
-.bank-c{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px;cursor:pointer;transition:.13s;box-shadow:var(--sh);}
-.bank-c:active{transform:scale(.96);}
-.bank-n{font-size:10px;font-weight:700;color:var(--t2);margin-bottom:5px;}
-.bank-a{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(13px,4vw,17px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.inv-row2{display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:13px 14px;margin:0 14px 9px;box-shadow:var(--sh);}
-.inv-ico{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.inv-inf{flex:1;min-width:0;}
-.inv-n{font-size:9px;font-weight:700;color:var(--t2);letter-spacing:1px;}
-.inv-a{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.inv-v{font-size:11px;color:var(--t2);margin-top:1px;}
-.inv-btn2{padding:8px 12px;border-radius:9px;border:none;background:var(--s3);color:var(--t2);font-size:10px;font-weight:700;cursor:pointer;transition:.13s;font-family:'Plus Jakarta Sans',sans-serif;}
-.inv-btn2:active{transform:scale(.88);}
-
-.plan-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,194,122,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.plan-hero::before{content:'';position:absolute;right:-20px;bottom:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,122,.1),transparent 70%);}
-.ph-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;}
-.ph-net{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;transition:color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-bottom:8px;}
-.fpmini{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:12px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.fpmini:active{transform:scale(.96);}
-.fpmini-bar{position:absolute;top:0;left:0;right:0;height:2px;}
-.fpmini-l{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.fpmini-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(11px,3vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fpmini-p{font-size:8px;color:var(--t3);margin-top:3px;}
-.fp-catview{display:none;padding:0 14px;}
-
-.chart-box{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:18px;margin:0 14px 12px;height:210px;display:flex;justify-content:center;box-shadow:var(--sh);}
-.rep-sel{margin:0 14px 12px;width:calc(100% - 28px);padding:11px 14px;border-radius:var(--r);background:var(--s2);border:1px solid var(--b2);color:var(--t1);font-weight:700;font-size:13px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;-webkit-appearance:none;}
-
-.tx-grp{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden;margin-bottom:10px;box-shadow:var(--sh);}
-.tx-gh{padding:14px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;transition:background .13s;}
-.tx-gh:active{background:var(--s3);}
-.tx-gh::-webkit-details-marker{display:none;}
-.tx-gh-left{display:flex;align-items:center;gap:10px;}
-.tx-gh-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.tx-gh-info{}
-.tx-gh-name{font-size:13px;font-weight:700;}
-.tx-gh-count{font-size:10px;color:var(--t2);margin-top:1px;}
-.tx-gh-amt{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;}
-.tx-gb{border-top:1px solid var(--b1);}
-.tx-card{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .1s;position:relative;}
-.tx-card:last-child{border-bottom:none;}
-.tx-card:active{background:var(--s3);}
-.tx-card.tx-faded{opacity:.42;}
-.tx-card.tx-faded .tx-d{text-decoration:line-through;}
-.tx-card-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-
 /* KART VE BUTON STİLLERİ GÜNCELLEMESİ (SIKIŞMAYI ÖNLER) */
 .tx-card-body { flex: 1; min-width: 0; padding-right: 8px; }
 .tx-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
@@ -464,7 +350,6 @@ select option{background:var(--s2);}
    <div class="pin-forgot" onclick="pinForgot()">PIN'imi unuttum</div>
  </div>
 </div>
-
 <div class="screen" id="scr-app">
  <div class="topbar">
    <div class="topbar-left">
@@ -491,18 +376,6 @@ select option{background:var(--s2);}
    <div class="hero-amt"><span class="hero-cur">₺</span><span class="hero-n" id="h-num">0</span></div>
    <div class="hero-chips" id="h-chips"></div>
  </div>
-
- <div class="inline-box" id="home-savings-box" style="justify-content:space-between; align-items:center; padding:14px 18px; margin:0 14px 12px; display:flex;">
-   <div style="display:flex; align-items:center; gap:8px;">
-       <div style="font-size:20px;">💎</div>
-       <div>
-           <div style="font-size:10px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:1px;">Plan Tasarrufu</div>
-           <div style="font-size:10px; color:var(--t3);">Gerçekleşen ödeme farkları</div>
-       </div>
-   </div>
-   <div style="font-family:'Bricolage Grotesque', sans-serif; font-size:18px; font-weight:800;" id="h-sav-amt">0 ₺</div>
- </div>
-
  <div class="sec-h"><span class="sec-t">Hızlı İşlem</span></div>
  <div class="qa-grid">
    <div class="qa" onclick="openBS('bs-inc','Gelir Ekle')"><div class="qa-ico" style="background:linear-gradient(135deg,#00995f,#006640);">💰</div><div class="qa-lbl">Gelir</div></div>
@@ -519,6 +392,7 @@ select option{background:var(--s2);}
  <div class="sec-h"><span class="sec-t">Bekleyen Ödemeler</span><span class="sec-act" onclick="goTab('pending')">Tümünü Gör</span></div>
  <div id="home-pend-list" style="padding:0 14px 14px;"></div>
 </div>
+
 <div class="page" id="page-pending">
  <div class="pend-hero">
    <div class="pend-lbl">Toplam Bekleyen</div>
@@ -565,6 +439,16 @@ select option{background:var(--s2);}
        <input type="month" id="fp-month-inp" onchange="renderFuturePlan()" style="width:auto; padding:3px 8px; font-size:12px; background:rgba(0,0,0,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:var(--t1);">
    </div>
    <div class="ph-net disp" id="fp-net">0 ₺</div>
+   <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); display:flex; justify-content:space-between; align-items:center;">
+     <div style="display:flex; align-items:center; gap:6px;">
+         <span style="font-size:16px;">💎</span>
+         <div>
+             <div style="font-size:9px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:1px;">Bütçe Tasarrufu (Artan)</div>
+             <div style="font-size:9px; color:var(--t3);">Sıfırlamak için tutara tıklayın</div>
+         </div>
+     </div>
+     <span style="font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; cursor:pointer;" id="fp-savings" onclick="resetSavings()">0 ₺</span>
+   </div>
  </div>
  
  <button class="btn btn-ac" style="margin:0 14px 12px; width:calc(100% - 28px); font-family:'Bricolage Grotesque',sans-serif; display:flex; justify-content:center; gap:8px;" onclick="transferAllPlanToActual()">🚀 Planı Bekleyenlere Aktar</button>
@@ -839,7 +723,7 @@ function saveDB(){try{localStorage.setItem(KU,JSON.stringify(users));localStorag
 
 function getFp() {
    let m = document.getElementById('fp-month-inp').value;
-   if(!fpData[m]) fpData[m] = {inc:0, items:{}, hidden:[], customInc:{}, checked: {}};
+   if(!fpData[m]) fpData[m] = {inc:0, items:{}, hidden:[], customInc:{}, checked: {}, savings: 0};
    return fpData[m];
 }
 
@@ -1227,6 +1111,17 @@ window.clearMonthExpenses = function() {
     });
 };
 
+window.resetSavings = function() {
+    openConf("Tasarrufu Sıfırla", "Bu ayki bütçe tasarrufunu (artan parayı) sıfırlamak istiyor musunuz?", "Sıfırla", () => {
+        let m = document.getElementById('fp-month-inp').value;
+        if(fpData[m]) fpData[m].savings = 0;
+        saveDB();
+        renderFuturePlan();
+        renderHome();
+        toast("Tasarruf sıfırlandı!");
+    });
+};
+
 function calcBudget(date){
  const uT=tx.filter(t=>t.uid===AU.id&&t.date===date&&t.cat!=='Bakiye Eşitleme');
  const inc=uT.filter(t=>t.type==='income').reduce((s,t)=>s+t.amt,0);
@@ -1300,7 +1195,8 @@ function renderHome(){
  const pEv=pTx.filter(t=>!bKats.includes(t.cat)).reduce((s,t)=>s+t.amt,0);
  const pFin=pTx.filter(t=>bKats.includes(t.cat)).reduce((s,t)=>s+t.amt,0);
  
- const monthSavings = tx.filter(t => t.uid === AU.id && t.date === date && t.savings).reduce((s,t) => s + t.savings, 0);
+ let fprHome = fpData[date] || {};
+ const monthSavings = fprHome.savings || 0;
 
  document.getElementById('stats-sc').innerHTML=`
    <div class="spill ${monthSavings >= 0 ? 'g' : 'r'}" onclick="toast('Planlananlar ile gerçek ödemeler arasındaki fark')"><div class="spill-l">Plan Tasarrufu</div><div class="spill-v" style="color:var(--${monthSavings >= 0 ? 'gr' : 'rd'})">${H?'***':(monthSavings > 0 ? '+' : '') + fs(monthSavings)} ₺</div><div class="spill-p">Artan / Azalan</div></div>
@@ -1310,7 +1206,6 @@ function renderHome(){
    <div class="spill c" onclick="openSpill('birikim')"><div class="spill-l">Birikim</div><div class="spill-v" style="color:var(--cy)">${H?'***':fs(b.saved)} ₺</div></div>
  `;
 }
-
 window.openSpill=function(type){
  vib();
  let m = document.getElementById('dateInp').value;
@@ -1356,7 +1251,7 @@ window.payPending = function(id) {
     document.getElementById('mpp-id').value = id;
     document.getElementById('mpp-orig').value = t.amt;
     document.getElementById('mpp-amt').value = t.amt;
-    document.getElementById('mpp-desc').innerHTML = `<b>${t.desc}</b><br>Planlanan Tutar: <b style="color:var(--am)">${t.amt} ₺</b>`;
+    document.getElementById('mpp-desc').innerHTML = `<b>${t.desc}</b><br>Planlanan Tutar: <b style="color:var(--am)">${t.amt.toLocaleString('tr-TR')} ₺</b>`;
     
     showModal('m-pay-pend');
 };
@@ -1379,12 +1274,18 @@ window.confirmPayPending = function() {
     setTimeout(() => {
         tx[i].amt = actualAmt;
         tx[i].isPaid = true;
-        tx[i].savings = (tx[i].savings || 0) + diff;
+        
+        const m = tx[i].date;
+        if(!fpData[m]) fpData[m] = {inc:0, items:{}, hidden:[], customInc:{}, checked:{}, savings:0};
+        fpData[m].savings = (fpData[m].savings || 0) + diff;
+        
         saveDB();
         hideModal('m-pay-pend');
-        if(curTab === 'pending') renderPending();
         renderHome();
-        toast('✅ Bankadan düşüldü!');
+        if(curTab === 'pending') renderPending();
+        if(curTab === 'reports') renderReports();
+        if(curTab === 'plan') renderFuturePlan();
+        toast('✅ Ödendi ve bütçeden düşüldü!');
     }, 300);
 };
 
@@ -1683,6 +1584,13 @@ window.previewFP = function() {
         ne.innerText = net.toLocaleString('tr-TR') + ' ₺';
         ne.style.color = net >= 0 ? 'var(--gr)' : 'var(--rd)';
     }
+    
+    const savAmt = fpr.savings || 0;
+    const eSav = document.getElementById('fp-savings');
+    if(eSav) {
+        eSav.innerText = (savAmt > 0 ? '+' : '') + savAmt.toLocaleString('tr-TR') + ' ₺';
+        eSav.style.color = savAmt >= 0 ? 'var(--gr)' : 'var(--rd)';
+    }
 
     const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v.toLocaleString('tr-TR') + ' ₺'; };
     setTxt('fp-tot', totalExp);
@@ -1825,7 +1733,7 @@ function renderFpCatContent() {
 
               <div class="fp-item-actions">
                 <button class="fp-btn fp-btn-save" onclick="toggleFpComplete(this, '${item.key}')" title="Bütçeye Dahil Et">${checkIcon}</button>
-                <button class="fp-btn fp-btn-send" title="Ödenmiş Gider Olarak Aktar" onclick="sendPlanToActual('${item.key}')">🚀</button>
+                <button class="fp-btn fp-btn-send" title="Bekleyen Gider Olarak Aktar" onclick="sendPlanToActual('${item.key}')">🚀</button>
                 <button class="fp-btn fp-btn-del" onclick="delFpItem('${item.key}')">🗑</button>
               </div>
             </div>`;
@@ -1844,25 +1752,19 @@ window.sendPlanToActual = function(key) {
     if(!amt || amt <= 0) return toast('Önce tutar girin!');
     
     const parts = key.split('|||');
-    let cat, desc;
-    if(key.startsWith('Custom|||')) {
-        cat = parts[1] || 'Diğer';
-        desc = parts[2] ? parts[2].split('_')[0] : cat;
-    } else {
-        cat = parts[0] || 'Diğer';
-        desc = parts[1] || cat;
-    }
+    let cat = parts[1] || 'Diğer';
+    let desc = parts[2] ? parts[2].split('_')[0] : cat;
     
     tx.push({
         id: Date.now(),
         uid: AU.id,
         type: 'expense',
         cat: cat,
-        desc: desc + " (Plandan)",
+        desc: desc,
         amt: amt,
         date: document.getElementById('dateInp').value,
-        account: 'Nakit (Cüzdan)',
-        isPaid: false
+        account: 'Nakit (Cüzdan)', 
+        isPaid: false 
     });
     
     saveDB();
@@ -1882,21 +1784,15 @@ window.transferAllPlanToActual = function() {
         const currentDate = document.getElementById('dateInp').value;
         entries.forEach(([key, amt]) => {
             const parts = key.split('|||');
-            let cat, desc;
-            if(key.startsWith('Custom|||')) {
-                cat = parts[1] || 'Diğer';
-                desc = parts[2] ? parts[2].split('_')[0] : cat;
-            } else {
-                cat = parts[0] || 'Diğer';
-                desc = parts[1] || cat;
-            }
+            let cat = parts[1] || 'Diğer';
+            let desc = parts[2] ? parts[2].split('_')[0] : cat;
             
             tx.push({
                 id: Date.now() + count, 
                 uid: AU.id,
                 type: 'expense',
                 cat: cat,
-                desc: desc + " (Plandan)",
+                desc: desc,
                 amt: amt,
                 date: currentDate,
                 account: 'Nakit (Cüzdan)',
