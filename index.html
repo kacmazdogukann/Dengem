@@ -159,7 +159,6 @@ select option{background:var(--s2);}
 .btn-ghost::after{display:none;}
 .btn-dashed{background:transparent;border:1.5px dashed var(--b2);color:var(--t2);box-shadow:none;}
 .btn-dashed::after{display:none;}
-
 .hero{margin:4px 14px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r3);padding:18px 20px;position:relative;overflow:hidden;box-shadow:var(--sh);}
 .hero::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(68,136,255,.1),transparent 70%);top:-50px;right:-50px;pointer-events:none;}
 .hero-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
@@ -355,20 +354,6 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
  </div>
 </div>
 
-<div class="modal-bg" id="m-actual-amt">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--gr)">Gerçekleşen Tutar</div>
-   <div class="modal-d" id="maa-desc" style="margin-bottom:14px; line-height:1.5;"></div>
-   <input type="hidden" id="maa-key">
-   <input type="hidden" id="maa-planned">
-   <div class="fg"><label class="fl">Ödenen / Bekleyen Tutar (TL)</label><input type="number" id="maa-inp"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-actual-amt')">İptal</button>
-     <button class="btn btn-gr" style="flex:1;margin:0;" onclick="confirmActualAmt()">Aktar</button>
-   </div>
- </div>
-</div>
-
 <div class="modal-bg" id="m-adduser">
  <div class="modal-c">
    <div class="modal-t" style="color:var(--ac)">Yeni Profil</div>
@@ -415,6 +400,7 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    <button class="btn btn-ghost" style="margin-top:12px;" onclick="closeChangePin()">İptal</button>
  </div>
 </div>
+
 <div class="modal-bg" id="m-ass-pin">
  <div class="modal-c">
    <div class="modal-t" style="color:var(--cy);text-align:center;">Varlıklar Kilitli</div>
@@ -504,7 +490,6 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    <div class="pin-forgot" onclick="pinForgot()">PIN'imi unuttum</div>
  </div>
 </div>
-
 <div class="screen" id="scr-app">
  <div class="topbar">
    <div class="topbar-left">
@@ -583,6 +568,7 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    <button class="btn btn-ac" onclick="saveInvPrice()">Kaydet</button>
  </div>
 </div>
+
 <div class="page" id="page-plan">
  <div class="plan-hero">
    <div class="ph-lbl">
@@ -590,19 +576,9 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
        <input type="month" id="fp-month-inp" onchange="renderFuturePlan()" style="width:auto; padding:3px 8px; font-size:12px; background:rgba(0,0,0,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:var(--t1);">
    </div>
    <div class="ph-net disp" id="fp-net">0 ₺</div>
-   <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); display:flex; justify-content:space-between; align-items:center;">
-     <div style="display:flex; align-items:center; gap:6px;">
-         <span style="font-size:16px;">💎</span>
-         <div>
-             <div style="font-size:9px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:1px;">Bütçe Tasarrufu (Artan)</div>
-             <div style="font-size:9px; color:var(--t3);">Sıfırlamak için tutara tıklayın</div>
-         </div>
-     </div>
-     <span style="font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; cursor:pointer;" id="fp-savings" onclick="resetSavings()">0 ₺</span>
-   </div>
  </div>
  
- <button class="btn btn-ac" style="margin:0 14px 12px; width:calc(100% - 28px); font-family:'Bricolage Grotesque',sans-serif; display:flex; justify-content:center; gap:8px;" onclick="transferAllPlanToActual()">🚀 Planı Bekleyenlere Aktar</button>
+ <button class="btn btn-ac" style="margin:0 14px 12px; width:calc(100% - 28px); font-family:'Bricolage Grotesque',sans-serif; display:flex; justify-content:center; gap:8px;" onclick="transferAllPlanToActual()">🚀 Planı Gerçek Giderlere Aktar</button>
 
  <div class="fp-grid2">
    <div class="fpmini">
@@ -874,7 +850,7 @@ function saveDB(){try{localStorage.setItem(KU,JSON.stringify(users));localStorag
 
 function getFp() {
    let m = document.getElementById('fp-month-inp').value;
-   if(!fpData[m]) fpData[m] = {inc:0, items:{}, hidden:[], customInc:{}, checked: {}, savings: 0};
+   if(!fpData[m]) fpData[m] = {inc:0, items:{}, hidden:[], customInc:{}, checked: {}};
    return fpData[m];
 }
 
@@ -888,7 +864,7 @@ document.addEventListener('touchend', e => {
  let dy = e.changedTouches[0].clientY - swY;
  if (dx > 80 && Math.abs(dy) < 50) {
    let openModal = document.querySelector('.modal-bg.show');
-   if (openModal && openModal.id !== 'm-pinset' && openModal.id !== 'm-pin-change' && openModal.id !== 'm-ass-pin' && openModal.id !== 'm-actual-amt') { 
+   if (openModal && openModal.id !== 'm-pinset' && openModal.id !== 'm-pin-change' && openModal.id !== 'm-ass-pin') { 
        hideModal(openModal.id); return; 
    }
    if (openBSid) { closeBS(); return; }
@@ -1251,16 +1227,6 @@ function closeBS(){
  editId=null;
 }
 
-window.resetSavings = function() {
-    openConf("Tasarrufu Sıfırla", "Bu ayki bütçe tasarrufunu (artan parayı) sıfırlamak istiyor musunuz?", "Sıfırla", () => {
-        let fpr = getFp();
-        fpr.savings = 0;
-        saveDB();
-        renderFuturePlan();
-        toast("Tasarruf sıfırlandı!");
-    });
-};
-
 function calcBudget(date){
  const uT=tx.filter(t=>t.uid===AU.id&&t.date===date&&t.cat!=='Bakiye Eşitleme');
  const inc=uT.filter(t=>t.type==='income').reduce((s,t)=>s+t.amt,0);
@@ -1341,6 +1307,7 @@ function renderHome(){
    <div class="spill c" onclick="openSpill('birikim')"><div class="spill-l">Birikim</div><div class="spill-v" style="color:var(--cy)">${H?'***':fs(b.saved)} ₺</div></div>
  `;
 }
+
 window.openSpill=function(type){
  vib();
  let m = document.getElementById('dateInp').value;
@@ -1360,7 +1327,6 @@ window.openSpill=function(type){
 };
 
 window.toggleHide=function(){vib();hideN=!hideN;try{localStorage.setItem('dng_hide',hideN);}catch(e){}renderHome();if(curTab==='assets')renderAssets();};
-
 function renderPending(){
  if(!AU)return;
  const date=document.getElementById('dateInp').value;
@@ -1637,6 +1603,7 @@ window.previewFP = function() {
     let ti = parseFloat(document.getElementById('fp-main-inc')?.value) || 0;
     if (fpr.customInc) Object.values(fpr.customInc).forEach(v => ti += v);
 
+    // Ekranda aktif olarak görünen input değerlerini hafızaya kaydet
     document.querySelectorAll('.fp-inp').forEach(inp => {
         const val = parseFloat(inp.value) || 0;
         const key = inp.dataset.key;
@@ -1650,10 +1617,12 @@ window.previewFP = function() {
     let groupSums = { ev: 0, finans: 0, diger: 0 };
     let categorySums = {};
 
+    // Arka plandaki tüm verileri tara
     if(window._fpItems) {
         window._fpItems.forEach(item => {
             if (fpr.hidden && fpr.hidden.includes(item.key)) return;
 
+            // SADECE "TİK" İLE ONAYLANMIŞ OLANLARI TOPLA
             if (fpr.checked && fpr.checked[item.key]) {
                 const est = fpr.items[item.key] !== undefined ? fpr.items[item.key] : item.last;
                 const val = parseFloat(est) || 0;
@@ -1672,18 +1641,12 @@ window.previewFP = function() {
         });
     }
 
+    // UI (Arayüz) Toplamlarını Güncelle
     const net = ti - totalExp;
     const ne = document.getElementById('fp-net');
     if (ne) {
         ne.innerText = net.toLocaleString('tr-TR') + ' ₺';
         ne.style.color = net >= 0 ? 'var(--gr)' : 'var(--rd)';
-    }
-    
-    const savAmt = fpr.savings || 0;
-    const eSav = document.getElementById('fp-savings');
-    if(eSav) {
-        eSav.innerText = (savAmt > 0 ? '+' : '') + savAmt.toLocaleString('tr-TR') + ' ₺';
-        eSav.style.color = savAmt >= 0 ? 'var(--gr)' : 'var(--t1)';
     }
 
     const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v.toLocaleString('tr-TR') + ' ₺'; };
@@ -1854,52 +1817,21 @@ window.sendPlanToActual = function(key) {
         cat = parts[0] || 'Diğer';
         desc = parts[1] || cat;
     }
-
-    document.getElementById('maa-key').value = key;
-    document.getElementById('maa-planned').value = amt;
-    document.getElementById('maa-inp').value = amt;
-    document.getElementById('maa-desc').innerHTML = `<b>${desc}</b> için planlanan tutar: <b style="color:var(--rd)">${amt} ₺</b><br>Gerçekte ne kadar tuttu?`;
     
-    showModal('m-actual-amt');
-};
-
-window.confirmActualAmt = function() {
-    let key = document.getElementById('maa-key').value;
-    let plannedAmt = parseFloat(document.getElementById('maa-planned').value) || 0;
-    let actualAmt = parseFloat(document.getElementById('maa-inp').value);
-    
-    if(isNaN(actualAmt) || actualAmt <= 0) return toast('Geçerli bir tutar girin!');
-
-    let fpr = getFp();
-    const parts = key.split('|||');
-    let cat, desc;
-    if(key.startsWith('Custom|||')) {
-        cat = parts[1] || 'Diğer';
-        desc = parts[2] ? parts[2].split('_')[0] : cat;
-    } else {
-        cat = parts[0] || 'Diğer';
-        desc = parts[1] || cat;
-    }
-
-    let diff = plannedAmt - actualAmt;
-    fpr.savings = (fpr.savings || 0) + diff;
-
     tx.push({
         id: Date.now(),
         uid: AU.id,
         type: 'expense',
         cat: cat,
         desc: desc + " (Plandan)",
-        amt: actualAmt,
+        amt: amt,
         date: document.getElementById('dateInp').value,
         account: 'Nakit (Cüzdan)', 
-        isPaid: false 
+        isPaid: true 
     });
     
     saveDB();
-    hideModal('m-actual-amt');
-    toast(`⏳ ${desc} bekleyenlere eklendi!`);
-    renderFuturePlan();
+    toast(`✅ ${desc} bütçeden düşüldü!`);
     renderHome();
 };
 
@@ -1911,7 +1843,7 @@ window.transferAllPlanToActual = function() {
     
     if(entries.length === 0) return toast('Aktarılacak onaylanmış (✅) tutar bulunamadı!');
 
-    openConf("Planı Aktar", `${entries.length} onaylı kalem bekleyen ödemelere eklensin mi?\n(Not: Toplu aktarımda arta kalan tasarruf hesaplanmaz, planlanan tutar geçerli olur.)`, "Aktar", () => {
+    openConf("Planı Aktar", `${entries.length} onaylı kalem ödenmiş gider olarak bütçeye işlensin mi?`, "Aktar", () => {
         const currentDate = document.getElementById('dateInp').value;
         entries.forEach(([key, amt]) => {
             const parts = key.split('|||');
@@ -1933,12 +1865,12 @@ window.transferAllPlanToActual = function() {
                 amt: amt,
                 date: currentDate,
                 account: 'Nakit (Cüzdan)',
-                isPaid: false
+                isPaid: true
             });
             count++;
         });
         saveDB();
-        toast(`${count} kalem bekleyenlere aktarıldı!`);
+        toast(`${count} kalem başarıyla aktarıldı!`);
         goTab('home');
         renderHome();
     }, false);
