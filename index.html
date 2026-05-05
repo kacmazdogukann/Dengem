@@ -159,7 +159,6 @@ select option{background:var(--s2);}
 .btn-ghost::after{display:none;}
 .btn-dashed{background:transparent;border:1.5px dashed var(--b2);color:var(--t2);box-shadow:none;}
 .btn-dashed::after{display:none;}
-
 .hero{margin:4px 14px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r3);padding:18px 20px;position:relative;overflow:hidden;box-shadow:var(--sh);}
 .hero::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(68,136,255,.1),transparent 70%);top:-50px;right:-50px;pointer-events:none;}
 .hero-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
@@ -546,6 +545,16 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
      <div><div class="ass-lbl">Net Servet</div><div class="ass-tot" id="ass-tot">0 ₺</div></div>
      <div class="hero-eye" onclick="vib();toggleHide()" id="ass-eye">👁️</div>
+   </div>
+   <div style="display:flex;gap:16px;margin-top:12px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;">
+     <div style="flex:1;">
+        <div style="font-size:10px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:2px;">Banka & Nakit</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--t1);" id="ass-bank-tot">0 ₺</div>
+     </div>
+     <div style="flex:1;">
+        <div style="font-size:10px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:2px;">Döviz & Altın</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--t1);" id="ass-inv-tot">0 ₺</div>
+     </div>
    </div>
  </div>
  <div class="sec-h"><span class="sec-t">Banka Hesapları</span></div>
@@ -1318,7 +1327,6 @@ window.openSpill=function(type){
 };
 
 window.toggleHide=function(){vib();hideN=!hideN;try{localStorage.setItem('dng_hide',hideN);}catch(e){}renderHome();if(curTab==='assets')renderAssets();};
-
 function renderPending(){
  if(!AU)return;
  const date=document.getElementById('dateInp').value;
@@ -1348,9 +1356,16 @@ function renderAssets(){
  const f=v=>v.toLocaleString('tr-TR',{minimumFractionDigits:2});
  const f0=v=>v.toLocaleString('tr-TR',{maximumFractionDigits:0});
  const gV=tG*goldP,uV=tU*usdP,eV=tE*eurP;
- const net=Object.values(banks).reduce((s,v)=>s+v,0)+gV+uV+eV;
+ 
+ const bankTot = Object.values(banks).reduce((s,v)=>s+v,0);
+ const invTot = gV+uV+eV;
+ const net = bankTot + invTot;
+ 
  document.getElementById('ass-tot').innerText=H?'*** ₺':f(net)+' ₺';
+ document.getElementById('ass-bank-tot').innerText=H?'*** ₺':f(bankTot)+' ₺';
+ document.getElementById('ass-inv-tot').innerText=H?'*** ₺':f(invTot)+' ₺';
  document.getElementById('ass-eye').innerText=H?'🙈':'👁️';
+ 
  let bH='';
  Object.entries(banks).forEach(([b,a])=>{
    bH+=`<div class="bank-c" onclick="openBankDetail('${b}')"><div class="bank-n">${b}</div><div class="bank-a" style="color:${a>=0?'var(--t1)':'var(--rd)'};">${H?'***':f(a)} ₺</div></div>`;
@@ -1794,8 +1809,14 @@ window.sendPlanToActual = function(key) {
     if(!amt || amt <= 0) return toast('Önce tutar girin!');
     
     const parts = key.split('|||');
-    const cat = parts[1];
-    const desc = parts.length > 2 ? parts[2].split('_')[0] : cat;
+    let cat, desc;
+    if(key.startsWith('Custom|||')) {
+        cat = parts[1] || 'Diğer';
+        desc = parts[2] ? parts[2].split('_')[0] : cat;
+    } else {
+        cat = parts[0] || 'Diğer';
+        desc = parts[1] || cat;
+    }
     
     tx.push({
         id: Date.now(),
@@ -1826,8 +1847,14 @@ window.transferAllPlanToActual = function() {
         const currentDate = document.getElementById('dateInp').value;
         entries.forEach(([key, amt]) => {
             const parts = key.split('|||');
-            const cat = parts[1] || 'Diğer';
-            const desc = parts.length > 2 ? parts[2].split('_')[0] : cat;
+            let cat, desc;
+            if(key.startsWith('Custom|||')) {
+                cat = parts[1] || 'Diğer';
+                desc = parts[2] ? parts[2].split('_')[0] : cat;
+            } else {
+                cat = parts[0] || 'Diğer';
+                desc = parts[1] || cat;
+            }
             
             tx.push({
                 id: Date.now() + count, 
