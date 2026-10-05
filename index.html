@@ -401,7 +401,7 @@ input:focus,select:focus{border-color:var(--ac);background:var(--bg);box-shadow:
    <div class="login-logo disp">DEN<em>GEM</em></div>
    <div class="login-sub">Finansal Denge Merkezi</div>
    <div class="profile-wrap" id="prof-wrap"></div>
-   <div class="login-reset" onclick="resetSys()">⚠️️ Sistemi Sıfırla</div>
+   <div class="login-reset" onclick="resetSys()">⚠ Sistemi Sıfırla</div>
    <div style="text-align:center;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:1px;margin-top:24px;text-transform:uppercase;">© By dogukankcmz</div>
  </div>
 </div>
@@ -733,7 +733,6 @@ input:focus,select:focus{border-color:var(--ac);background:var(--bg);box-shadow:
 </div>
 
 <script>
-// BURADAN SONRASI ORİJİNAL JAVASCRIPT KODUNUZDUR, HİÇBİR ŞEY DEĞİŞTİRİLMEDİ.
 const vib=()=>{try{navigator.vibrate&&navigator.vibrate(10);}catch(e){}};
 
 const KU='dng_u14',KT='dng_t14',KL='dng_l14',KF='dng_f14';
@@ -859,7 +858,8 @@ function updateDate(){
 }
 function onDateChange(){updateDate();renderHome();}
 
-window.onload=function(){
+// İŞTE SİZİN İÇİN DÜZELTİLMİŞ BAŞLATMA KISMI (window.onload YERİNE DOMContentLoaded)
+document.addEventListener('DOMContentLoaded', function() {
  fetchDB();loadTheme();
  document.querySelectorAll('.bsel').forEach(s=>{
    s.innerHTML=BANKS.map(b=>`<option value="${b}">${b}</option>`).join('')+`<option value="Dışarıdan Nakit">Dışarıdan</option>`;
@@ -884,7 +884,8 @@ window.onload=function(){
         }
     });
  });
-};
+});
+// BAŞLATMA DÜZELTMESİ SONU
 
 function buildPinGrid(gridId,handler){
  const g=document.getElementById(gridId);if(!g)return;
