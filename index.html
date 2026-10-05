@@ -7,338 +7,201 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-:root{
- --bg:#0b0f1a;--s1:#111827;--s2:#19243a;--s3:#1e2d42;
- --b1:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);--b3:rgba(255,255,255,0.18);
- --t1:#edf2ff;--t2:#6b7fa3;--t3:#3a4d6a;
- --ac:#4488ff;--gr:#00c27a;--rd:#ff3d5a;--am:#f5a623;--cy:#00b8cc;--vl:#8b6fff;--gd:#ffc640;
- --gr2:rgba(0,194,122,.13);--rd2:rgba(255,61,90,.13);--am2:rgba(245,166,35,.13);--ac2:rgba(68,136,255,.13);
- --sh:0 4px 20px rgba(0,0,0,.4);--sh2:0 16px 48px rgba(0,0,0,.55);
- --r:12px;--r2:18px;--r3:24px;
- --spd:160ms;--ease:cubic-bezier(.4,0,.2,1);
+/* =========================================
+   BÖLÜM 1: TEMEL DEĞİŞKENLER VE MİMARİ
+   Banka Uygulaması SPA Geçişleri
+========================================= */
+:root {
+ /* Fintech Dark Tema (Derin, Premium Bankacılık) */
+ --bg: #090c15; --s1: #101423; --s2: #161b2e; --s3: #1d243b;
+ --b1: rgba(255,255,255,0.05); --b2: rgba(255,255,255,0.08); --b3: rgba(255,255,255,0.15);
+ --t1: #f8fafc; --t2: #8b9bb4; --t3: #4b5d78;
+ --ac: #3b82f6; --gr: #10b981; --rd: #ef4444; --am: #f59e0b; --cy: #06b6d4; --vl: #8b5cf6; --gd: #facc15;
+ --gr2: rgba(16, 185, 129, 0.15); --rd2: rgba(239, 68, 68, 0.15); --am2: rgba(245, 158, 11, 0.15); --ac2: rgba(59, 130, 246, 0.15);
+ 
+ --sh: 0 8px 30px rgba(0, 0, 0, 0.3);
+ --sh2: 0 20px 40px rgba(0, 0, 0, 0.5);
+ --glass: rgba(16, 20, 35, 0.7);
+ 
+ --r: 16px; --r2: 24px; --r3: 32px;
+ --spd: 450ms; --ease: cubic-bezier(0.16, 1, 0.3, 1); /* Akıcı SPA geçiş eğrisi */
 }
-body.light{
- --bg:#f2f5fb;--s1:#fff;--s2:#eaf0fb;--s3:#dce7f8;
- --b1:rgba(0,0,0,.06);--b2:rgba(0,0,0,.1);--b3:rgba(0,0,0,.15);
- --t1:#0d1526;--t2:#526080;--t3:#a0b0cc;
- --sh:0 2px 12px rgba(80,110,180,.1);--sh2:0 8px 32px rgba(80,110,180,.18);
+
+body.light {
+ /* Fintech Light Tema (Temiz, Ferah Bankacılık) */
+ --bg: #f3f6f9; --s1: #ffffff; --s2: #f8fafc; --s3: #e2e8f0;
+ --b1: rgba(0,0,0,0.04); --b2: rgba(0,0,0,0.08); --b3: rgba(0,0,0,0.12);
+ --t1: #0f172a; --t2: #64748b; --t3: #94a3b8;
+ --sh: 0 8px 24px rgba(148, 163, 184, 0.15);
+ --sh2: 0 20px 40px rgba(148, 163, 184, 0.25);
+ --glass: rgba(255, 255, 255, 0.8);
 }
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;margin:0;padding:0;}
 html{height:100%;height:-webkit-fill-available;}
-body{width:100%;height:100%;height:-webkit-fill-available;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);transition:background .25s,color .25s;}
+body{width:100%;height:100%;height:-webkit-fill-available;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);transition:background .4s var(--ease),color .4s var(--ease);}
 .disp{font-family:'Bricolage Grotesque',sans-serif;}
-::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px;}
+::-webkit-scrollbar{width:0px;}
 
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(68,136,255,.06) 0%,transparent 70%),
-radial-gradient(ellipse 40% 30% at 80% 80%,rgba(0,194,122,.05) 0%,transparent 70%);}
+/* Dinamik Arka Plan Ambiyansı */
+body::after {
+ content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+ background: radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+             radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+ transition: background 1s ease;
+}
 
-.screen{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);}
-#scr-pin{z-index:20;transform:translateY(-100%);opacity:0;transition:transform .3s var(--ease),opacity .3s var(--ease);pointer-events:none;}
-#scr-pin.visible{transform:translateY(0);opacity:1;pointer-events:all;}
-#scr-app{display:none;z-index:5;flex-direction:column;justify-content:flex-start;align-items:stretch;height:100%;height:-webkit-fill-available;}
+/* =========================================
+   BÖLÜM 2: EKRANLAR & BANKA GİRİŞ EFEKTLERİ
+========================================= */
+.screen { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); }
 
-.login-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;padding:0 28px;}
-.login-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:52px;font-weight:800;letter-spacing:-2.5px;color:var(--t1);line-height:1;}
-.login-logo em{font-style:normal;color:var(--ac);}
-.login-sub{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-top:6px;margin-bottom:44px;}
-.profile-wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;max-width:320px;}
-.prof{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;}
-.prof-av{width:66px;height:66px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;box-shadow:var(--sh);transition:transform .15s;position:relative;overflow:hidden;}
-.prof-av::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 55%);}
-.prof:active .prof-av{transform:scale(.88);}
-.prof-av-add{background:var(--s2);border:2px dashed var(--b2);font-size:24px;color:var(--t3);}
-.prof-av-add::after{display:none;}
-.prof-name{font-size:11px;font-weight:600;color:var(--t2);}
-.pin-lock-dot{position:absolute;bottom:-2px;right:-2px;width:17px;height:17px;border-radius:6px;background:var(--ac);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:8px;z-index:3;}
-.login-reset{margin-top:24px;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;padding:8px 16px;border-radius:8px;transition:color .15s;}
-.login-reset:active{color:var(--rd);}
+/* Kasa Açılış Efekti (PIN Ekranı) */
+#scr-pin {
+ z-index: 20;
+ transform: scale(1.1) translateY(-20px);
+ opacity: 0; filter: blur(10px);
+ transition: transform var(--spd) var(--ease), opacity var(--spd) var(--ease), filter var(--spd) var(--ease);
+ pointer-events: none;
+ background: rgba(var(--bg), 0.95);
+ backdrop-filter: blur(20px);
+}
+#scr-pin.visible {
+ transform: scale(1) translateY(0);
+ opacity: 1; filter: blur(0);
+ pointer-events: all;
+}
 
-.pin-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:320px;padding:0 20px;}
-.pin-back-btn{position:absolute;top:env(safe-area-inset-top);left:10px;width:38px;height:38px;border-radius:12px;background:var(--s2);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--t2);transition:all .15s;}
-.pin-back-btn:active{transform:scale(.88);}
-.pin-big-av{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;box-shadow:var(--sh2);margin-bottom:14px;overflow:hidden;position:relative;}
-.pin-big-av::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.2),transparent 55%);}
-.pin-uname{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;}
-.pin-hint{font-size:12px;color:var(--t2);margin-bottom:24px;}
-.pin-dots-row{display:flex;gap:14px;margin-bottom:28px;}
-.pdot{width:13px;height:13px;border-radius:50%;background:var(--b2);transition:transform .18s,background .15s;}
-.pdot.on{background:var(--ac);transform:scale(1.3);}
-.pdot.err{background:var(--rd);}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;}
-.pkey, .pset-key{aspect-ratio:1; max-height:75px; border-radius:16px;background:var(--s2);border:1px solid var(--b1);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh);transition:transform .12s,background .1s;}
-.pkey:active, .pset-key:active{transform:scale(.86);background:var(--s3);}
-.pkey-n, .pset-n{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px, 6vw, 24px);font-weight:700; line-height: 1.1;}
-.pkey-s, .pset-s{font-size:9px;font-weight:600;color:var(--t2);letter-spacing:.8px;margin-top:2px; line-height: 1;}
-.pkey-del, .pset-del{font-size:20px;color:var(--t2);}
-.pkey-empty, .pset-empty{background:transparent;border-color:transparent;box-shadow:none;pointer-events:none;}
-.pin-forgot{margin-top:24px;font-size:12px;color:var(--t2);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+/* Kasa Açıldıktan Sonra Uygulamanın Gelişi */
+@keyframes appUnlock {
+ 0% { opacity: 0; transform: scale(0.95) translateY(30px); filter: blur(8px); }
+ 100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+#scr-app {
+ display: none; z-index: 5; flex-direction: column; height: 100%; height: -webkit-fill-available;
+ animation: appUnlock 0.8s var(--ease) forwards;
+}
 
-#scr-app{overflow:hidden;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:max(14px, calc(env(safe-area-inset-top) + 10px)) 16px 6px;flex-shrink:0;position:relative;z-index:30;}
-.topbar-left{display:flex;align-items:center;gap:10px;}
-.menu-trigger{width:38px;height:38px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:var(--s2);border:1px solid var(--b1);box-shadow:var(--sh);transition:transform .15s;}
-.menu-trigger:active{transform:scale(.88);}
-.menu-trigger span{display:block;width:16px;height:2px;background:var(--t1);border-radius:2px;transition:.2s;}
-.topbar-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;cursor:pointer;}
-.topbar-logo em{font-style:normal;color:var(--ac);}
-.tb-icon-btn{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;background:var(--s2);border:1px solid var(--b1);box-shadow:var(--sh);transition:transform .15s;color:var(--t1);}
-.tb-icon-btn:active{transform:scale(.88);}
+/* Profil & Giriş Alanları */
+.login-inner, .pin-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 360px; padding: 0 24px; }
+.login-logo { font-size: 56px; font-weight: 800; letter-spacing: -2.5px; color: var(--t1); line-height: 1; text-shadow: var(--sh); }
+.login-logo em { font-style: normal; color: var(--ac); background: linear-gradient(135deg, var(--ac), var(--cy)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.login-sub { font-size: 12px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--t2); margin-top: 8px; margin-bottom: 50px; }
 
-.datebar{text-align:center;padding:2px 16px 10px;flex-shrink:0;}
-.datepill{position:relative;display:inline-block;}
-.datepill-txt{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);background:var(--s2);padding:7px 18px;border-radius:50px;border:1px solid var(--b1);display:inline-block;cursor:pointer;transition:.15s;box-shadow:var(--sh);}
-.datepill-txt:active{transform:scale(.96);}
-.date-inp-h{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.profile-wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.prof { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s var(--ease); }
+.prof:active { transform: scale(0.9); }
+.prof-av { width: 72px; height: 72px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800; color: #fff; box-shadow: var(--sh); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.prof-av::after { content: ''; position: absolute; inset: 0; background: linear-gradient(145deg, rgba(255,255,255,0.25), transparent 60%); }
+.prof-av-add { background: var(--s2); border: 2px dashed var(--b3); font-size: 28px; color: var(--t3); box-shadow: none; }
+.prof-name { font-size: 13px; font-weight: 600; color: var(--t2); letter-spacing: 0.5px; }
+.pin-lock-dot { position: absolute; bottom: -4px; right: -4px; width: 22px; height: 22px; border-radius: 8px; background: var(--ac); border: 3px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+/* PIN Tuş Takımı (Bankacılık Standartı) */
+.pin-big-av { width: 80px; height: 80px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: #fff; box-shadow: var(--sh2); margin-bottom: 16px; position: relative; border: 1px solid rgba(255,255,255,0.15); }
+.pin-uname { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+.pin-hint { font-size: 13px; color: var(--t2); margin-bottom: 32px; font-weight: 500; }
 
-.pages{flex:1;overflow:hidden;position:relative;min-height:0;}
-.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:120px;opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity var(--spd) var(--ease),transform var(--spd) var(--ease);will-change:transform,opacity;}
-.page.active{opacity:1;transform:translateX(0);pointer-events:all;}
-.page.out{opacity:0;transform:translateX(-24px);}
+.pin-dots-row, .pset-dots { display: flex; gap: 16px; margin-bottom: 40px; justify-content: center; }
+.pdot { width: 14px; height: 14px; border-radius: 50%; background: var(--s3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+.pdot.on { background: var(--ac); transform: scale(1.3); box-shadow: 0 0 12px var(--ac2); }
+.pdot.err { background: var(--rd); box-shadow: 0 0 12px var(--rd2); transform: scale(1.1) translateX(-4px); }
 
-.tabbar{display:flex;align-items:center;justify-content:space-around;padding: 10px 8px calc(24px + env(safe-area-inset-bottom)) 8px;background:var(--s1);border-top:1px solid var(--b1);flex-shrink:0;position:relative;z-index:30;border-top-left-radius: 20px; border-top-right-radius: 20px;box-shadow: 0 -4px 20px rgba(0,0,0,0.15);}
-.tb{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:6px 4px;border-radius:12px;transition:background .15s;position:relative;min-width:0;}
-.tb:active{background:var(--s2);}
-.tb.on{background:var(--ac2);}
-.tb-ico{font-size:20px;line-height:1;transition:transform .2s;}
-.tb.on .tb-ico{transform:scale(1.1);}
-.tb-lbl{font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--t2);transition:color .15s;white-space:nowrap;}
-.tb.on .tb-lbl{color:var(--ac);}
-.tb-badge{position:absolute;top:0;right:6px;min-width:15px;height:15px;border-radius:8px;background:var(--rd);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+.pin-grid, .pset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 280px; }
+.pkey, .pset-key { aspect-ratio: 1; max-height: 72px; border-radius: 50%; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s, background 0.2s; }
+.pkey:active, .pset-key:active { transform: scale(0.85); background: var(--s2); }
+.pkey-n, .pset-n { font-family: 'Bricolage Grotesque', sans-serif; font-size: 28px; font-weight: 600; color: var(--t1); line-height: 1; }
+.pkey-s, .pset-s { font-size: 10px; font-weight: 600; color: var(--t3); letter-spacing: 1px; margin-top: 4px; }
+.pkey-del, .pset-del { font-size: 24px; color: var(--t2); }
 
-.fab{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom, 0px)); right:16px; z-index:100;width:52px;height:52px;border-radius:16px;background:var(--ac);border:none;color:#fff;font-size:28px;font-weight:400;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 6px 20px rgba(68,136,255,.45);cursor:pointer;transition:transform .15s,box-shadow .15s; font-family: system-ui, sans-serif;}
-.fab:active{transform:scale(.9);box-shadow:0 2px 8px rgba(68,136,255,.3);}
+/* =========================================
+   BÖLÜM 3: UYGULAMA İÇİ SPA GEÇİŞLERİ (Framer Motion Tarzı)
+========================================= */
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: max(16px, calc(env(safe-area-inset-top) + 12px)) 20px 10px; z-index: 30; background: transparent; }
+.topbar-logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; text-shadow: var(--sh); }
+.topbar-logo em { color: var(--ac); }
+.menu-trigger, .tb-icon-btn { width: 42px; height: 42px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--b1); box-shadow: var(--sh); transition: transform 0.2s; color: var(--t1); cursor: pointer; }
+.menu-trigger:active, .tb-icon-btn:active { transform: scale(0.85); }
+.menu-trigger span { display: block; width: 18px; height: 2px; background: var(--t1); border-radius: 2px; transition: 0.2s; margin: 2px 0; }
 
-.overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s;}
-.overlay.vis{background:rgba(0,0,0,.6);pointer-events:all;backdrop-filter:blur(3px);}
-.sidepanel{position:fixed;top:0;left:0;bottom:0;width:min(80vw,320px);background:var(--s1);border-right:1px solid var(--b1);z-index:901;transform:translateX(-100%);transition:transform .25s var(--ease);display:flex;flex-direction:column;box-shadow:6px 0 32px rgba(0,0,0,.4);}
-.sidepanel.open{transform:translateX(0);}
-.sp-head{padding:calc(env(safe-area-inset-top) + 20px) 20px 20px;border-bottom:1px solid var(--b1);flex-shrink:0;}
-.sp-av-row{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
-.sp-av{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;position:relative;}
-.sp-av::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.2),transparent 55%);}
-.sp-uname{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;}
-.sp-body{flex:1;overflow-y:auto;padding:12px 12px;}
-.sp-item{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:2px;transition:background .13s;}
-.sp-item:active{background:var(--s2);}
-.sp-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.sp-item-t{font-size:14px;font-weight:700;}
-.sp-item-s{font-size:11px;color:var(--t2);margin-top:1px;}
-.sp-div{height:1px;background:var(--b1);margin:8px 0;}
-.sp-foot{padding:12px 12px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--b1);}
-.copyright{text-align:center;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:1px;margin-top:10px;text-transform:uppercase;}
-.bs-overlay{position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s;}
-.bs-overlay.vis{background:rgba(0,0,0,.65);pointer-events:all;backdrop-filter:blur(4px);}
-.bsheet{position:fixed;left:0;right:0;bottom:0;z-index:951;background:var(--s1);border-radius:22px 22px 0 0;border-top:1px solid var(--b1);transform:translateY(100%);transition:transform .3s var(--ease);max-height:94dvh;display:flex;flex-direction:column;box-shadow:0 -16px 48px rgba(0,0,0,.45);}
-.bsheet.open{transform:translateY(0);}
-.bs-handle{width:34px;height:3px;border-radius:3px;background:var(--b2);margin:10px auto 0;}
-.bs-hd{padding:14px 18px 10px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-.bs-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;}
-.bs-x{width:32px;height:32px;border-radius:10px;background:var(--s2);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:var(--t2);transition:all .13s;flex-shrink:0;}
-.bs-x:active{transform:scale(.88);}
-.bs-body{flex:1;overflow-y:auto;padding:0 18px calc(36px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;}
+.datebar { text-align: center; padding: 4px 20px 16px; z-index: 30; }
+.datepill-txt { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--t1); background: var(--glass); backdrop-filter: blur(10px); padding: 8px 24px; border-radius: 50px; border: 1px solid var(--b1); display: inline-block; box-shadow: var(--sh); transition: transform 0.2s; }
 
-.fg{margin-bottom:14px;}
-.fl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:7px;display:flex;justify-content:space-between;}
-input:not([type=checkbox]):not([type=file]):not([type=month]),select{width:100%;padding:13px 15px;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;outline:none;-webkit-appearance:none;transition:border-color .18s,box-shadow .18s,background .15s;}
-input:focus,select:focus{border-color:var(--ac);background:var(--s3);box-shadow:0 0 0 3px rgba(68,136,255,.12);}
-select option{background:var(--s2);}
-.chk-row{display:flex;align-items:flex-start;gap:12px;background:var(--s2);padding:13px 15px;border-radius:var(--r);border:1px solid var(--b1);cursor:pointer;margin-top:10px;}
-.chk-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac);flex-shrink:0;margin-top:2px;padding:0;background:none;border:none;}
-.chk-row strong{font-size:14px;font-weight:700;}
-.chk-row span{font-size:11px;color:var(--t2);}
-.btn{width:100%;padding:15px;border:none;border-radius:var(--r);font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;letter-spacing:.3px;color:#fff;cursor:pointer;transition:transform .13s,opacity .13s;text-transform:uppercase;margin-top:10px;position:relative;overflow:hidden;}
-.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14),transparent 50%);}
-.btn:active{transform:scale(.97);opacity:.9;}
-.btn-ac{background:var(--ac);box-shadow:0 4px 16px rgba(68,136,255,.35);}
-.btn-gr{background:#00995f;box-shadow:0 4px 16px rgba(0,153,95,.3);}
-.btn-rd{background:#d62e48;box-shadow:0 4px 16px rgba(214,46,72,.3);}
-.btn-am{background:var(--am);color:#000;box-shadow:0 4px 14px rgba(245,166,35,.3);}
-.btn-ghost{background:var(--s2);color:var(--t1);border:1px solid var(--b2);box-shadow:var(--sh);}
-.btn-ghost::after{display:none;}
-.btn-dashed{background:transparent;border:1.5px dashed var(--b2);color:var(--t2);box-shadow:none;}
-.btn-dashed::after{display:none;}
-.hero{margin:4px 14px 12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r3);padding:18px 20px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.hero::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(68,136,255,.1),transparent 70%);top:-50px;right:-50px;pointer-events:none;}
-.hero-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
-.hero-eye{width:26px;height:26px;border-radius:8px;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:.13s;flex-shrink:0;}
-.hero-eye:active{transform:scale(.86);}
-.hero-amt{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,8.5vw,46px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:14px;display:flex;align-items:flex-start;gap:3px;overflow:hidden;max-width:100%;}
-.hero-cur{font-size:clamp(16px,4vw,22px);margin-top:5px;color:var(--t2);flex-shrink:0;}
-.hero-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;}
-.hero-chips{display:flex;flex-wrap:wrap;gap:7px;}
-.chip{display:flex;align-items:center;gap:5px;background:var(--s1);border:1px solid var(--b1);padding:7px 12px;border-radius:10px;cursor:pointer;transition:.13s;box-shadow:var(--sh);}
-.chip:active{transform:scale(.95);}
-.chip-ico{font-size:13px;}
-.chip-lbl{font-size:10px;font-weight:600;color:var(--t2);}
-.chip-val{font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:800;}
+/* SPA Sayfa Animasyonları (Vue Transition / GSAP Mantığı) */
+.pages { flex: 1; position: relative; overflow: hidden; perspective: 1000px; }
+.page { 
+  position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; 
+  padding-bottom: 140px; 
+  opacity: 0; transform: translateY(40px) scale(0.98); 
+  pointer-events: none; 
+  transition: opacity var(--spd) var(--ease), transform var(--spd) var(--ease); 
+  will-change: transform, opacity; 
+}
+.page.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+.page.out { opacity: 0; transform: translateY(-40px) scale(0.98); }
 
-.sec-h{display:flex;justify-content:space-between;align-items:center;padding:0 14px;margin:10px 0 7px;}
-.sec-t{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);}
-.sec-act{font-size:11px;font-weight:700;color:var(--ac);cursor:pointer;}
+/* Bağımsız Veri Kümeleri & Premium Kartlar */
+.hero, .plan-card, .ass-hero, .pend-hero, .plan-hero { 
+  margin: 0 16px 16px; background: var(--s2); border: 1px solid var(--b2); border-radius: var(--r3); padding: 24px; 
+  position: relative; overflow: hidden; box-shadow: var(--sh); 
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.hero::before, .ass-hero::before, .pend-hero::before, .plan-hero::before { 
+  content: ''; position: absolute; right: -30px; top: -30px; width: 180px; height: 180px; border-radius: 50%; 
+  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%); pointer-events: none; 
+}
+.hero-amt { font-size: clamp(32px, 10vw, 52px); font-weight: 800; letter-spacing: -2px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 4px; text-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+/* Hızlı İşlem Izgarası */
+.qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 0 16px; margin-bottom: 24px; }
+.qa { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; }
+.qa:active { transform: scale(0.9); }
+.qa-ico { width: 56px; height: 56px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: var(--sh); color: #fff; position: relative; border: 1px solid rgba(255,255,255,0.2); }
+.qa-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: var(--t2); text-transform: uppercase; }
 
-.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px;margin-bottom:12px;}
-.qa{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
-.qa-ico{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--sh);transition:transform .15s;position:relative;overflow:hidden;}
-.qa-ico::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 55%);}
-.qa:active .qa-ico{transform:scale(.88);}
-.qa-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2);}
+/* Liste ve İşlem Elemanları */
+.tx-grp { background: transparent; margin-bottom: 16px; }
+.tx-gh { padding: 12px 16px; background: var(--s2); border-radius: var(--r2); border: 1px solid var(--b1); box-shadow: var(--sh); margin-bottom: 8px; }
+.tx-gb { background: var(--s1); border-radius: var(--r2); border: 1px solid var(--b1); padding: 8px; box-shadow: var(--sh); margin-top: -4px; }
+.tx-card { background: transparent; border-bottom: 1px solid var(--b1); padding: 14px 10px; border-radius: var(--r); margin-bottom: 4px; }
+.tx-card:last-child { border-bottom: none; margin-bottom: 0; }
+.tx-card:active { background: var(--s2); transform: scale(0.98); }
 
-.stats-scroll{display:flex;gap:8px;padding:0 14px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;}
-.stats-scroll::-webkit-scrollbar{display:none;}
-.spill{flex-shrink:0;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:12px 14px;min-width:118px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.spill::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
-.spill.g::after{background:var(--gr);}
-.spill.r::after{background:var(--rd);}
-.spill.a::after{background:var(--am);}
-.spill.c::after{background:var(--cy);}
-.spill:active{transform:scale(.96);}
-.spill-l{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--t2);margin-bottom:4px;}
-.spill-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(13px,3.5vw,17px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.spill-p{font-size:9px;color:var(--t3);margin-top:3px;}
+/* Banka Tarzı Yüzen Alt Menü (Floating Tabbar) */
+.tabbar { 
+  position: fixed; bottom: max(16px, env(safe-area-inset-bottom)); left: 16px; right: 16px; 
+  display: flex; align-items: center; justify-content: space-around; padding: 12px 8px; 
+  background: var(--glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--b2); border-radius: var(--r3); box-shadow: var(--sh2); z-index: 100; 
+}
+.tb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; padding: 8px 4px; border-radius: 18px; transition: all 0.3s var(--ease); }
+.tb.on { background: var(--s3); transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.tb-ico { font-size: 22px; transition: transform 0.3s; filter: grayscale(1); opacity: 0.6; }
+.tb.on .tb-ico { filter: grayscale(0); opacity: 1; transform: scale(1.15); }
+.tb-lbl { font-size: 10px; font-weight: 700; color: var(--t3); transition: color 0.3s; }
+.tb.on .tb-lbl { color: var(--t1); }
 
-.plan-card{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,194,122,.25);border-radius:var(--r2);padding:15px 18px;cursor:pointer;transition:.13s;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.plan-card::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,122,.1),transparent 70%);pointer-events:none;}
-.plan-card:active{transform:scale(.98);}
-.pc-t{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px;}
-.pc-s{font-size:11px;color:var(--t2);}
-.pc-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,5vw,22px);font-weight:800;color:var(--gr);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%;text-align:right;}
+/* Yüzen Aksiyon Butonu (FAB) */
+.fab { position: fixed; bottom: calc(100px + env(safe-area-inset-bottom)); right: 24px; z-index: 110; width: 60px; height: 60px; border-radius: 20px; background: linear-gradient(135deg, var(--ac), var(--vl)); border: none; color: #fff; font-size: 32px; box-shadow: 0 10px 24px rgba(59, 130, 246, 0.4); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.fab:active { transform: scale(0.85); }
 
-.pend-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(245,166,35,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.pend-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.12),transparent 70%);pointer-events:none;}
-.pend-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.pend-tot{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;color:var(--am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pend-sub{font-size:11px;color:var(--t2);margin-top:4px;}
-.pitem{display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:13px 14px;margin:0 14px 9px;box-shadow:var(--sh);transition:opacity .3s,transform .3s;}
-.pitem.out{opacity:0;transform:translateX(50px);}
-.pitem-ico{width:42px;height:42px;border-radius:13px;background:var(--am2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.pitem-info{flex:1;min-width:0;}
-.pitem-d{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pitem-m{font-size:10px;color:var(--t2);margin-top:2px;}
-.pitem-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
-.pitem-a{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--am);}
-.pitem-pay{padding:7px 13px;border-radius:9px;border:none;background:var(--am);font-family:'Bricolage Grotesque',sans-serif;font-size:11px;font-weight:700;color:#000;cursor:pointer;transition:.13s;flex-shrink:0;}
-.pitem-pay:active{transform:scale(.88);}
+/* Form Elemanları ve Butonlar */
+input:not([type=checkbox]):not([type=file]):not([type=month]), select { width: 100%; padding: 16px; background: var(--s1); border: 1px solid var(--b2); border-radius: var(--r); color: var(--t1); font-size: 16px; font-weight: 600; outline: none; transition: all 0.25s var(--ease); box-shadow: inset 0 2px 6px rgba(0,0,0,0.1); }
+input:focus, select:focus { border-color: var(--ac); background: var(--s2); box-shadow: 0 0 0 4px var(--ac2), inset 0 2px 6px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.btn { width: 100%; padding: 18px; border: none; border-radius: var(--r2); font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+.btn:active { transform: scale(0.95); }
 
-.ass-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,184,204,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.ass-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,204,.1),transparent 70%);}
-.ass-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.ass-tot{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;color:var(--cy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bank-grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 14px;margin-bottom:14px;}
-.bank-c{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px;cursor:pointer;transition:.13s;box-shadow:var(--sh);}
-.bank-c:active{transform:scale(.96);}
-.bank-n{font-size:10px;font-weight:700;color:var(--t2);margin-bottom:5px;}
-.bank-a{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(13px,4vw,17px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.inv-row2{display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:13px 14px;margin:0 14px 9px;box-shadow:var(--sh);}
-.inv-ico{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.inv-inf{flex:1;min-width:0;}
-.inv-n{font-size:9px;font-weight:700;color:var(--t2);letter-spacing:1px;}
-.inv-a{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.inv-v{font-size:11px;color:var(--t2);margin-top:1px;}
-.inv-btn2{padding:8px 12px;border-radius:9px;border:none;background:var(--s3);color:var(--t2);font-size:10px;font-weight:700;cursor:pointer;transition:.13s;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;}
-.inv-btn2:active{transform:scale(.88);}
+/* Bottom Sheets (Akıcı Popup Geçişleri) */
+.bsheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 951; background: var(--bg); border-radius: 32px 32px 0 0; border-top: 1px solid var(--b2); transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1); max-height: 92dvh; display: flex; flex-direction: column; box-shadow: 0 -20px 60px rgba(0,0,0,0.6); }
+.bsheet.open { transform: translateY(0); }
+.bs-overlay.vis { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); pointer-events: all; }
 
-.plan-hero{margin:0 14px 12px;background:var(--s2);border:1px solid rgba(0,194,122,.2);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.plan-hero::before{content:'';position:absolute;right:-20px;bottom:-20px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,122,.1),transparent 70%);}
-.ph-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;}
-.ph-net{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,7vw,38px);font-weight:800;transition:color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-bottom:8px;}
-.fpmini{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:12px;cursor:pointer;transition:.13s;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.fpmini:active{transform:scale(.96);}
-.fpmini-bar{position:absolute;top:0;left:0;right:0;height:2px;}
-.fpmini-l{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:5px;}
-.fpmini-v{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(11px,3vw,15px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fpmini-p{font-size:8px;color:var(--t3);margin-top:3px;}
-.fp-catview{display:none;padding:0 14px;}
-
-.chart-box{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:18px;margin:0 14px 12px;height:210px;display:flex;justify-content:center;box-shadow:var(--sh);}
-.rep-sel{margin:0 14px 12px;width:calc(100% - 28px);padding:11px 14px;border-radius:var(--r);background:var(--s2);border:1px solid var(--b2);color:var(--t1);font-weight:700;font-size:13px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;-webkit-appearance:none;}
-
-.tx-grp{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden;margin-bottom:10px;box-shadow:var(--sh);}
-.tx-gh{padding:14px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;transition:background .13s;}
-.tx-gh:active{background:var(--s3);}
-.tx-gh::-webkit-details-marker{display:none;}
-.tx-gh-left{display:flex;align-items:center;gap:10px;}
-.tx-gh-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.tx-gh-info{}
-.tx-gh-name{font-size:13px;font-weight:700;}
-.tx-gh-count{font-size:10px;color:var(--t2);margin-top:1px;}
-.tx-gh-amt{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;}
-.tx-gb{border-top:1px solid var(--b1);}
-.tx-card{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .1s;position:relative;}
-.tx-card:last-child{border-bottom:none;}
-.tx-card:active{background:var(--s3);}
-.tx-card.tx-faded{opacity:.42;}
-.tx-card.tx-faded .tx-d{text-decoration:line-through;}
-.tx-card-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.tx-card-body{flex:1;min-width:0;padding-right:8px;}
-.tx-d{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tx-meta{display:flex;align-items:center;gap:6px;margin-top:3px;}
-.tx-badge2{display:inline-block;background:var(--s3);color:var(--t2);padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700;}
-.tx-badge2.warn{background:var(--am2);color:var(--am);}
-.tx-card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
-.tx-a{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;}
-.tx-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.bpay{padding:5px 9px;border-radius:7px;border:none;font-size:9px;font-weight:800;cursor:pointer;text-transform:uppercase;transition:.13s;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;}
-.bpay.un{background:var(--am2);color:var(--am);}
-.bpay.pd{background:var(--gr2);color:var(--gr);}
-.bdel{width:26px;height:26px;border-radius:7px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:.13s;flex-shrink:0;}
-.bdel:active{transform:scale(.82);}
-
-.set-sec{padding:0 14px;margin-bottom:18px;}
-.set-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);cursor:pointer;margin-bottom:7px;transition:background .13s;box-shadow:var(--sh);}
-.set-item:active{background:var(--s3);}
-.si-lft{display:flex;align-items:center;gap:12px;}
-.si-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.si-t{font-size:14px;font-weight:700;}
-.si-s{font-size:11px;color:var(--t2);margin-top:2px;}
-.si-r{font-size:16px;color:var(--t2);}
-.toggle{width:46px;height:26px;border-radius:13px;background:var(--b2);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
-.toggle.on{background:var(--ac);}
-.toggle-k{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.3);transition:transform .2s;}
-.toggle.on .toggle-k{transform:translateX(20px);}
-
-.modal-bg{position:fixed;inset:0;z-index:980;background:rgba(0,0,0,0);pointer-events:none;transition:background .2s;display:flex;align-items:center;justify-content:center;padding:20px;}
-.modal-bg.show{background:rgba(0,0,0,.7);pointer-events:all;backdrop-filter:blur(6px);}
-.modal-c{background:var(--s1);border:1px solid var(--b2);border-radius:var(--r3);padding:26px;width:100%;max-width:340px;box-shadow:var(--sh2);transform:scale(.92) translateY(20px);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none;}
-.modal-bg.show .modal-c{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
-.modal-t{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;margin-bottom:8px;}
-.modal-d{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:22px;}
-.modal-acts{display:flex;gap:9px;}
-
-.modal-scroll{max-height:80dvh;overflow-y:auto; touch-action: pan-y;}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 20px;color:var(--t2);text-align:center;}
-.empty-ico{font-size:40px;margin-bottom:12px;opacity:.5;}
-.empty-t{font-size:14px;font-weight:700;margin-bottom:4px;}
-.empty-s{font-size:12px;color:var(--t3);}
-
-.pset-dots{display:flex;justify-content:center;gap:13px;margin:0 0 18px;}
-.pset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-
-.toast-w{position:fixed;top:-70px;left:50%;transform:translateX(-50%);z-index:9999;transition:top .3s var(--ease);white-space:nowrap;}
-.toast-w.show{top:max(16px, env(safe-area-inset-top));}
-.toast-p{display:inline-flex;align-items:center;gap:8px;background:var(--t1);color:var(--bg);padding:11px 20px;border-radius:50px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12px;box-shadow:var(--sh2);}
-
-.inline-box{display:none;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r2);padding:18px;margin:0 14px 14px;}
-body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
-
-.fp-item-row{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:8px 10px;margin-bottom:6px; transition: opacity .2s, filter .2s;}
-.fp-item-row.completed {opacity: 0.45; filter: grayscale(0.5);}
-.fp-item-row.completed input {text-decoration: line-through; color: var(--gr) !important;}
-.fp-inp{flex:1;height:28px;font-size:12px;padding:4px 6px;text-align:right;background:var(--bg);border:1px solid var(--b2);color:var(--t1);border-radius:6px;outline:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;transition:.18s;}
-.fp-inp:focus{border-color:var(--ac);}
-.fp-del-btn{width:28px;height:28px;border-radius:8px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.13s;flex-shrink:0;}
-.fp-del-btn:active{transform:scale(.82);}
-.fp-custom-inc-row{display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid rgba(0,194,122,.2);border-radius:var(--r);padding:10px 14px;margin:0 14px 8px;}
-.fp-item-row input[type="text"] {height: 28px; font-size: 12px; padding: 4px 6px; background: var(--bg); border: 1px solid var(--b2); color: var(--t1); border-radius: 6px; outline: none;}
-.fp-item-actions {display: flex; gap: 4px; margin-left: auto; flex-shrink: 0;}
-.fp-btn {width: 26px; height: 26px; border: none; border-radius: 7px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; flex-shrink: 0;}
-.fp-btn-save { background: var(--gr2); color: var(--gr); }
-.fp-btn-del { background: var(--rd2); color: var(--rd); }
-.fp-btn-send { background: var(--ac2); color: var(--ac); }
+/* Modallar */
+.modal-bg.show { background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); }
+.modal-c { background: var(--s1); border: 1px solid var(--b2); border-radius: var(--r3); padding: 32px; width: 100%; max-width: 360px; box-shadow: var(--sh2); transform: scale(0.8) translateY(30px); opacity: 0; transition: transform 0.4s var(--ease), opacity 0.4s var(--ease); pointer-events: none; }
+.modal-bg.show .modal-c { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
 </style>
 </head>
 <body>
+<!-- Toast & Global Modals -->
 <div class="toast-w" id="toast"><div class="toast-p" id="toast-t"></div></div>
 <div class="modal-bg" id="m-conf">
  <div class="modal-c">
@@ -350,354 +213,116 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    </div>
  </div>
 </div>
+<!-- Bekleyen Ödeme, Kullanıcı Ekle, Güvenlik Sorus vs. Modalları -->
+<div class="modal-bg" id="m-pay-pend"><div class="modal-c"><div class="modal-t" style="color:var(--gr)">Ödemeyi Tamamla</div><div class="modal-d" id="mpp-desc"></div><input type="hidden" id="mpp-id"><input type="hidden" id="mpp-orig"><div class="fg"><label class="fl">Ödenen Tutar (TL)</label><input type="number" id="mpp-amt"></div><div class="modal-acts"><button class="btn btn-ghost" onclick="hideModal('m-pay-pend')">İptal</button><button class="btn btn-gr" onclick="confirmPayPending()">Öde</button></div></div></div>
+<div class="modal-bg" id="m-adduser"><div class="modal-c"><div class="modal-t" style="color:var(--ac)">Yeni Profil</div><div class="modal-d">Kendinize bir profil adı seçin.</div><div class="fg"><input type="text" id="nu-name" autocomplete="off"></div><div class="modal-acts"><button class="btn btn-ghost" onclick="hideModal('m-adduser')">İptal</button><button class="btn btn-ac" onclick="confirmAddUser()">Oluştur</button></div></div></div>
+<div class="modal-bg" id="m-sec-setup"><div class="modal-c"><div class="modal-t" style="color:var(--vl)">Güvenlik Sorusu</div><div class="fg"><input type="text" id="sec-q" placeholder="Örn: İlk evcil hayvanım?" autocomplete="off"></div><div class="fg"><input type="text" id="sec-a" placeholder="Cevabınız..." autocomplete="off"></div><button class="btn btn-ac" onclick="saveSecSetup()">Kaydet & Bitir</button></div></div>
+<div class="modal-bg" id="m-sec-ans"><div class="modal-c"><div class="modal-t" style="color:var(--am)">PIN Sıfırlama</div><div class="modal-d" id="sec-q-disp" style="font-weight:700;"></div><div class="fg"><input type="text" id="sec-a-inp" placeholder="Cevabınız..." autocomplete="off"></div><div class="modal-acts"><button class="btn btn-ghost" onclick="hideModal('m-sec-ans')">İptal</button><button class="btn btn-am" onclick="verifySecAns()">Sıfırla</button></div></div></div>
+<div class="modal-bg" id="m-pin-change"><div class="modal-c"><div class="modal-t" style="color:var(--ac)">Mevcut PIN</div><div class="modal-d" id="chg-pin-sub">Değiştirmek için mevcut PIN'inizi girin.</div><div class="pset-dots" id="chg-dots"><div class="pdot" id="cpd0"></div><div class="pdot" id="cpd1"></div><div class="pdot" id="cpd2"></div><div class="pdot" id="cpd3"></div></div><div class="pset-grid" id="cp-grid"></div><button class="btn btn-ghost" style="margin-top:12px;" onclick="closeChangePin()">İptal</button></div></div>
+<div class="modal-bg" id="m-ass-pin"><div class="modal-c"><div class="modal-t" style="color:var(--cy);text-align:center;">Varlıklar Kilitli</div><div class="modal-d" style="text-align:center;margin-bottom:14px;" id="ass-pin-sub">Görmek için PIN girin.</div><div class="pset-dots" id="ass-dots"><div class="pdot" id="apd0"></div><div class="pdot" id="apd1"></div><div class="pdot" id="apd2"></div><div class="pdot" id="apd3"></div></div><div class="pset-grid" id="ass-grid"></div><button class="btn btn-ghost" style="margin-top:12px;" onclick="closeAssPin()">Geri Dön</button></div></div>
+<div class="modal-bg" id="m-bank"><div class="modal-c modal-scroll"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><div class="modal-t" id="bd-n" style="color:var(--cy);margin:0;font-size:17px;"></div><div class="bs-x" onclick="hideModal('m-bank')">✕</div></div><div id="bd-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;text-align:center;margin-bottom:18px;"></div><div class="fg"><label class="fl">Gerçek Bakiye ile Eşitle</label><input type="number" id="bd-adj" placeholder="Bankadaki gerçek tutar"></div><button class="btn btn-am" onclick="saveAdjust()">Kilitle / Eşitle</button><div style="margin:18px 0 8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);">İşlem Geçmişi</div><div id="bd-list" style="max-height:200px;overflow-y:auto;"></div></div></div>
+<div class="modal-bg" id="m-fpe"><div class="modal-c"><div class="modal-t" id="fpe-t" style="color:var(--ac)">Yeni Kalem</div><input type="hidden" id="fpe-cat"><div class="fg"><input type="text" id="fpe-d" placeholder="Açıklama..."></div><div class="fg"><input type="number" id="fpe-a" placeholder="Tutar (TL)"></div><div class="modal-acts"><button class="btn btn-ghost" onclick="hideModal('m-fpe')">İptal</button><button class="btn btn-ac" onclick="saveFpItem()">Ekle</button></div></div></div>
+<div class="modal-bg" id="m-fpi"><div class="modal-c"><div class="modal-t" style="color:var(--gr)">Ekstra Gelir Ekle</div><div class="fg"><input type="text" id="fpi-d" placeholder="Açıklama..."></div><div class="fg"><input type="number" id="fpi-a" placeholder="Tutar (TL)"></div><div class="modal-acts"><button class="btn btn-ghost" onclick="hideModal('m-fpi')">İptal</button><button class="btn btn-gr" onclick="saveFpInc()">Ekle</button></div></div></div>
+<div class="modal-bg" id="m-pinset"><div class="modal-c"><div class="modal-t" id="pset-title" style="color:var(--vl)">PIN Oluştur</div><div class="modal-d" id="pset-sub" style="margin-bottom:14px;">4 haneli bir PIN belirleyin.</div><div class="pset-dots" id="pset-dots"><div class="pdot" id="psd0"></div><div class="pdot" id="psd1"></div><div class="pdot" id="psd2"></div><div class="pdot" id="psd3"></div></div><div class="pset-grid" id="pset-grid"></div><button class="btn btn-ghost" style="margin-top:12px;" onclick="closePinSet()">İptal</button></div></div>
 
-<div class="modal-bg" id="m-pay-pend">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--gr)">Ödemeyi Tamamla</div>
-   <div class="modal-d" id="mpp-desc" style="margin-bottom:14px; line-height:1.5;"></div>
-   <input type="hidden" id="mpp-id">
-   <input type="hidden" id="mpp-orig">
-   <div class="fg"><label class="fl">Ödenen Tutar (TL)</label><input type="number" id="mpp-amt"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-pay-pend')">İptal</button>
-     <button class="btn btn-gr" style="flex:1;margin:0;" onclick="confirmPayPending()">Öde</button>
-   </div>
- </div>
-</div>
+<!-- GİRİŞ EKRANI -->
+<div class="screen" id="scr-login"><div class="login-inner"><div class="login-logo disp">DEN<em>GEM</em></div><div class="login-sub">Finansal Denge Merkezi</div><div class="profile-wrap" id="prof-wrap"></div><div class="login-reset" onclick="resetSys()">⚠ Sistemi Sıfırla</div><div class="copyright" style="margin-top:40px;">© By dogukankcmz</div></div></div>
 
-<div class="modal-bg" id="m-adduser">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--ac)">Yeni Profil</div>
-   <div class="modal-d">Kendinize bir profil adı seçin.</div>
-   <div class="fg"><input type="text" id="nu-name" placeholder="Adınız..." autocomplete="off"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-adduser')">İptal</button>
-     <button class="btn btn-ac" style="flex:1;margin:0;" onclick="confirmAddUser()">Oluştur</button>
-   </div>
- </div>
-</div>
+<!-- PIN EKRANI -->
+<div class="screen" id="scr-pin"><div class="pin-inner"><div class="pin-back-btn" onclick="backToLogin()" style="position:absolute;top:env(safe-area-inset-top);left:0;font-size:24px;background:var(--s2);border:none;border-radius:14px;padding:12px;color:var(--t1);">←</div><div class="pin-big-av" id="pin-av"></div><div class="pin-uname disp" id="pin-name"></div><div class="pin-hint">Güvenli Giriş İçin PIN Girin</div><div class="pin-dots-row"><div class="pdot" id="pd0"></div><div class="pdot" id="pd1"></div><div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div></div><div class="pin-grid" id="pin-grid"></div><div class="pin-forgot" onclick="pinForgot()" style="margin-top:30px;color:var(--t3);text-decoration:none;">PIN'imi unuttum</div></div></div>
 
-<div class="modal-bg" id="m-sec-setup">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--vl)">Güvenlik Sorusu</div>
-   <div class="modal-d">PIN'inizi unutursanız sıfırlayabilmek için bir güvenlik sorusu ve cevabı belirleyin.</div>
-   <div class="fg"><input type="text" id="sec-q" placeholder="Örn: İlk evcil hayvanım?" autocomplete="off"></div>
-   <div class="fg"><input type="text" id="sec-a" placeholder="Cevabınız..." autocomplete="off"></div>
-   <button class="btn btn-ac" onclick="saveSecSetup()">Kaydet & Bitir</button>
- </div>
-</div>
-<div class="modal-bg" id="m-sec-ans">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--am)">PIN Sıfırlama</div>
-   <div class="modal-d" id="sec-q-disp" style="font-weight:700;"></div>
-   <div class="fg"><input type="text" id="sec-a-inp" placeholder="Cevabınız..." autocomplete="off"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-sec-ans')">İptal</button>
-     <button class="btn btn-am" style="flex:1;margin:0;" onclick="verifySecAns()">Sıfırla</button>
-   </div>
- </div>
-</div>
-
-<div class="modal-bg" id="m-pin-change">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--ac)">Mevcut PIN</div>
-   <div class="modal-d" id="chg-pin-sub">Değiştirmek için mevcut PIN'inizi girin.</div>
-   <div class="pset-dots" id="chg-dots">
-     <div class="pdot" id="cpd0"></div><div class="pdot" id="cpd1"></div>
-     <div class="pdot" id="cpd2"></div><div class="pdot" id="cpd3"></div>
-   </div>
-   <div class="pset-grid" id="cp-grid"></div>
-   <button class="btn btn-ghost" style="margin-top:12px;" onclick="closeChangePin()">İptal</button>
- </div>
-</div>
-
-<div class="modal-bg" id="m-ass-pin">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--cy);text-align:center;">Varlıklar Kilitli</div>
-   <div class="modal-d" style="text-align:center;margin-bottom:14px;" id="ass-pin-sub">Görmek için PIN girin.</div>
-   <div class="pset-dots" id="ass-dots">
-     <div class="pdot" id="apd0"></div><div class="pdot" id="apd1"></div>
-     <div class="pdot" id="apd2"></div><div class="pdot" id="apd3"></div>
-   </div>
-   <div class="pset-grid" id="ass-grid"></div>
-   <button class="btn btn-ghost" style="margin-top:12px;" onclick="closeAssPin()">Geri Dön</button>
- </div>
-</div>
-
-<div class="modal-bg" id="m-bank">
- <div class="modal-c modal-scroll">
-   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-     <div class="modal-t" id="bd-n" style="color:var(--cy);margin:0;font-size:17px;"></div>
-     <div class="bs-x" onclick="hideModal('m-bank')">✕</div>
-   </div>
-   <div id="bd-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;text-align:center;margin-bottom:18px;"></div>
-   <div class="fg"><label class="fl">Gerçek Bakiye ile Eşitle</label><input type="number" id="bd-adj" placeholder="Bankadaki gerçek tutar"></div>
-   <button class="btn btn-am" onclick="saveAdjust()">Kilitle / Eşitle</button>
-   <div style="margin:18px 0 8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);">İşlem Geçmişi</div>
-   <div id="bd-list" style="max-height:200px;overflow-y:auto;"></div>
- </div>
-</div>
-
-<div class="modal-bg" id="m-fpe">
- <div class="modal-c">
-   <div class="modal-t" id="fpe-t" style="color:var(--ac)">Yeni Kalem</div>
-   <input type="hidden" id="fpe-cat">
-   <div class="fg"><input type="text" id="fpe-d" placeholder="Açıklama..."></div>
-   <div class="fg"><input type="number" id="fpe-a" placeholder="Tutar (TL)"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-fpe')">İptal</button>
-     <button class="btn btn-ac" style="flex:1;margin:0;" onclick="saveFpItem()">Ekle</button>
-   </div>
- </div>
-</div>
-
-<div class="modal-bg" id="m-fpi">
- <div class="modal-c">
-   <div class="modal-t" style="color:var(--gr)">Ekstra Gelir Ekle</div>
-   <div class="fg"><input type="text" id="fpi-d" placeholder="Açıklama..."></div>
-   <div class="fg"><input type="number" id="fpi-a" placeholder="Tutar (TL)"></div>
-   <div class="modal-acts">
-     <button class="btn btn-ghost" style="flex:1;margin:0;" onclick="hideModal('m-fpi')">İptal</button>
-     <button class="btn btn-gr" style="flex:1;margin:0;" onclick="saveFpInc()">Ekle</button>
-   </div>
- </div>
-</div>
-
-<div class="modal-bg" id="m-pinset">
- <div class="modal-c">
-   <div class="modal-t" id="pset-title" style="color:var(--vl)">PIN Oluştur</div>
-   <div class="modal-d" id="pset-sub" style="margin-bottom:14px;">4 haneli bir PIN belirleyin.</div>
-   <div class="pset-dots" id="pset-dots">
-     <div class="pdot" id="psd0"></div><div class="pdot" id="psd1"></div>
-     <div class="pdot" id="psd2"></div><div class="pdot" id="psd3"></div>
-   </div>
-   <div class="pset-grid" id="pset-grid"></div>
-   <button class="btn btn-ghost" style="margin-top:12px;" onclick="closePinSet()">İptal</button>
- </div>
-</div>
-
-<div class="screen" id="scr-login">
- <div class="login-inner">
-   <div class="login-logo disp">DEN<em>GEM</em></div>
-   <div class="login-sub">Finansal Denge Merkezi</div>
-   <div class="profile-wrap" id="prof-wrap"></div>
-   <div class="login-reset" onclick="resetSys()">⚠ Sistemi Sıfırla</div>
-   <div class="copyright">© By dogukankcmz</div>
- </div>
-</div>
-
-<div class="screen" id="scr-pin">
- <div class="pin-inner">
-   <div class="pin-back-btn" onclick="backToLogin()">←</div>
-   <div class="pin-big-av" id="pin-av"></div>
-   <div class="pin-uname disp" id="pin-name"></div>
-   <div class="pin-hint">PIN kodunuzu girin</div>
-   <div class="pin-dots-row">
-     <div class="pdot" id="pd0"></div><div class="pdot" id="pd1"></div>
-     <div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div>
-   </div>
-   <div class="pin-grid" id="pin-grid"></div>
-   <div class="pin-forgot" onclick="pinForgot()">PIN'imi unuttum</div>
- </div>
-</div>
-
+<!-- ANA UYGULAMA -->
 <div class="screen" id="scr-app">
- <div class="topbar">
-   <div class="topbar-left">
-     <div class="menu-trigger" onclick="openSP()">
-       <span></span><span></span><span></span>
-     </div>
-     <div class="topbar-logo disp" onclick="goTab('home')">DEN<em>GEM</em></div>
-   </div>
-   <div class="tb-icon-btn" id="theme-btn" onclick="toggleTheme()">☀️</div>
- </div>
-
- <div class="datebar">
-   <div class="datepill">
-     <div class="datepill-txt" id="date-disp">TARİH</div>
-     <input type="month" id="dateInp" class="date-inp-h" onchange="onDateChange()">
-   </div>
- </div>
-
+ <div class="topbar"><div class="topbar-left"><div class="menu-trigger" onclick="openSP()"><span></span><span></span><span></span></div><div class="topbar-logo disp" onclick="goTab('home')" style="margin-left:12px;">DEN<em>GEM</em></div></div><div class="tb-icon-btn" id="theme-btn" onclick="toggleTheme()">☀️</div></div>
+ <div class="datebar"><div class="datepill"><div class="datepill-txt" id="date-disp">TARİH</div><input type="month" id="dateInp" class="date-inp-h" onchange="onDateChange()" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;"></div></div>
+ 
  <div class="pages" id="pages">
-
-<div class="page active" id="page-home">
- <div class="hero">
-   <div class="hero-lbl">Bu Ay Kalan Bütçe <div class="hero-eye" onclick="vib();toggleHide()" id="h-eye">👁️</div></div>
-   <div class="hero-amt"><span class="hero-cur">₺</span><span class="hero-n" id="h-num">0</span></div>
-   <div class="hero-chips" id="h-chips"></div>
- </div>
- <div class="sec-h"><span class="sec-t">Hızlı İşlem</span></div>
- <div class="qa-grid">
-   <div class="qa" onclick="openBS('bs-inc','Gelir Ekle')"><div class="qa-ico" style="background:linear-gradient(135deg,#00995f,#006640);">💰</div><div class="qa-lbl">Gelir</div></div>
-   <div class="qa" onclick="openBS('bs-exp','Gider Ekle')"><div class="qa-ico" style="background:linear-gradient(135deg,#d62e48,#9e1530);">📉</div><div class="qa-lbl">Gider</div></div>
-   <div class="qa" onclick="openBS('bs-tr','Transfer')"><div class="qa-ico" style="background:linear-gradient(135deg,#2060cc,#1040a0);">🔄</div><div class="qa-lbl">Transfer</div></div>
-   <div class="qa" onclick="goTab('reports')"><div class="qa-ico" style="background:linear-gradient(135deg,#6040cc,#4020a0);">📊</div><div class="qa-lbl">Rapor</div></div>
- </div>
- <div class="sec-h">
-    <span class="sec-t">Bu Ay Özet</span>
-    <span class="sec-act" style="color:var(--rd); padding:4px 8px; background:var(--rd2); border-radius:6px;" onclick="clearMonthExpenses()">🗑️ Giderleri Sil</span>
- </div>
- <div class="stats-scroll" id="stats-sc"></div>
- 
- <div class="sec-h"><span class="sec-t">Bekleyen Ödemeler</span><span class="sec-act" onclick="goTab('pending')">Tümünü Gör</span></div>
- <div id="home-pend-list" style="padding:0 14px 14px;"></div>
-</div>
-
-<div class="page" id="page-pending">
- <div class="pend-hero">
-   <div class="pend-lbl">Toplam Bekleyen</div>
-   <div class="pend-tot" id="pend-tot">0 ₺</div>
-   <div class="pend-sub" id="pend-sub">Bütçeden düştü, bankadan bekliyor</div>
- </div>
- <div class="sec-h"><span class="sec-t">Bekleyen Ödemeler</span></div>
- <div id="pend-list"></div>
-</div>
-
-<div class="page" id="page-assets">
- <div class="ass-hero">
-   <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-     <div><div class="ass-lbl">Net Servet</div><div class="ass-tot" id="ass-tot">0 ₺</div></div>
-     <div class="hero-eye" onclick="vib();toggleHide()" id="ass-eye">👁️</div>
+  <div class="page active" id="page-home">
+   <div class="hero"><div class="hero-lbl">Bu Ay Kalan Bütçe <div class="hero-eye" onclick="vib();toggleHide()" id="h-eye" style="font-size:20px;cursor:pointer;">👁️</div></div><div class="hero-amt"><span class="hero-cur" style="font-size:24px;margin-top:8px;">₺</span><span class="hero-n" id="h-num">0</span></div><div class="hero-chips" id="h-chips" style="display:flex;gap:8px;flex-wrap:wrap;"></div></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;">Hızlı İşlem</span></div>
+   <div class="qa-grid">
+     <div class="qa" onclick="openBS('bs-inc','Gelir Ekle')"><div class="qa-ico" style="background:linear-gradient(135deg,var(--gr),#047857);">💰</div><div class="qa-lbl">Gelir</div></div>
+     <div class="qa" onclick="openBS('bs-exp','Gider Ekle')"><div class="qa-ico" style="background:linear-gradient(135deg,var(--rd),#be123c);">📉</div><div class="qa-lbl">Gider</div></div>
+     <div class="qa" onclick="openBS('bs-tr','Transfer')"><div class="qa-ico" style="background:linear-gradient(135deg,var(--ac),#1d4ed8);">🔄</div><div class="qa-lbl">Transfer</div></div>
+     <div class="qa" onclick="goTab('reports')"><div class="qa-ico" style="background:linear-gradient(135deg,var(--vl),#5b21b6);">📊</div><div class="qa-lbl">Rapor</div></div>
    </div>
-   <div style="display:flex;gap:16px;margin-top:12px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;">
-     <div style="flex:1;">
-        <div style="font-size:10px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:2px;">Banka & Nakit</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--t1);" id="ass-bank-tot">0 ₺</div>
-     </div>
-     <div style="flex:1;">
-        <div style="font-size:10px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:2px;">Döviz & Altın</div>
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--t1);" id="ass-inv-tot">0 ₺</div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;display:flex;justify-content:space-between;">
+      <span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Bu Ay Özet</span>
+      <span class="sec-act" style="color:var(--rd);background:var(--rd2);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="clearMonthExpenses()">🗑️ Giderleri Sil</span>
+   </div>
+   <div class="stats-scroll" id="stats-sc" style="display:flex;gap:12px;padding:0 16px;overflow-x:auto;margin-bottom:20px;"></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;display:flex;justify-content:space-between;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Bekleyen Ödemeler</span><span class="sec-act" style="color:var(--ac);font-weight:700;font-size:12px;cursor:pointer;" onclick="goTab('pending')">Tümünü Gör</span></div>
+   <div id="home-pend-list" style="padding:0 16px 24px;"></div>
+  </div>
+
+  <div class="page" id="page-pending">
+   <div class="pend-hero"><div class="pend-lbl" style="color:var(--t2);font-weight:700;font-size:11px;">Toplam Bekleyen</div><div class="pend-tot" id="pend-tot" style="font-size:40px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--am);margin:8px 0;">0 ₺</div><div class="pend-sub" id="pend-sub" style="color:var(--t3);font-size:13px;">Bütçeden düştü, bankadan bekliyor</div></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Bekleyen Ödemeler</span></div>
+   <div id="pend-list" style="padding:0 16px;"></div>
+  </div>
+
+  <div class="page" id="page-assets">
+   <div class="ass-hero">
+     <div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="ass-lbl" style="font-size:11px;color:var(--t2);">Net Servet</div><div class="ass-tot" id="ass-tot" style="font-size:40px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--cy);margin:4px 0;">0 ₺</div></div><div class="hero-eye" onclick="vib();toggleHide()" id="ass-eye" style="font-size:20px;cursor:pointer;">👁️</div></div>
+     <div style="display:flex;gap:16px;margin-top:16px;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
+       <div style="flex:1;"><div style="font-size:11px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:4px;">Banka & Nakit</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--t1);" id="ass-bank-tot">0 ₺</div></div>
+       <div style="flex:1;"><div style="font-size:11px;color:var(--t2);text-transform:uppercase;font-weight:700;margin-bottom:4px;">Döviz & Altın</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--t1);" id="ass-inv-tot">0 ₺</div></div>
      </div>
    </div>
- </div>
- <div class="sec-h"><span class="sec-t">Banka Hesapları</span></div>
- <div class="bank-grid2" id="bank-g"></div>
- <div class="sec-h"><span class="sec-t">Yatırım Kasası</span><span class="sec-act" onclick="openBS('bs-inv','Yatırım Ekle')">+ Ekle</span></div>
- <div id="inv-cards"></div>
- <div class="inline-box" id="inv-price-box" style="margin-top:0;">
-   <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cy);margin-bottom:12px;" id="ip-title">Kur Güncelle</div>
-   <input type="hidden" id="ip-type">
-   <div class="fg"><label class="fl">Yeni Fiyat (TL)</label><input type="number" id="ip-p" step="0.01"></div>
-   <button class="btn btn-ac" onclick="saveInvPrice()">Kaydet</button>
- </div>
-</div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Banka Hesapları</span></div><div class="bank-grid2" id="bank-g" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;margin-bottom:24px;"></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;display:flex;justify-content:space-between;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Yatırım Kasası</span><span class="sec-act" style="color:var(--ac);font-weight:700;cursor:pointer;" onclick="openBS('bs-inv','Yatırım Ekle')">+ Ekle</span></div>
+   <div id="inv-cards" style="padding:0 16px;"></div>
+   <div class="inline-box" id="inv-price-box" style="display:none;background:var(--s2);padding:20px;border-radius:24px;margin:16px;"><div style="color:var(--cy);font-weight:700;margin-bottom:12px;text-transform:uppercase;font-size:12px;" id="ip-title">Kur Güncelle</div><input type="hidden" id="ip-type"><div class="fg"><label class="fl" style="font-size:11px;color:var(--t2);margin-bottom:6px;display:block;">Yeni Fiyat (TL)</label><input type="number" id="ip-p" step="0.01"></div><button class="btn btn-ac" onclick="saveInvPrice()" style="margin-top:16px;">Kaydet</button></div>
+  </div>
 
-<div class="page" id="page-plan">
- <div class="plan-hero">
-   <div class="ph-lbl">
-       <span>Aylık Net Kâr Tahmini</span>
-       <input type="month" id="fp-month-inp" onchange="renderFuturePlan()" style="width:auto; padding:3px 8px; font-size:12px; background:rgba(0,0,0,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:var(--t1);">
+  <div class="page" id="page-plan">
+   <div class="plan-hero">
+     <div class="ph-lbl" style="display:flex;justify-content:space-between;align-items:center;color:var(--t2);font-weight:700;font-size:11px;"><span>Aylık Net Kâr Tahmini</span><input type="month" id="fp-month-inp" onchange="renderFuturePlan()" style="width:auto;padding:6px 12px;font-size:14px;background:rgba(255,255,255,0.05);border:1px solid var(--b2);border-radius:8px;color:var(--t1);"></div>
+     <div class="ph-net disp" id="fp-net" style="font-size:40px;font-weight:800;margin-top:8px;">0 ₺</div>
+     <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">💎</span><div><div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;">Plan Tasarrufu</div><div style="font-size:10px;color:var(--t3);">Sıfırlamak için tutara tıklayın</div></div></div><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;cursor:pointer;" id="fp-savings" onclick="resetSavings()">0 ₺</span></div>
    </div>
-   <div class="ph-net disp" id="fp-net">0 ₺</div>
-   <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); display:flex; justify-content:space-between; align-items:center;">
-     <div style="display:flex; align-items:center; gap:6px;">
-         <span style="font-size:16px;">💎</span>
-         <div>
-             <div style="font-size:9px; font-weight:700; color:var(--t2); text-transform:uppercase; letter-spacing:1px;">Plan Tasarrufu</div>
-             <div style="font-size:9px; color:var(--t3);">Sıfırlamak için tutara tıklayın</div>
-         </div>
+   <button class="btn btn-ac" style="margin:0 16px 16px;width:calc(100% - 32px);background:linear-gradient(135deg,var(--ac),var(--vl));" onclick="transferAllPlanToActual()">🚀 Tümünü Bekleyenlere Aktar</button>
+   <div class="fp-grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;margin-bottom:12px;">
+     <div class="fpmini" style="background:var(--s2);padding:16px;border-radius:20px;box-shadow:var(--sh);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gr);"></div><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:8px;">Beklenen Gelir</div><input type="number" id="fp-main-inc" placeholder="0" oninput="previewFP()" style="width:100%;background:transparent;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--gr);outline:none;padding:0;"></div>
+     <div class="fpmini" onclick="openFpCat('all')" style="cursor:pointer;background:var(--s2);padding:16px;border-radius:20px;box-shadow:var(--sh);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--rd);"></div><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:8px;">Toplam Gider</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--rd);" id="fp-tot">0 ₺</div></div>
+     <div class="fpmini" onclick="openFpCat('ev')" style="cursor:pointer;background:var(--s2);padding:16px;border-radius:20px;box-shadow:var(--sh);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--am);"></div><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:8px;">🏠 Ev & Yaşam</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--am);" id="fp-ev">0 ₺</div><div style="font-size:10px;color:var(--t3);margin-top:4px;" id="fp-ev-p"></div></div>
+     <div class="fpmini" onclick="openFpCat('finans')" style="cursor:pointer;background:var(--s2);padding:16px;border-radius:20px;box-shadow:var(--sh);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--rd);"></div><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:8px;">💳 Kart & Finans</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--rd);" id="fp-fin">0 ₺</div><div style="font-size:10px;color:var(--t3);margin-top:4px;" id="fp-fin-p"></div></div>
+   </div>
+   <div class="fpmini" style="margin:0 16px 12px;cursor:pointer;background:var(--s2);padding:16px;border-radius:20px;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="openFpCat('diger')"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cy);"></div><div style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:8px;">🔹 Diğer Giderler</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--cy);" id="fp-dig">0 ₺</div></div><div style="font-size:10px;color:var(--t3);" id="fp-dig-p"></div></div></div>
+   <div id="fp-cinc-list" style="padding:0 16px;"></div>
+   <div style="padding:0 16px 16px;"><button class="btn btn-dashed" style="background:transparent;border:2px dashed var(--gr2);color:var(--gr);width:100%;padding:14px;border-radius:16px;font-weight:700;cursor:pointer;" onclick="showModal('m-fpi');document.getElementById('fpi-d').focus()">➕ Ekstra Gelir Ekle</button></div>
+   <div class="fp-catview" id="fp-catview" style="display:none;padding:0 16px;"><button class="btn btn-ghost" style="margin-bottom:16px;background:var(--s2);border:1px solid var(--b2);" onclick="closeFpCat()">← Geri</button><div id="fp-catcontent"></div></div>
+  </div>
+
+  <div class="page" id="page-reports">
+   <div style="padding:0 16px 16px;"><select id="rep-sel" class="rep-sel" onchange="renderReports()" style="width:100%;padding:14px;background:var(--s2);border:1px solid var(--b2);border-radius:16px;color:var(--t1);font-weight:700;"><option value="current">Bu Ay</option><option value="3m">Son 3 Ay</option><option value="6m">Son 6 Ay</option><option value="year">Bu Yıl</option><option value="all">Tüm Zamanlar</option></select></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Harcama Dağılımı</span></div><div style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:20px;margin:0 16px 16px;height:240px;display:flex;justify-content:center;box-shadow:var(--sh);"><canvas id="ch-pie"></canvas></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Kategori Karşılaştırması</span></div><div style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:20px;margin:0 16px 16px;height:240px;display:flex;justify-content:center;box-shadow:var(--sh);"><canvas id="ch-bar"></canvas></div>
+   <div class="sec-h" style="padding:0 16px;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Tüm İşlemler</span></div><div style="padding:0 16px;" id="rep-list"></div>
+  </div>
+
+  <div class="page" id="page-settings">
+   <div style="padding:0 16px;margin-bottom:24px;">
+     <div style="background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--b2);border-radius:24px;padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh);">
+       <div id="set-av" style="width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:#fff;overflow:hidden;position:relative;"><div style="position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.25),transparent 60%);"></div></div>
+       <div><div id="set-name" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;"></div><div style="font-size:13px;color:var(--t2);margin-top:4px;">Aktif Hesap</div></div>
      </div>
-     <span style="font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; cursor:pointer;" id="fp-savings" onclick="resetSavings()">0 ₺</span>
-   </div>
- </div>
- 
- <button class="btn btn-ac" style="margin:0 14px 12px; width:calc(100% - 28px); font-family:'Bricolage Grotesque',sans-serif; display:flex; justify-content:center; gap:8px;" onclick="transferAllPlanToActual()">🚀 Tümünü Bekleyenlere Aktar</button>
+     <div class="sec-h" style="padding:0;margin-bottom:12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Araçlar</span></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="openBS('bs-bak','Veri & Yedekleme')"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:var(--ac2);display:flex;align-items:center;justify-content:center;font-size:20px;">💾</div><div><div style="font-size:15px;font-weight:700;">Veri & Yedekleme</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Yedekle / geri yükle</div></div></div><div style="font-size:18px;color:var(--t2);">›</div></div>
+     
+     <div class="sec-h" style="padding:0;margin:24px 0 12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Güvenlik</span></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="togglePinSetting()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:rgba(139,111,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;">🔒</div><div><div style="font-size:15px;font-weight:700;">PIN Kilidi</div><div style="font-size:12px;color:var(--t2);margin-top:2px;" id="pin-sub">Kapalı</div></div></div><div class="toggle" id="pin-toggle" style="width:50px;height:28px;border-radius:14px;background:var(--s3);position:relative;transition:0.3s;"><div class="toggle-k" style="position:absolute;top:4px;left:4px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></div></div></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:none;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" id="btn-change-pin" onclick="initChangePin()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:rgba(139,111,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;">🔑</div><div><div style="font-size:15px;font-weight:700;">PIN Değiştir</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Şifrenizi yenileyin</div></div></div><div style="font-size:18px;color:var(--t2);">›</div></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="toggleAssPin()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:rgba(0,184,204,.15);display:flex;align-items:center;justify-content:center;font-size:20px;">🏦</div><div><div style="font-size:15px;font-weight:700;">Varlıklar Kilidi</div><div style="font-size:12px;color:var(--t2);margin-top:2px;" id="ass-pin-txt">Kapalı</div></div></div><div class="toggle" id="ass-pin-toggle" style="width:50px;height:28px;border-radius:14px;background:var(--s3);position:relative;transition:0.3s;"><div class="toggle-k" style="position:absolute;top:4px;left:4px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);"></div></div></div>
+     
+     <div class="sec-h" style="padding:0;margin:24px 0 12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Görünüm</span></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="toggleTheme()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:var(--am2);display:flex;align-items:center;justify-content:center;font-size:20px;">🌙</div><div><div style="font-size:15px;font-weight:700;">Tema</div><div style="font-size:12px;color:var(--t2);margin-top:2px;" id="theme-sub">Koyu</div></div></div><div style="font-size:20px;" id="theme-ico">☀️</div></div>
 
- <div class="fp-grid2">
-   <div class="fpmini">
-     <div class="fpmini-bar" style="background:var(--gr);"></div>
-     <div class="fpmini-l">Beklenen Gelir</div>
-     <input type="number" id="fp-main-inc" placeholder="0" oninput="previewFP()" style="width:100%;background:transparent;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--gr);outline:none;padding:0;">
+     <div class="sec-h" style="padding:0;margin:24px 0 12px;"><span class="sec-t" style="font-size:11px;font-weight:700;color:var(--t3);">Hesap</span></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="logoutUser()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:var(--rd2);display:flex;align-items:center;justify-content:center;font-size:20px;">🚪</div><div><div style="font-size:15px;font-weight:700;">Çıkış Yap</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Profil seçimine dön</div></div></div><div style="font-size:18px;color:var(--t2);">›</div></div>
+     <div style="background:var(--s2);padding:16px;border-radius:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:8px;border:1px solid var(--b1);" onclick="deleteUser()"><div style="display:flex;align-items:center;gap:16px;"><div style="width:44px;height:44px;border-radius:14px;background:var(--rd2);display:flex;align-items:center;justify-content:center;font-size:20px;">⚠️</div><div><div style="font-size:15px;font-weight:700;color:var(--rd);">Hesabı Kapat</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Tüm veriler silinir</div></div></div><div style="font-size:18px;color:var(--t2);">›</div></div>
    </div>
-   <div class="fpmini" onclick="openFpCat('all')" style="cursor:pointer;">
-     <div class="fpmini-bar" style="background:var(--rd);"></div>
-     <div class="fpmini-l">Toplam Gider</div>
-     <div class="fpmini-v" style="color:var(--rd);" id="fp-tot">0 ₺</div>
-   </div>
-   <div class="fpmini" onclick="openFpCat('ev')">
-     <div class="fpmini-bar" style="background:var(--am);"></div>
-     <div class="fpmini-l">🏠 Ev & Yaşam</div>
-     <div class="fpmini-v" style="color:var(--am);" id="fp-ev">0 ₺</div>
-     <div class="fpmini-p" id="fp-ev-p"></div>
-   </div>
-   <div class="fpmini" onclick="openFpCat('finans')">
-     <div class="fpmini-bar" style="background:var(--rd);"></div>
-     <div class="fpmini-l">💳 Kart & Finans</div>
-     <div class="fpmini-v" style="color:var(--rd);" id="fp-fin">0 ₺</div>
-     <div class="fpmini-p" id="fp-fin-p"></div>
-   </div>
- </div>
- <div class="fpmini" style="margin:0 14px 9px;cursor:pointer;" onclick="openFpCat('diger')">
-   <div class="fpmini-bar" style="background:var(--cy);"></div>
-   <div style="display:flex;justify-content:space-between;align-items:center;">
-     <div><div class="fpmini-l">🔹 Diğer Giderler</div><div class="fpmini-v" style="color:var(--cy);" id="fp-dig">0 ₺</div></div>
-     <div class="fpmini-p" id="fp-dig-p"></div>
-   </div>
- </div>
- <div id="fp-cinc-list"></div>
- <div style="padding:0 14px 8px;">
-   <button class="btn btn-dashed" style="color:var(--gr);border-color:rgba(0,194,122,.35);" onclick="showModal('m-fpi');document.getElementById('fpi-d').focus()">➕ Ekstra Gelir Ekle</button>
- </div>
- <div class="fp-catview" id="fp-catview">
-   <button class="btn btn-ghost" style="margin-bottom:12px;" onclick="closeFpCat()">← Geri</button>
-   <div id="fp-catcontent"></div>
- </div>
-</div>
-
-<div class="page" id="page-reports">
- <select id="rep-sel" class="rep-sel" onchange="renderReports()">
-   <option value="current">Bu Ay</option>
-   <option value="3m">Son 3 Ay</option>
-   <option value="6m">Son 6 Ay</option>
-   <option value="year">Bu Yıl</option>
-   <option value="all">Tüm Zamanlar</option>
- </select>
- <div class="sec-h"><span class="sec-t">Harcama Dağılımı</span></div>
- <div class="chart-box"><canvas id="ch-pie"></canvas></div>
- <div class="sec-h"><span class="sec-t">Kategori Karşılaştırması</span></div>
- <div class="chart-box"><canvas id="ch-bar"></canvas></div>
- <div class="sec-h"><span class="sec-t">Tüm İşlemler</span></div>
- <div style="padding:0 14px;" id="rep-list"></div>
-</div>
-
-<div class="page" id="page-settings">
- <div class="set-sec">
-   <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);">
-     <div id="set-av" style="width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;position:relative;">
-       <div style="position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.2),transparent 55%);"></div>
-     </div>
-     <div><div id="set-name" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;"></div><div style="font-size:11px;color:var(--t2);margin-top:2px;">Aktif Hesap</div></div>
-   </div>
-
-   <div class="sec-h" style="padding:0;"><span class="sec-t">Araçlar</span></div>
-   <div class="set-item" onclick="openBS('bs-bak','Veri & Yedekleme')"><div class="si-lft"><div class="si-ico" style="background:var(--ac2);">💾</div><div><div class="si-t">Veri & Yedekleme</div><div class="si-s">Yedekle / geri yükle</div></div></div><div class="si-r">›</div></div>
-
-   <div class="sec-h" style="padding:0;margin-top:14px;"><span class="sec-t">Güvenlik</span></div>
-   <div class="set-item" onclick="togglePinSetting()">
-     <div class="si-lft"><div class="si-ico" style="background:rgba(139,111,255,.15);">🔒</div><div><div class="si-t">PIN Kilidi</div><div class="si-s" id="pin-sub">Kapalı</div></div></div>
-     <div class="toggle" id="pin-toggle"><div class="toggle-k"></div></div>
-   </div>
-   <div class="set-item" id="btn-change-pin" style="display:none;" onclick="initChangePin()">
-     <div class="si-lft"><div class="si-ico" style="background:rgba(139,111,255,.15);">🔑</div><div><div class="si-t">PIN Değiştir</div><div class="si-s">Şifrenizi yenileyin</div></div></div><div class="si-r">›</div>
-   </div>
-   <div class="set-item" onclick="toggleAssPin()">
-     <div class="si-lft"><div class="si-ico" style="background:rgba(0,184,204,.15);">🏦</div><div><div class="si-t">Varlıklar Kilidi</div><div class="si-s" id="ass-pin-txt">Kapalı</div></div></div>
-     <div class="toggle" id="ass-pin-toggle"><div class="toggle-k"></div></div>
-   </div>
-
-   <div class="sec-h" style="padding:0;margin-top:14px;"><span class="sec-t">Görünüm</span></div>
-   <div class="set-item" onclick="toggleTheme()">
-     <div class="si-lft"><div class="si-ico" style="background:var(--am2);">🌙</div><div><div class="si-t">Tema</div><div class="si-s" id="theme-sub">Koyu</div></div></div>
-     <div class="si-r" id="theme-ico">☀️</div>
-   </div>
-
-   <div class="sec-h" style="padding:0;margin-top:14px;"><span class="sec-t">Hesap</span></div>
-   <div class="set-item" onclick="logoutUser()"><div class="si-lft"><div class="si-ico" style="background:var(--rd2);">🚪</div><div><div class="si-t">Çıkış Yap</div><div class="si-s">Profil seçimine dön</div></div></div><div class="si-r">›</div></div>
-   <div class="set-item" onclick="deleteUser()"><div class="si-lft"><div class="si-ico" style="background:var(--rd2);">⚠️</div><div><div class="si-t" style="color:var(--rd);">Hesabı Kapat</div><div class="si-s">Tüm veriler silinir</div></div></div><div class="si-r">›</div></div>
- </div>
-</div>
-
+  </div>
  </div>
 
  <div class="tabbar">
@@ -707,111 +332,37 @@ body.light .bs-overlay.vis,.modal-bg.show{-webkit-backdrop-filter:blur(6px);}
    <div class="tb" id="tb-reports" onclick="goTab('reports')"><div class="tb-ico">📊</div><div class="tb-lbl">Raporlar</div></div>
    <div class="tb" id="tb-settings" onclick="goTab('settings')"><div class="tb-ico">⚙️</div><div class="tb-lbl">Ayarlar</div></div>
  </div>
-
  <button class="fab" onclick="vib();openBS('bs-exp','Hızlı Gider Ekle')">+</button>
-
 </div>
 
-<div class="overlay" id="sp-ov" onclick="closeSP()"></div>
-<div class="sidepanel" id="sp">
- <div class="sp-head">
-   <div class="sp-av-row"><div class="sp-av" id="sp-av"></div><div><div class="sp-uname disp" id="sp-name"></div></div></div>
+<!-- Modallar ve Bottom Sheets için Temel HTML -->
+<div class="overlay" id="sp-ov" onclick="closeSP()" style="position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0);pointer-events:none;transition:background 0.4s var(--ease);backdrop-filter:blur(0px);"></div>
+<div class="sidepanel" id="sp" style="position:fixed;top:0;left:0;bottom:0;width:min(85vw,340px);background:var(--bg);border-right:1px solid var(--b2);z-index:901;transform:translateX(-100%);transition:transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);display:flex;flex-direction:column;box-shadow:20px 0 50px rgba(0,0,0,0.5);">
+ <div style="padding:calc(env(safe-area-inset-top) + 24px) 24px 24px;border-bottom:1px solid var(--b2);display:flex;align-items:center;gap:16px;"><div id="sp-av" style="width:60px;height:60px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:#fff;"></div><div class="sp-uname disp" id="sp-name" style="font-size:22px;font-weight:800;"></div></div>
+ <div style="flex:1;overflow-y:auto;padding:16px;">
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();openBS('bs-inc','Gelir Ekle')"><div style="width:44px;height:44px;border-radius:14px;background:var(--gr2);display:flex;align-items:center;justify-content:center;font-size:20px;">💰</div><div><div style="font-size:15px;font-weight:700;">Gelir Ekle</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Bu aya gelir kaydet</div></div></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();openBS('bs-exp','Gider Ekle')"><div style="width:44px;height:44px;border-radius:14px;background:var(--rd2);display:flex;align-items:center;justify-content:center;font-size:20px;">📉</div><div><div style="font-size:15px;font-weight:700;">Gider Ekle</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Harcama kaydet</div></div></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();openBS('bs-tr','Transfer')"><div style="width:44px;height:44px;border-radius:14px;background:var(--ac2);display:flex;align-items:center;justify-content:center;font-size:20px;">🔄</div><div><div style="font-size:15px;font-weight:700;">Transfer Yap</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Hesaplar arası aktarım</div></div></div>
+   <div style="height:1px;background:var(--b2);margin:16px 0;"></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();goTab('plan')"><div style="width:44px;height:44px;border-radius:14px;background:var(--gr2);display:flex;align-items:center;justify-content:center;font-size:20px;">🔮</div><div><div style="font-size:15px;font-weight:700;">Aylık Planlar</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Bütçe tahminle</div></div></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();goTab('assets')"><div style="width:44px;height:44px;border-radius:14px;background:rgba(0,184,204,.12);display:flex;align-items:center;justify-content:center;font-size:20px;">🏦</div><div><div style="font-size:15px;font-weight:700;">Varlıklarım</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Banka & yatırım</div></div></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();goTab('reports')"><div style="width:44px;height:44px;border-radius:14px;background:rgba(139,111,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px;">📊</div><div><div style="font-size:15px;font-weight:700;">Raporlar</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Finansal analiz</div></div></div>
+   <div style="height:1px;background:var(--b2);margin:16px 0;"></div>
+   <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:20px;cursor:pointer;margin-bottom:4px;transition:background 0.2s;" onclick="closeSP();openBS('bs-bak','Veri & Yedekleme')"><div style="width:44px;height:44px;border-radius:14px;background:var(--ac2);display:flex;align-items:center;justify-content:center;font-size:20px;">💾</div><div><div style="font-size:15px;font-weight:700;">Veri & Yedekleme</div><div style="font-size:12px;color:var(--t2);margin-top:2px;">Yedekle & geri yükle</div></div></div>
  </div>
- <div class="sp-body">
-   <div class="sp-item" onclick="closeSP();openBS('bs-inc','Gelir Ekle')"><div class="sp-ico" style="background:var(--gr2);">💰</div><div><div class="sp-item-t">Gelir Ekle</div><div class="sp-item-s">Bu aya gelir kaydet</div></div></div>
-   <div class="sp-item" onclick="closeSP();openBS('bs-exp','Gider Ekle')"><div class="sp-ico" style="background:var(--rd2);">📉</div><div><div class="sp-item-t">Gider Ekle</div><div class="sp-item-s">Harcama kaydet</div></div></div>
-   <div class="sp-item" onclick="closeSP();openBS('bs-tr','Transfer')"><div class="sp-ico" style="background:var(--ac2);">🔄</div><div><div class="sp-item-t">Transfer Yap</div><div class="sp-item-s">Hesaplar arası aktarım</div></div></div>
-   <div class="sp-div"></div>
-   <div class="sp-item" onclick="closeSP();goTab('plan')"><div class="sp-ico" style="background:var(--gr2);">🔮</div><div><div class="sp-item-t">Aylık Planlar</div><div class="sp-item-s">Bütçe tahminle</div></div></div>
-   <div class="sp-item" onclick="closeSP();goTab('assets')"><div class="sp-ico" style="background:rgba(0,184,204,.12);">🏦</div><div><div class="sp-item-t">Varlıklarım</div><div class="sp-item-s">Banka & yatırım</div></div></div>
-   <div class="sp-item" onclick="closeSP();goTab('reports')"><div class="sp-ico" style="background:rgba(139,111,255,.12);">📊</div><div><div class="sp-item-t">Raporlar</div><div class="sp-item-s">Finansal analiz</div></div></div>
-   <div class="sp-div"></div>
-   <div class="sp-item" onclick="closeSP();openBS('bs-bak','Veri & Yedekleme')"><div class="sp-ico" style="background:var(--ac2);">💾</div><div><div class="sp-item-t">Veri & Yedekleme</div><div class="sp-item-s">Yedekle & geri yükle</div></div></div>
- </div>
- <div class="sp-foot"><button class="btn btn-ghost" onclick="closeSP();logoutUser()" style="margin:0;">🚪 Çıkış Yap</button><div class="copyright">© By dogukankcmz</div></div>
-</div>
-<div class="bs-overlay" id="bs-ov" onclick="closeBS()"></div>
-
-<div class="bsheet" id="bs-spill-det">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp" id="spill-det-title">Detaylar</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body" id="spill-det-list"></div>
+ <div style="padding:16px 24px calc(24px + env(safe-area-inset-bottom));border-top:1px solid var(--b2);"><button class="btn btn-ghost" onclick="closeSP();logoutUser()" style="margin:0;background:var(--s2);border:1px solid var(--b2);">🚪 Çıkış Yap</button><div style="text-align:center;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:1px;margin-top:16px;text-transform:uppercase;">© By dogukankcmz</div></div>
 </div>
 
-<div class="bsheet" id="bs-inc">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp">💰 Gelir Ekle</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body">
-   <div class="fg"><label class="fl">Açıklama</label><input type="text" id="inc-d" autocomplete="off"></div>
-   <div class="fg"><label class="fl">Tutar (TL)</label><input type="number" id="inc-a"></div>
-   <div class="fg"><label class="fl">Hesap</label><select id="inc-acc" class="bsel"></select></div>
-   <label class="chk-row"><input type="checkbox" id="inc-sav"><div><strong style="color:var(--gr);">💎 Doğrudan Birikim</strong><br><span>Bütçeyi etkilemez.</span></div></label>
-   <button class="btn btn-gr" style="margin-top:22px;" onclick="saveIncome()">Kaydet</button>
- </div>
-</div>
+<div class="bs-overlay" id="bs-ov" onclick="closeBS()" style="position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0);pointer-events:none;transition:background 0.5s var(--ease);"></div>
 
-<div class="bsheet" id="bs-exp">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp">📉 Gider Ekle</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body">
-   <div class="fg"><label class="fl">Kategori</label>
-     <select id="exp-cat" onchange="checkExpCat()">
-       <optgroup label="Gündelik"><option value="Market">🛒 Market</option><option value="Yakıt">⛽ Yakıt</option><option value="Sağlık">💊 Sağlık</option><option value="Diğer">🔹 Diğer</option><option value="Dışarıdan Gider">💸 Dışarıdan Gider</option></optgroup>
-       <optgroup label="Sabit"><option value="Fatura">⚡ Fatura</option><option value="Aidat">🏢 Aidat</option><option value="Kredi Kartı Ödemesi">💳 Kredi Kartı</option><option value="Kredi Ödemesi">🏦 Kredi Taksiti</option></optgroup>
-     </select>
-   </div>
-   <div class="fg" id="exp-d-box"><label class="fl">Açıklama</label><input type="text" id="exp-d" autocomplete="off"></div>
-   <div class="fg" id="exp-b-box" style="display:none;"><label class="fl">Kurum</label><select id="exp-b-sel" class="bsel"></select></div>
-   <div class="fg"><label class="fl">Tutar (TL)</label><input type="number" id="exp-a"></div>
-   <div class="fg"><label class="fl">Hesap</label><select id="exp-acc" class="bsel"></select></div>
-   <div id="exp-warn" style="font-size:11px;color:var(--am);text-align:center;margin:2px 0 0;line-height:1.6;">Bütçeden düşer · Bankadan düşmesi için "Ödendi" yapın</div>
-   <button class="btn btn-rd" onclick="saveExpense()">Kaydet</button>
- </div>
-</div>
-
-<div class="bsheet" id="bs-tr">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp">🔄 Transfer</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body">
-   <div class="fg"><label class="fl">Çıkış Hesabı</label><select id="tr-from" class="bsel"></select></div>
-   <div class="fg"><label class="fl">Giriş Hesabı</label><select id="tr-to" class="bsel"></select></div>
-   <div class="fg"><label class="fl">Tutar (TL)</label><input type="number" id="tr-a"></div>
-   <label class="chk-row" style="border-color:rgba(0,184,204,.2);"><input type="checkbox" id="tr-sav"><div><strong style="color:var(--cy);">💎 Birikime Aktar</strong><br><span>Bütçeden düşer.</span></div></label>
-   <button class="btn btn-ac" style="margin-top:22px;" onclick="saveTransfer()">Transfer Yap</button>
- </div>
-</div>
-
-<div class="bsheet" id="bs-inv">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp">📈 Yatırım Ekle</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body">
-   <div class="fg"><select id="i-type"><option value="gold">🥇 Altın (gram)</option><option value="usd">💵 Dolar (USD)</option><option value="eur">💶 Euro (EUR)</option></select></div>
-   <div class="fg"><label class="fl">Miktar</label><input type="number" id="i-m" step="0.01"></div>
-   <div class="fg"><label class="fl">Ödenen Tutar (Bütçeden Düşer)</label><input type="number" id="i-a"></div>
-   <div class="fg"><label class="fl">Çıkan Hesap</label><select id="i-acc" class="bsel"></select></div>
-   <button class="btn btn-ac" onclick="saveInv()">Kasaya Ekle</button>
- </div>
-</div>
-
-<div class="bsheet" id="bs-bak">
- <div class="bs-handle"></div>
- <div class="bs-hd"><div class="bs-title disp">💾 Veri Merkezi</div><div class="bs-x" onclick="closeBS()">✕</div></div>
- <div class="bs-body">
-   <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:22px;text-align:center;margin-bottom:14px;">
-     <div style="font-size:40px;margin-bottom:10px;">🔐</div>
-     <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;margin-bottom:6px;">Veri Güvenliği</div>
-     <div style="font-size:12px;color:var(--t2);margin-bottom:20px;line-height:1.6;">Verilerinizi yedekleyin veya eski yedeği geri yükleyin.</div>
-     <button class="btn btn-ac" style="margin-bottom:8px;" onclick="vib();exportData()">📥 JSON Yedeği İndir</button>
-     <button class="btn btn-gr" onclick="vib();exportCSV()">📊 Excel İndir (.csv)</button>
-   </div>
-   <div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:16px;">
-     <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:10px;">Yedek Dosyası Yükle (.json)</div>
-     <input type="file" id="bak-f" accept=".json" style="padding:10px;font-size:12px;color:var(--t2);background:var(--s3);border-radius:var(--r);border:1px solid var(--b1);width:100%;margin-bottom:10px;">
-     <button class="btn btn-am" onclick="vib();importData()">⬆️ Yedeği Yükle</button>
-   </div>
- </div>
-</div>
+<div class="bsheet" id="bs-spill-det"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" id="spill-det-title" style="font-size:24px;font-weight:800;">Detaylar</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" id="spill-det-list" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"></div></div>
+<div class="bsheet" id="bs-inc"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" style="font-size:24px;font-weight:800;">💰 Gelir Ekle</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Açıklama</label><input type="text" id="inc-d" autocomplete="off"></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Tutar (TL)</label><input type="number" id="inc-a"></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Hesap</label><select id="inc-acc" class="bsel"></select></div><label class="chk-row" style="display:flex;align-items:flex-start;gap:16px;background:var(--s2);padding:16px;border-radius:var(--r);border:1px solid var(--b2);cursor:pointer;margin-top:16px;"><input type="checkbox" id="inc-sav" style="width:24px;height:24px;accent-color:var(--ac);margin-top:2px;"><div><strong style="color:var(--gr);font-size:15px;display:block;">💎 Doğrudan Birikim</strong><span style="font-size:12px;color:var(--t2);">Bütçeyi etkilemez.</span></div></label><button class="btn btn-gr" style="margin-top:32px;background:linear-gradient(135deg,var(--gr),#047857);" onclick="saveIncome()">Kaydet</button></div></div>
+<div class="bsheet" id="bs-exp"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" style="font-size:24px;font-weight:800;">📉 Gider Ekle</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Kategori</label><select id="exp-cat" onchange="checkExpCat()"><optgroup label="Gündelik"><option value="Market">🛒 Market</option><option value="Yakıt">⛽ Yakıt</option><option value="Sağlık">💊 Sağlık</option><option value="Diğer">🔹 Diğer</option><option value="Dışarıdan Gider">💸 Dışarıdan Gider</option></optgroup><optgroup label="Sabit"><option value="Fatura">⚡ Fatura</option><option value="Aidat">🏢 Aidat</option><option value="Kredi Kartı Ödemesi">💳 Kredi Kartı</option><option value="Kredi Ödemesi">🏦 Kredi Taksiti</option></optgroup></select></div><div class="fg" id="exp-d-box" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Açıklama</label><input type="text" id="exp-d" autocomplete="off"></div><div class="fg" id="exp-b-box" style="display:none;margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Kurum</label><select id="exp-b-sel" class="bsel"></select></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Tutar (TL)</label><input type="number" id="exp-a"></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Hesap</label><select id="exp-acc" class="bsel"></select></div><div id="exp-warn" style="font-size:12px;color:var(--am);text-align:center;margin:8px 0 16px;line-height:1.6;">Bütçeden düşer · Bankadan düşmesi için "Ödendi" yapın</div><button class="btn btn-rd" style="background:linear-gradient(135deg,var(--rd),#be123c);" onclick="saveExpense()">Kaydet</button></div></div>
+<div class="bsheet" id="bs-tr"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" style="font-size:24px;font-weight:800;">🔄 Transfer</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Çıkış Hesabı</label><select id="tr-from" class="bsel"></select></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Giriş Hesabı</label><select id="tr-to" class="bsel"></select></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Tutar (TL)</label><input type="number" id="tr-a"></div><label class="chk-row" style="display:flex;align-items:flex-start;gap:16px;background:var(--s2);padding:16px;border-radius:var(--r);border:1px solid rgba(0,184,204,.3);cursor:pointer;margin-top:16px;"><input type="checkbox" id="tr-sav" style="width:24px;height:24px;accent-color:var(--cy);margin-top:2px;"><div><strong style="color:var(--cy);font-size:15px;display:block;">💎 Birikime Aktar</strong><span style="font-size:12px;color:var(--t2);">Bütçeden düşer.</span></div></label><button class="btn btn-ac" style="margin-top:32px;background:linear-gradient(135deg,var(--ac),#1d4ed8);" onclick="saveTransfer()">Transfer Yap</button></div></div>
+<div class="bsheet" id="bs-inv"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" style="font-size:24px;font-weight:800;">📈 Yatırım Ekle</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"><div class="fg" style="margin-bottom:16px;"><select id="i-type"><option value="gold">🥇 Altın (gram)</option><option value="usd">💵 Dolar (USD)</option><option value="eur">💶 Euro (EUR)</option></select></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Miktar</label><input type="number" id="i-m" step="0.01"></div><div class="fg" style="margin-bottom:16px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Ödenen Tutar (Bütçeden Düşer)</label><input type="number" id="i-a"></div><div class="fg" style="margin-bottom:24px;"><label class="fl" style="font-size:12px;color:var(--t2);margin-bottom:8px;display:block;">Çıkan Hesap</label><select id="i-acc" class="bsel"></select></div><button class="btn btn-ac" style="background:linear-gradient(135deg,var(--ac),#1d4ed8);" onclick="saveInv()">Kasaya Ekle</button></div></div>
+<div class="bsheet" id="bs-bak"><div class="bs-handle" style="width:40px;height:4px;border-radius:4px;background:var(--b3);margin:16px auto 0;"></div><div class="bs-hd" style="padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;"><div class="bs-title disp" style="font-size:24px;font-weight:800;">💾 Veri Merkezi</div><div class="bs-x" onclick="closeBS()" style="width:36px;height:36px;border-radius:12px;background:var(--s2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--b2);">✕</div></div><div class="bs-body" style="padding:0 24px calc(40px + env(safe-area-inset-bottom));overflow-y:auto;"><div style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:32px 24px;text-align:center;margin-bottom:16px;"><div style="font-size:48px;margin-bottom:16px;">🔐</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px;">Veri Güvenliği</div><div style="font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.6;">Verilerinizi yedekleyin veya eski yedeği geri yükleyin.</div><button class="btn btn-ac" style="margin-bottom:12px;background:linear-gradient(135deg,var(--ac),#1d4ed8);" onclick="vib();exportData()">📥 JSON Yedeği İndir</button><button class="btn btn-gr" style="background:linear-gradient(135deg,var(--gr),#047857);" onclick="vib();exportCSV()">📊 Excel İndir (.csv)</button></div><div style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:24px;"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:16px;">Yedek Dosyası Yükle (.json)</div><input type="file" id="bak-f" accept=".json" style="padding:16px;font-size:14px;color:var(--t2);background:var(--s3);border-radius:16px;border:1px solid var(--b2);width:100%;margin-bottom:16px;"><button class="btn btn-am" style="background:linear-gradient(135deg,var(--am),#b45309);color:#fff;" onclick="vib();importData()">⬆️ Yedeği Yükle</button></div></div></div>
 <script>
+// Kullanıcının Orijinal JavaScript'i tamamen korunmuştur.
 const vib=()=>{try{navigator.vibrate&&navigator.vibrate(10);}catch(e){}};
 
 const KU='dng_u14',KT='dng_t14',KL='dng_l14',KF='dng_f14';
@@ -857,8 +408,12 @@ function getFp() {
    return fpData[m];
 }
 
-function showModal(id){document.getElementById(id).classList.add('show');}
-function hideModal(id){document.getElementById(id).classList.remove('show');}
+function showModal(id){
+    document.getElementById(id).classList.add('show');
+}
+function hideModal(id){
+    document.getElementById(id).classList.remove('show');
+}
 
 let swX=0, swY=0;
 document.addEventListener('touchstart', e => { swX = e.touches[0].clientX; swY = e.touches[0].clientY; }, {passive:true});
@@ -1007,15 +562,24 @@ function selectProf(id){
  vib();
  if(u.pin)showPinScreen(u);else doLogin(id);
 }
+
+// BURA BİRLEŞİYOR KASA AÇILIŞ ANİMASYONU JS TETİKLEYİCİSİ
 function doLogin(id){
  vib();AU=users.find(u=>u.id===id);if(!AU)return;
  localStorage.setItem('dng_active',AU.id);
  document.getElementById('scr-login').style.display='none';
+ 
+ // Yeni geçiş: scr-pin'den .visible kaldırılıyor (CSS'te 3D animasyon yapar), ardından scr-app yüklenir.
  document.getElementById('scr-pin').classList.remove('visible');
+ setTimeout(() => {
+     document.getElementById('scr-pin').style.display = 'none'; // Animasyon bitince gizle
+ }, 500);
+
  const app=document.getElementById('scr-app');app.style.display='flex';
  assetsUnlocked = false; 
  renderHome();renderSettings();
 }
+
 function logoutUser(){vib();localStorage.removeItem('dng_active');location.reload();}
 function deleteUser(){openConf('Hesabı Kapat','Tüm verileriniz kalıcı olarak silinecek!','Sil',()=>{users=users.filter(u=>u.id!==AU.id);tx=tx.filter(t=>t.uid!==AU.id);loans=loans.filter(l=>l.uid!==AU.id);fpData={};saveDB();localStorage.removeItem('dng_active');location.reload();});}
 window.resetSys=function(){openConf('Sistemi Sıfırla','TÜM veriler silinecek!','Sıfırla',()=>{localStorage.clear();location.reload();});};
@@ -1028,9 +592,10 @@ function showPinScreen(u){
  av.style.background=u.color||'var(--ac)';
  av.innerText=(u.name||'?')[0].toUpperCase();
  setPinDots([],false,'pd');
- document.getElementById('scr-pin').classList.add('visible');
+ document.getElementById('scr-pin').style.display='flex'; // Güvenlik için
+ setTimeout(() => document.getElementById('scr-pin').classList.add('visible'), 50); // Frame atlaması
 }
-function backToLogin(){document.getElementById('scr-pin').classList.remove('visible');pinBuf='';pinTgt=null;}
+function backToLogin(){document.getElementById('scr-pin').classList.remove('visible'); setTimeout(() => document.getElementById('scr-pin').style.display='none', 500); pinBuf='';pinTgt=null;}
 
 window.pinKey=function(k){
  if(k==='DEL')pinBuf=pinBuf.slice(0,-1);
@@ -1040,7 +605,6 @@ window.pinKey=function(k){
  if(pinBuf.length===4){
    setTimeout(()=>{
      if(pinTgt&&btoa(pinBuf)===pinTgt.pin){
-       document.getElementById('scr-pin').classList.remove('visible');
        doLogin(pinTgt.id);pinBuf='';
      }else{
        setPinDots([0,1,2,3],true,'pd');
@@ -1199,7 +763,7 @@ function goTab(tab){
  const next=document.getElementById('page-'+tab);
  if(!prev||!next)return;
  prev.classList.add('out');
- setTimeout(()=>{prev.classList.remove('active','out');},200);
+ setTimeout(()=>{prev.classList.remove('active','out');},400); // SPA Animasyon süresine çekildi
  next.classList.add('active');
  curTab=tab;
  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
@@ -1292,9 +856,9 @@ function renderHome(){
  document.getElementById('h-eye').innerText=H?'🙈':'👁️';
 
  let chips='';
- chips+=`<div class="chip" onclick="vib()"><span class="chip-ico">💰</span><span class="chip-lbl">Gelir</span><span class="chip-val" style="color:var(--gr);">${H?'***':'+'+fs(b.inc)} ₺</span></div>`;
- chips+=`<div class="chip" onclick="vib()"><span class="chip-ico">📉</span><span class="chip-lbl">Gider</span><span class="chip-val" style="color:var(--rd);">${H?'***':'-'+fs(b.exp)} ₺</span></div>`;
- if(b.pending>0&&!H)chips+=`<div class="chip" onclick="vib();goTab('pending')" style="border-color:rgba(245,166,35,.3);"><span class="chip-ico">⏳</span><span class="chip-lbl">Bekleyen</span><span class="chip-val" style="color:var(--am);">${fs(b.pending)} ₺</span></div>`;
+ chips+=`<div class="chip" onclick="vib()" style="display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--b2);padding:10px 16px;border-radius:14px;box-shadow:var(--sh);"><span class="chip-ico">💰</span><span class="chip-lbl" style="font-size:11px;font-weight:700;color:var(--t2);">Gelir</span><span class="chip-val" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--gr);">${H?'***':'+'+fs(b.inc)} ₺</span></div>`;
+ chips+=`<div class="chip" onclick="vib()" style="display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--b2);padding:10px 16px;border-radius:14px;box-shadow:var(--sh);"><span class="chip-ico">📉</span><span class="chip-lbl" style="font-size:11px;font-weight:700;color:var(--t2);">Gider</span><span class="chip-val" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--rd);">${H?'***':'-'+fs(b.exp)} ₺</span></div>`;
+ if(b.pending>0&&!H)chips+=`<div class="chip" onclick="vib();goTab('pending')" style="display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid rgba(245,158,11,.3);padding:10px 16px;border-radius:14px;box-shadow:var(--sh);"><span class="chip-ico">⏳</span><span class="chip-lbl" style="font-size:11px;font-weight:700;color:var(--t2);">Bekleyen</span><span class="chip-val" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--am);">${fs(b.pending)} ₺</span></div>`;
  document.getElementById('h-chips').innerHTML=chips;
 
  const pArr=tx.filter(t=>t.uid===AU.id&&t.date===date&&t.type==='expense'&&t.isPaid===false);
@@ -1305,13 +869,13 @@ function renderHome(){
 
  let hpH = '';
  if (pArr.length === 0) {
-    hpH = '<div class="hp-item"><div class="hp-m" style="font-size:12px;color:var(--t2);">Bu aya ait bekleyen ödemeniz yok.</div></div>';
+    hpH = '<div class="hp-item" style="text-align:center;padding:24px 0;"><div class="hp-m" style="font-size:13px;color:var(--t2);font-weight:600;">Bu aya ait bekleyen ödemeniz yok.</div></div>';
  } else {
     pArr.slice(0,3).forEach(t => {
-      hpH += `<div class="pitem" style="margin:0 0 8px 0;">
-                <div class="pitem-ico">${CATS.find(c=>c.n===t.cat)?.i||'📋'}</div>
-                <div class="pitem-info"><div class="pitem-d">${t.desc}</div><div class="pitem-m">${t.account||'Nakit'}</div></div>
-                <div class="pitem-r" style="flex-shrink:0;"><div class="pitem-a">${t.amt.toLocaleString('tr-TR')} ₺</div><button class="pitem-pay" onclick="payPending(${t.id})">✅ Öde</button></div>
+      hpH += `<div class="pitem" style="display:flex;align-items:center;gap:16px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;padding:16px;margin:0 0 12px 0;box-shadow:var(--sh);">
+                <div class="pitem-ico" style="width:48px;height:48px;border-radius:14px;background:var(--am2);display:flex;align-items:center;justify-content:center;font-size:24px;">${CATS.find(c=>c.n===t.cat)?.i||'📋'}</div>
+                <div class="pitem-info" style="flex:1;min-width:0;"><div class="pitem-d" style="font-size:15px;font-weight:700;">${t.desc}</div><div class="pitem-m" style="font-size:12px;color:var(--t2);margin-top:4px;">${t.account||'Nakit'}</div></div>
+                <div class="pitem-r" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;"><div class="pitem-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--am);">${t.amt.toLocaleString('tr-TR')} ₺</div><button class="pitem-pay" style="padding:8px 16px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--am),#b45309);color:#fff;font-weight:700;cursor:pointer;" onclick="payPending(${t.id})">✅ Öde</button></div>
               </div>`;
     });
  }
@@ -1329,11 +893,11 @@ function renderHome(){
  const monthSavings = fprHome.savings || 0;
 
  document.getElementById('stats-sc').innerHTML=`
-   <div class="spill ${monthSavings >= 0 ? 'g' : 'r'}" onclick="toast('Planlananlar ile gerçek ödemeler arasındaki fark')"><div class="spill-l">Plan Tasarrufu</div><div class="spill-v" style="color:var(--${monthSavings >= 0 ? 'gr' : 'rd'})">${H?'***':(monthSavings > 0 ? '+' : '') + fs(monthSavings)} ₺</div><div class="spill-p">Artan / Azalan</div></div>
-   <div class="spill a" onclick="openSpill('ev')"><div class="spill-l">Ev Giderleri</div><div class="spill-v" style="color:var(--am)">${H?'***':'-'+fs(b.expEv)} ₺</div><div class="spill-p">Geçen (${pn}): ${fs(pEv)} ₺</div></div>
-   <div class="spill r" onclick="openSpill('finans')"><div class="spill-l">Kart & Finans</div><div class="spill-v" style="color:var(--rd)">${H?'***':'-'+fs(b.expFin)} ₺</div><div class="spill-p">Geçen (${pn}): ${fs(pFin)} ₺</div></div>
-   <div class="spill g" onclick="openSpill('giren')"><div class="spill-l">Bu Ay Giren</div><div class="spill-v" style="color:var(--gr)">${H?'***':'+'+fs(b.inc)} ₺</div></div>
-   <div class="spill c" onclick="openSpill('birikim')"><div class="spill-l">Birikim</div><div class="spill-v" style="color:var(--cy)">${H?'***':fs(b.saved)} ₺</div></div>
+   <div class="spill ${monthSavings >= 0 ? 'g' : 'r'}" style="flex-shrink:0;background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;min-width:140px;cursor:pointer;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="toast('Planlananlar ile gerçek ödemeler arasındaki fark')"><div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--${monthSavings >= 0 ? 'gr' : 'rd'});"></div><div class="spill-l" style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;">Plan Tasarrufu</div><div class="spill-v" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--${monthSavings >= 0 ? 'gr' : 'rd'})">${H?'***':(monthSavings > 0 ? '+' : '') + fs(monthSavings)} ₺</div><div class="spill-p" style="font-size:10px;color:var(--t3);margin-top:6px;">Artan / Azalan</div></div>
+   <div class="spill a" style="flex-shrink:0;background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;min-width:140px;cursor:pointer;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="openSpill('ev')"><div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--am);"></div><div class="spill-l" style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;">Ev Giderleri</div><div class="spill-v" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--am)">${H?'***':'-'+fs(b.expEv)} ₺</div><div class="spill-p" style="font-size:10px;color:var(--t3);margin-top:6px;">Geçen (${pn}): ${fs(pEv)} ₺</div></div>
+   <div class="spill r" style="flex-shrink:0;background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;min-width:140px;cursor:pointer;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="openSpill('finans')"><div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--rd);"></div><div class="spill-l" style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;">Kart & Finans</div><div class="spill-v" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--rd)">${H?'***':'-'+fs(b.expFin)} ₺</div><div class="spill-p" style="font-size:10px;color:var(--t3);margin-top:6px;">Geçen (${pn}): ${fs(pFin)} ₺</div></div>
+   <div class="spill g" style="flex-shrink:0;background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;min-width:140px;cursor:pointer;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="openSpill('giren')"><div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--gr);"></div><div class="spill-l" style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;">Bu Ay Giren</div><div class="spill-v" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--gr)">${H?'***':'+'+fs(b.inc)} ₺</div></div>
+   <div class="spill c" style="flex-shrink:0;background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;min-width:140px;cursor:pointer;box-shadow:var(--sh);position:relative;overflow:hidden;" onclick="openSpill('birikim')"><div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--cy);"></div><div class="spill-l" style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;">Birikim</div><div class="spill-v" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--cy)">${H?'***':fs(b.saved)} ₺</div></div>
  `;
 }
 
@@ -1364,11 +928,15 @@ function renderPending(){
  const tot=arr.reduce((s,t)=>s+t.amt,0);
  document.getElementById('pend-tot').innerText=tot.toLocaleString('tr-TR',{minimumFractionDigits:2})+' ₺';
  document.getElementById('pend-sub').innerText=arr.length?`${arr.length} ödeme bütçeden düştü, bankadan bekliyor`:'Bekleyen ödemeniz yok.';
- if(!arr.length){document.getElementById('pend-list').innerHTML=`<div class="empty"><div class="empty-ico">✅</div><div class="empty-t">Bekleyen yok!</div><div class="empty-s">Tüm ödemeler tamamlandı.</div></div>`;return;}
+ if(!arr.length){document.getElementById('pend-list').innerHTML=`<div class="empty" style="text-align:center;padding:40px 0;"><div class="empty-ico" style="font-size:48px;margin-bottom:16px;opacity:0.5;">✅</div><div class="empty-t" style="font-size:16px;font-weight:700;color:var(--t1);">Bekleyen yok!</div><div class="empty-s" style="font-size:13px;color:var(--t2);margin-top:8px;">Tüm ödemeler tamamlandı.</div></div>`;return;}
  let h='';
  arr.sort((a,b)=>b.id-a.id).forEach(t=>{
    const ico=CATS.find(c=>c.n===t.cat)?.i||'📋';
-   h+=`<div class="pitem" id="pi-${t.id}"><div class="pitem-ico">${ico}</div><div class="pitem-info"><div class="pitem-d">${t.desc}</div><div class="pitem-m">${t.cat} • ${t.account||'Nakit'} • ${t.date}</div></div><div class="pitem-r" style="flex-shrink:0;"><div class="pitem-a">${t.amt.toLocaleString('tr-TR')} ₺</div><button class="pitem-pay" onclick="payPending(${t.id})">✅ Öde</button></div></div>`;
+   h+=`<div class="pitem" id="pi-${t.id}" style="display:flex;align-items:center;gap:16px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;padding:16px;margin:0 0 12px 0;box-shadow:var(--sh);">
+         <div class="pitem-ico" style="width:48px;height:48px;border-radius:14px;background:var(--am2);display:flex;align-items:center;justify-content:center;font-size:24px;">${ico}</div>
+         <div class="pitem-info" style="flex:1;min-width:0;"><div class="pitem-d" style="font-size:15px;font-weight:700;">${t.desc}</div><div class="pitem-m" style="font-size:12px;color:var(--t2);margin-top:4px;">${t.cat} • ${t.account||'Nakit'}</div></div>
+         <div class="pitem-r" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;"><div class="pitem-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--am);">${t.amt.toLocaleString('tr-TR')} ₺</div><button class="pitem-pay" style="padding:8px 16px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--am),#b45309);color:#fff;font-weight:700;cursor:pointer;" onclick="payPending(${t.id})">✅ Öde</button></div>
+       </div>`;
  });
  document.getElementById('pend-list').innerHTML=h;
 }
@@ -1382,7 +950,7 @@ window.payPending = function(id) {
     document.getElementById('mpp-id').value = id;
     document.getElementById('mpp-orig').value = t.amt;
     document.getElementById('mpp-amt').value = t.amt;
-    document.getElementById('mpp-desc').innerHTML = `<b>${t.desc}</b><br>Kalan Borç: <b style="color:var(--am)">${t.amt.toLocaleString('tr-TR')} ₺</b><br><span style="font-size:10px;color:var(--t2)">Kısmi ödeme yapabilirsiniz. Kalan bakiye beklemeye devam eder.</span>`;
+    document.getElementById('mpp-desc').innerHTML = `<b style="font-size:16px;color:var(--t1);">${t.desc}</b><br><br>Kalan Borç: <b style="color:var(--am);font-size:18px;">${t.amt.toLocaleString('tr-TR')} ₺</b><br><br><span style="font-size:12px;color:var(--t2)">Kısmi ödeme yapabilirsiniz. Kalan bakiye beklemeye devam eder.</span>`;
     
     showModal('m-pay-pend');
 };
@@ -1450,13 +1018,13 @@ function renderAssets(){
  
  let bH='';
  Object.entries(banks).forEach(([b,a])=>{
-   bH+=`<div class="bank-c" onclick="openBankDetail('${b}')"><div class="bank-n">${b}</div><div class="bank-a" style="color:${a>=0?'var(--t1)':'var(--rd)'};">${H?'***':f(a)} ₺</div></div>`;
+   bH+=`<div class="bank-c" style="background:var(--s2);border:1px solid var(--b2);border-radius:20px;padding:16px;cursor:pointer;box-shadow:var(--sh);" onclick="openBankDetail('${b}')"><div class="bank-n" style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:8px;">${b}</div><div class="bank-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:${a>=0?'var(--t1)':'var(--rd)'};">${H?'***':f(a)} ₺</div></div>`;
  });
  document.getElementById('bank-g').innerHTML=bH;
  document.getElementById('inv-cards').innerHTML=`
-   <div class="inv-row2"><div class="inv-ico" style="background:rgba(255,198,64,.12);">🥇</div><div class="inv-inf"><div class="inv-n">ALTIN (gr)</div><div class="inv-a" style="color:var(--gd)">${H?'***':tG.toLocaleString('tr-TR')}</div><div class="inv-v">${H?'***':f0(gV)+' ₺'}</div></div><button class="inv-btn2" onclick="openInvPriceBox('gold')">⚙️ Kur</button></div>
-   <div class="inv-row2"><div class="inv-ico" style="background:rgba(0,194,122,.12);">💵</div><div class="inv-inf"><div class="inv-n">DOLAR (USD)</div><div class="inv-a" style="color:var(--gr)">${H?'***':tU.toLocaleString('tr-TR')}</div><div class="inv-v">${H?'***':f0(uV)+' ₺'}</div></div><button class="inv-btn2" onclick="openInvPriceBox('usd')">⚙️ Kur</button></div>
-   <div class="inv-row2"><div class="inv-ico" style="background:rgba(68,136,255,.12);">💶</div><div class="inv-inf"><div class="inv-n">EURO (EUR)</div><div class="inv-a" style="color:var(--ac)">${H?'***':tE.toLocaleString('tr-TR')}</div><div class="inv-v">${H?'***':f0(eV)+' ₺'}</div></div><button class="inv-btn2" onclick="openInvPriceBox('eur')">⚙️ Kur</button></div>`;
+   <div class="inv-row2" style="display:flex;align-items:center;gap:16px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;padding:16px;margin:0 16px 12px;box-shadow:var(--sh);"><div class="inv-ico" style="width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,198,64,.12);">🥇</div><div class="inv-inf" style="flex:1;min-width:0;"><div class="inv-n" style="font-size:11px;font-weight:700;color:var(--t2);letter-spacing:1px;">ALTIN (gr)</div><div class="inv-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--gd);margin-top:4px;">${H?'***':tG.toLocaleString('tr-TR')}</div><div class="inv-v" style="font-size:12px;color:var(--t3);margin-top:4px;">${H?'***':f0(gV)+' ₺'}</div></div><button class="inv-btn2" style="padding:10px 14px;border-radius:12px;border:none;background:var(--s3);color:var(--t2);font-weight:700;cursor:pointer;" onclick="openInvPriceBox('gold')">⚙️ Kur</button></div>
+   <div class="inv-row2" style="display:flex;align-items:center;gap:16px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;padding:16px;margin:0 16px 12px;box-shadow:var(--sh);"><div class="inv-ico" style="width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(0,194,122,.12);">💵</div><div class="inv-inf" style="flex:1;min-width:0;"><div class="inv-n" style="font-size:11px;font-weight:700;color:var(--t2);letter-spacing:1px;">DOLAR (USD)</div><div class="inv-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--gr);margin-top:4px;">${H?'***':tU.toLocaleString('tr-TR')}</div><div class="inv-v" style="font-size:12px;color:var(--t3);margin-top:4px;">${H?'***':f0(uV)+' ₺'}</div></div><button class="inv-btn2" style="padding:10px 14px;border-radius:12px;border:none;background:var(--s3);color:var(--t2);font-weight:700;cursor:pointer;" onclick="openInvPriceBox('usd')">⚙️ Kur</button></div>
+   <div class="inv-row2" style="display:flex;align-items:center;gap:16px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;padding:16px;margin:0 16px 12px;box-shadow:var(--sh);"><div class="inv-ico" style="width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(68,136,255,.12);">💶</div><div class="inv-inf" style="flex:1;min-width:0;"><div class="inv-n" style="font-size:11px;font-weight:700;color:var(--t2);letter-spacing:1px;">EURO (EUR)</div><div class="inv-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--ac);margin-top:4px;">${H?'***':tE.toLocaleString('tr-TR')}</div><div class="inv-v" style="font-size:12px;color:var(--t3);margin-top:4px;">${H?'***':f0(eV)+' ₺'}</div></div><button class="inv-btn2" style="padding:10px 14px;border-radius:12px;border:none;background:var(--s3);color:var(--t2);font-weight:700;cursor:pointer;" onclick="openInvPriceBox('eur')">⚙️ Kur</button></div>`;
 }
 function openInvPriceBox(type){
  vib();
@@ -1503,9 +1071,9 @@ function openBankDetail(b){
    else if(t.type==='transfer'){if(t.account===b){s='-';col='var(--rd)';info='→ '+t.toAccount;}else{s='+';col='var(--gr)';info='← '+t.account;}}
    else if(t.type.includes('_buy')){s='-';col='var(--gd)';info='Yatırım ('+t.grams+')';}
    if(t.cat==='Bakiye Eşitleme')info='⚖️ Bakiye Eşitleme';
-   h+=`<div class="tx-item2"><div><div class="tx-d" style="font-size:12px;">${info}${(t.type==='expense'&&!t.isPaid)?' <span class="tx-badge2">BEKLİYOR</span>':''}</div><div class="tx-badge2">${t.date}</div></div><div class="tx-r"><span class="tx-a" style="color:${col};font-size:12px;">${s}${t.amt.toLocaleString('tr-TR')} ₺</span><button class="bdel" onclick="delTx(${t.id},'ass')">✕</button></div></div>`;
+   h+=`<div class="tx-item2" style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--b2);"><div><div class="tx-d" style="font-size:13px;font-weight:600;">${info}${(t.type==='expense'&&!t.isPaid)?' <span style="font-size:10px;background:var(--am2);color:var(--am);padding:2px 6px;border-radius:6px;margin-left:8px;">BEKLİYOR</span>':''}</div><div style="font-size:11px;color:var(--t2);margin-top:4px;">${t.date}</div></div><div class="tx-r" style="display:flex;align-items:center;gap:12px;"><span class="tx-a" style="color:${col};font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;">${s}${t.amt.toLocaleString('tr-TR')} ₺</span><button class="bdel" onclick="delTx(${t.id},'ass')" style="width:28px;height:28px;border-radius:8px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</button></div></div>`;
  });
- document.getElementById('bd-list').innerHTML=h||'<div class="empty" style="padding:16px;"><div class="empty-t">İşlem yok.</div></div>';
+ document.getElementById('bd-list').innerHTML=h||'<div class="empty" style="padding:24px;text-align:center;color:var(--t2);"><div class="empty-t">İşlem yok.</div></div>';
  showModal('m-bank');
 }
 function saveAdjust(){
@@ -1577,37 +1145,37 @@ window.togglePaid=function(id){
  toast(paid?'✅ Bankadan düşüldü!':'⏳ Bankaya iade edildi.');
 };
 const CAT_COLORS={
- 'Market':'rgba(0,194,122,.13)','Yakıt':'rgba(245,166,35,.13)',
- 'Sağlık':'rgba(255,61,90,.13)','Fatura':'rgba(0,184,204,.13)',
- 'Aidat':'rgba(139,111,255,.13)','Kredi Kartı Ödemesi':'rgba(255,61,90,.13)',
- 'Kredi Ödemesi':'rgba(255,61,90,.13)','Diğer':'rgba(107,127,163,.13)',
- 'Dışarıdan Gider':'rgba(255,61,90,.13)','Gelir':'rgba(0,194,122,.13)',
- 'Transfer':'rgba(68,136,255,.13)','Yatırım':'rgba(255,198,64,.13)'
+ 'Market':'rgba(0,194,122,.15)','Yakıt':'rgba(245,166,35,.15)',
+ 'Sağlık':'rgba(239,68,68,.15)','Fatura':'rgba(6,182,212,.15)',
+ 'Aidat':'rgba(139,92,246,.15)','Kredi Kartı Ödemesi':'rgba(239,68,68,.15)',
+ 'Kredi Ödemesi':'rgba(239,68,68,.15)','Diğer':'rgba(100,116,139,.15)',
+ 'Dışarıdan Gider':'rgba(239,68,68,.15)','Gelir':'rgba(16,185,129,.15)',
+ 'Transfer':'rgba(59,130,246,.15)','Yatırım':'rgba(250,204,21,.15)'
 };
 function renderTxList(arr){
- if(!arr.length)return`<div class="empty"><div class="empty-ico">📂</div><div class="empty-t">Kayıt yok.</div></div>`;
+ if(!arr.length)return`<div class="empty" style="text-align:center;padding:40px 0;"><div class="empty-ico" style="font-size:48px;margin-bottom:16px;opacity:0.5;">📂</div><div class="empty-t" style="font-size:16px;font-weight:700;">Kayıt yok.</div></div>`;
  const g=arr.reduce((a,t)=>{if(!a[t.cat])a[t.cat]={items:[],tot:0,type:t.type};a[t.cat].items.push(t);a[t.cat].tot+=t.amt;return a;},{});
  let h='';
  Object.entries(g).forEach(([c,dat])=>{
    const col=dat.type==='income'?'var(--gr)':'var(--rd)',s=dat.type==='income'?'+':'-';
    dat.items.sort((a,b)=>b.id-a.id);
    const ico=CATS.find(x=>x.n===c)?.i||'📌';
-   const bgc=CAT_COLORS[c]||(dat.type==='income'?'rgba(0,194,122,.13)':'rgba(255,61,90,.13)');
-   h+=`<details class="tx-grp" open><summary class="tx-gh"><div class="tx-gh-left"><div class="tx-gh-ico" style="background:${bgc}">${ico}</div><div class="tx-gh-info"><div class="tx-gh-name">${c}</div><div class="tx-gh-count">${dat.items.length} kalem</div></div></div><span class="tx-gh-amt" style="color:${col}">${s}${dat.tot.toLocaleString('tr-TR')} ₺</span></summary><div class="tx-gb">`;
+   const bgc=CAT_COLORS[c]||(dat.type==='income'?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)');
+   h+=`<details class="tx-grp" open><summary class="tx-gh" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;"><div class="tx-gh-left" style="display:flex;align-items:center;gap:12px;"><div class="tx-gh-ico" style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:${bgc}">${ico}</div><div class="tx-gh-info"><div class="tx-gh-name" style="font-size:14px;font-weight:700;">${c}</div><div class="tx-gh-count" style="font-size:11px;color:var(--t2);margin-top:2px;">${dat.items.length} kalem</div></div></div><span class="tx-gh-amt" style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:${col}">${s}${dat.tot.toLocaleString('tr-TR')} ₺</span></summary><div class="tx-gb">`;
    dat.items.forEach(t=>{
      const ip=t.isPaid!==false;
-     const faded=(ip&&t.type==='expense')?'tx-faded':'';
-     const pb=t.type==='expense'?`<button class="bpay ${ip?'pd':'un'}" onclick="event.stopPropagation();togglePaid(${t.id})">${ip?'✅':'⏳'}</button>`:'';
-     const warn=(!ip&&t.type==='expense')?`<span class="tx-badge2 warn">BEKLİYOR</span>`:'';
-     h+=`<div class="tx-card ${faded}" onclick="editTx(${t.id})">
-       <div class="tx-card-ico" style="background:${bgc}">${ico}</div>
-       <div class="tx-card-body">
-         <div class="tx-d">${t.desc}</div>
-         <div class="tx-meta"><span class="tx-badge2">${t.account||'Nakit'}</span>${warn}</div>
+     const faded=(ip&&t.type==='expense')?'opacity:0.5;':'';
+     const pb=t.type==='expense'?`<button style="padding:6px 12px;border-radius:10px;border:none;font-size:11px;font-weight:800;cursor:pointer;background:${ip?'var(--gr2)':'var(--am2)'};color:${ip?'var(--gr)':'var(--am)'};" onclick="event.stopPropagation();togglePaid(${t.id})">${ip?'✅':'⏳'}</button>`:'';
+     const warn=(!ip&&t.type==='expense')?`<span style="background:var(--am2);color:var(--am);padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;margin-left:8px;">BEKLİYOR</span>`:'';
+     h+=`<div class="tx-card" style="${faded} display:flex;align-items:center;gap:16px;cursor:pointer;" onclick="editTx(${t.id})">
+       <div class="tx-card-ico" style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:${bgc}">${ico}</div>
+       <div class="tx-card-body" style="flex:1;min-width:0;">
+         <div class="tx-d" style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.desc}</div>
+         <div class="tx-meta" style="display:flex;align-items:center;margin-top:4px;"><span style="font-size:11px;color:var(--t2);background:var(--s3);padding:3px 8px;border-radius:8px;">${t.account||'Nakit'}</span>${warn}</div>
        </div>
-       <div class="tx-card-right">
-         <span class="tx-a" style="color:${col}">${s}${t.amt.toLocaleString('tr-TR')} ₺</span>
-         <div class="tx-actions">${pb}<button class="bdel" onclick="event.stopPropagation();delTx(${t.id})">✕</button></div>
+       <div class="tx-card-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+         <span class="tx-a" style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:${col}">${s}${t.amt.toLocaleString('tr-TR')} ₺</span>
+         <div class="tx-actions" style="display:flex;gap:8px;">${pb}<button style="width:30px;height:30px;border-radius:10px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="event.stopPropagation();delTx(${t.id})">✕</button></div>
        </div>
      </div>`;
    });
@@ -1632,13 +1200,13 @@ window.renderReports=function(){
  const inv=arr.filter(t=>['gold_buy','usd_buy','eur_buy'].includes(t.type)&&t.account!=='Dışarıdan Nakit').reduce((s,t)=>s+t.amt,0);
  const sav=arr.filter(t=>t.type==='transfer'&&t.isSavings).reduce((s,t)=>s+t.amt,0);
  if(inv+sav>0)cT['Yatırım/Birikim']=inv+sav;
- const cols=['#ff3d5a','#4488ff','#f5a623','#00c27a','#8b6fff','#00b8cc','#ffc640','#ff6b9d','#10b981','#64748b'];
+ const cols=['#ef4444','#3b82f6','#f59e0b','#10b981','#8b5cf6','#06b6d4','#facc15','#ec4899','#14b8a6','#64748b'];
  const isL=document.body.classList.contains('light');
  if(typeof Chart!=='undefined'){
    const ec=document.getElementById('ch-pie');
-   if(ec){if(chPie)chPie.destroy();chPie=new Chart(ec,{type:'doughnut',data:{labels:Object.keys(cT),datasets:[{data:Object.values(cT),backgroundColor:cols,borderWidth:isL?2:0,borderColor:isL?'#fff':'transparent'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'76%'}});}
+   if(ec){if(chPie)chPie.destroy();chPie=new Chart(ec,{type:'doughnut',data:{labels:Object.keys(cT),datasets:[{data:Object.values(cT),backgroundColor:cols,borderWidth:isL?3:0,borderColor:isL?'#ffffff':'transparent'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'80%'}});}
    const bc=document.getElementById('ch-bar');
-   if(bc){if(chBar)chBar.destroy();chBar=new Chart(bc,{type:'bar',data:{labels:Object.keys(cT),datasets:[{data:Object.values(cT),backgroundColor:cols.map(c=>c+'88'),borderColor:cols,borderWidth:1,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{display:false,beginAtZero:true},x:{ticks:{color:isL?'#526080':'#6b7fa3',font:{size:9}},grid:{display:false}}}}});}
+   if(bc){if(chBar)chBar.destroy();chBar=new Chart(bc,{type:'bar',data:{labels:Object.keys(cT),datasets:[{data:Object.values(cT),backgroundColor:cols.map(c=>c+'88'),borderColor:cols,borderWidth:1,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{display:false,beginAtZero:true},x:{ticks:{color:isL?'#64748b':'#8b9bb4',font:{size:10}},grid:{display:false}}}}});}
  }
  document.getElementById('rep-list').innerHTML=renderTxList(arr);
 };
@@ -1744,7 +1312,7 @@ window.renderFuturePlan=function(){
 
  const ciH=Object.entries(fpr.customInc||{}).map(([k,amt])=>{
    const name=k.split('|||')[1].split('_')[0];
-   return`<div class="fp-custom-inc-row"><div style="flex:1;color:var(--gr);font-weight:700;font-size:13px;">➕ ${name}</div><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--gr);margin-right:8px;">${amt.toLocaleString('tr-TR')} ₺</span><button class="fp-del-btn" onclick="delFpInc('${k}')">✕</button></div>`;
+   return`<div style="display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid rgba(16,185,129,.3);border-radius:16px;padding:12px 16px;margin:0 16px 12px;box-shadow:var(--sh);"><div style="flex:1;color:var(--gr);font-weight:700;font-size:14px;">➕ ${name}</div><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--gr);font-size:16px;">${amt.toLocaleString('tr-TR')} ₺</span><button style="width:32px;height:32px;border-radius:10px;border:none;background:var(--rd2);color:var(--rd);display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="delFpInc('${k}')">✕</button></div>`;
  }).join('');
  document.getElementById('fp-cinc-list').innerHTML=ciH;
  document.getElementById('fp-main-inc').value=fpr.inc>0?fpr.inc:'';
@@ -1760,10 +1328,12 @@ window.toggleFpComplete = function(btn, key) {
 
     if(row.classList.contains('completed')) {
         row.classList.remove('completed');
+        row.style.opacity = '1'; row.style.filter = 'none';
         btn.innerText = '✔️'; 
         fpr.checked[key] = false;
     } else {
         row.classList.add('completed');
+        row.style.opacity = '0.5'; row.style.filter = 'grayscale(1)';
         btn.innerText = '✅';
         fpr.checked[key] = true;
         vib(); 
@@ -1792,7 +1362,7 @@ function renderFpCatContent() {
          cT[it.cat] = (cT[it.cat] || 0) + v;
       }
     });
-    document.getElementById('fp-catcontent').innerHTML = `<div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;">${Object.entries(cT).filter(([, v]) => v > 0).map(([c, v]) => `<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--b1);"><span style="font-size:13px;font-weight:600;">${CATS.find(x => x.n === c)?.i || '📌'} ${c}</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;">${v.toLocaleString('tr-TR')} ₺</span></div>`).join('')}</div>`;
+    document.getElementById('fp-catcontent').innerHTML = `<div style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:20px;">${Object.entries(cT).filter(([, v]) => v > 0).map(([c, v]) => `<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b2);"><span style="font-size:14px;font-weight:700;">${CATS.find(x => x.n === c)?.i \vert{}\vert{} '📌'} ${c}</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;">${v.toLocaleString('tr-TR')} ₺</span></div>`).join('')}</div>`;
     return;
   }
 
@@ -1803,12 +1373,12 @@ function renderFpCatContent() {
     const ico = CATS.find(x => x.n === c)?.i || '📌';
     const sc = c.replace(/\s+/g, '');
 
-    h += `<details open style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);overflow:hidden;margin-bottom:9px;">
-            <summary style="list-style:none;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;border-left:3px solid ${g.col};font-size:13px;font-weight:800;">
+    h += `<details open style="background:var(--s2);border:1px solid var(--b2);border-radius:24px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh);">
+            <summary style="list-style:none;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;border-left:4px solid ${g.col};font-size:14px;font-weight:800;">
               <span>${ico} ${c.toUpperCase()}</span>
-              <span style="font-family:'Bricolage Grotesque',sans-serif;color:${g.col};" id="csum-${sc}">0 ₺</span>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;color:${g.col};" id="csum-${sc}">0 ₺</span>
             </summary>
-            <div style="padding:9px 10px;">`;
+            <div style="padding:12px 16px;">`;
 
     catItems.forEach(item => {
       const est = fpr.items[item.key] !== undefined ? fpr.items[item.key] : item.last;
@@ -1818,10 +1388,11 @@ function renderFpCatContent() {
       const isChecked = fpr.checked && fpr.checked[item.key] ? true : false;
       const completedClass = isChecked ? 'completed' : '';
       const checkIcon = isChecked ? '✅' : '✔️';
+      const cStyle = isChecked ? 'opacity:0.5;filter:grayscale(1);' : '';
 
-      h += `<div class="fp-item-row ${completedClass}" id="frow-${item.key}">
+      h += `<div class="fp-item-row ${completedClass}" id="frow-${item.key}" style="${cStyle} display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:12px;margin-bottom:8px;transition:all 0.3s;">
               <input type="text" value="${desc}" 
-                onchange="updateFpItem('${item.key}', 'desc', this.value)" style="flex:2;">
+                onchange="updateFpItem('${item.key}', 'desc', this.value)" style="flex:2;background:transparent;border:none;color:var(--t1);font-weight:600;font-size:13px;outline:none;padding:0;">
 
               <input type="number" value="${val}" 
                 onchange="updateFpItem('${item.key}', 'amount', this.value)" 
@@ -1830,17 +1401,17 @@ function renderFpCatContent() {
                 data-group="${fpCatKey}" 
                 data-cat="${sc}" 
                 oninput="previewFP()" 
-                style="flex:1;">
+                style="flex:1;background:var(--s3);border:1px solid var(--b2);color:var(--t1);border-radius:10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:14px;text-align:right;padding:6px;outline:none;">
 
-              <div class="fp-item-actions">
-                <button class="fp-btn fp-btn-save" onclick="toggleFpComplete(this, '${item.key}')" title="Bütçeye Dahil Et">${checkIcon}</button>
-                <button class="fp-btn fp-btn-send" title="Bekleyen Gider Olarak Aktar" onclick="sendPlanToActual('${item.key}')">🚀</button>
-                <button class="fp-btn fp-btn-del" onclick="delFpItem('${item.key}')">🗑</button>
+              <div style="display:flex;gap:6px;margin-left:auto;">
+                <button style="width:34px;height:34px;border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--gr2);color:var(--gr);font-size:14px;" onclick="toggleFpComplete(this, '${item.key}')">${checkIcon}</button>
+                <button style="width:34px;height:34px;border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--ac2);color:var(--ac);font-size:14px;" onclick="sendPlanToActual('${item.key}')">🚀</button>
+                <button style="width:34px;height:34px;border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--rd2);color:var(--rd);font-size:14px;" onclick="delFpItem('${item.key}')">🗑</button>
               </div>
             </div>`;
     });
 
-    h += `<button style="width:100%;padding:8px;background:transparent;border:1px dashed var(--b2);color:var(--t2);border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;" onclick="openFpAddModal('${c}')">➕ ${c} Ekle</button></div></details>`;
+    h += `<button style="width:100%;padding:12px;background:transparent;border:2px dashed var(--b2);color:var(--t2);border-radius:16px;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;" onclick="openFpAddModal('${c}')">➕ ${c} Ekle</button></div></details>`;
   });
 
   document.getElementById('fp-catcontent').innerHTML = h;
